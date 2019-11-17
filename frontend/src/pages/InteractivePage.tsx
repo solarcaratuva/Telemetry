@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import OnePedalDrive from "../components/OnePedalDrive";
 import { io } from "socket.io-client";
 import ToggleButtons from "../components/ToggleButtons";
+import MotorFaults from "../components/MotorFaults";
 
 const socket = io("http://localhost:5050");
 const MAX_LENGTH = 50;
@@ -59,7 +60,9 @@ const InteractivePage = () => {
             ],
           };
           if (updatedData[name as keyof Data].length > MAX_LENGTH) {
-            updatedData[name as keyof Data] = updatedData[name as keyof Data].slice(-MAX_LENGTH);
+            updatedData[name as keyof Data] = updatedData[
+              name as keyof Data
+            ].slice(-MAX_LENGTH);
           }
           return updatedData;
         });
@@ -77,7 +80,9 @@ const InteractivePage = () => {
             ],
           };
           if (updatedData[name as keyof StringData].length > MAX_LENGTH) {
-            updatedData[name as keyof StringData] = updatedData[name as keyof StringData].slice(-MAX_LENGTH);
+            updatedData[name as keyof StringData] = updatedData[
+              name as keyof StringData
+            ].slice(-MAX_LENGTH);
           }
           return updatedData;
         });
@@ -176,19 +181,35 @@ const InteractivePage = () => {
               }}
             >
               <ToggleButtons
-                state={ stringData.gear_state.length != 0 ? stringData.gear_state[stringData.gear_state.length - 1].value : "false" }
+                state={
+                  stringData.gear_state.length != 0
+                    ? stringData.gear_state[stringData.gear_state.length - 1]
+                        .value
+                    : "false"
+                }
                 left={"Low"}
                 right={"High"}
                 label={"Gear:"}
               />
               <ToggleButtons
-                state={ stringData.hazard_state.length != 0 ? stringData.hazard_state[stringData.hazard_state.length - 1].value : "false" }
+                state={
+                  stringData.hazard_state.length != 0
+                    ? stringData.hazard_state[
+                        stringData.hazard_state.length - 1
+                      ].value
+                    : "false"
+                }
                 left={"Off"}
                 right={"On"}
                 label={"Hazard State:"}
               />
               <ToggleButtons
-                state={ stringData.turn_state.length != 0 ? stringData.turn_state[stringData.turn_state.length - 1].value : "false" }
+                state={
+                  stringData.turn_state.length != 0
+                    ? stringData.turn_state[stringData.turn_state.length - 1]
+                        .value
+                    : "false"
+                }
                 left={"Left"}
                 right={"Right"}
                 label={"Turn Signal:"}
@@ -203,7 +224,13 @@ const InteractivePage = () => {
                 flex: "3 0 0",
               }}
             >
-              <OnePedalDrive value={ data.pedal_value.length != 0 ? data.pedal_value[data.pedal_value.length - 1].value : 50 } />
+              <OnePedalDrive
+                value={
+                  data.pedal_value.length != 0
+                    ? data.pedal_value[data.pedal_value.length - 1].value
+                    : 50
+                }
+              />
               <Box
                 sx={{
                   display: "flex",
@@ -211,18 +238,15 @@ const InteractivePage = () => {
                   gap: "16px",
                 }}
               >
-                {/* Replace this paper component with motor faults */}
-                <Paper
-                  sx={{
-                    flex: "1 0 0",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "calc(25vh - 8px)",
-                  }}
-                >
-                  <Typography>Motor Faults</Typography>
-                </Paper>
+                <MotorFaults
+                  Over_current={1}
+                  Hall_sensor={1}
+                  Motor_locked={1}
+                  Sensor_fault1={1}
+                  Sensor_fault2={1}
+                  High_voltage={1}
+                  Controller_overheat={1}
+                />
                 {/* Replace this paper component with fifa chart */}
                 <Paper
                   sx={{
