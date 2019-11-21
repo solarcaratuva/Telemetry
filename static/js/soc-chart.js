@@ -32,13 +32,13 @@ var ctx = document.getElementById("myAreaChart");
 var myLineChart = new Chart(ctx, {
   type: 'line',
   data: {
-    labels: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+    labels: [],
     datasets: [{
       label: "Voltage",
       lineTension: 0.3,
       backgroundColor: "rgba(35, 45, 75, 0.05)",
       borderColor: "rgba(35, 45, 75, 1)",
-      pointRadius: 3,
+      pointRadius: 1.5,
       pointBackgroundColor: "rgba(35, 45, 75, 1)",
       pointBorderColor: "rgba(35, 45, 75, 1)",
       pointHoverRadius: 3,
@@ -46,7 +46,7 @@ var myLineChart = new Chart(ctx, {
       pointHoverBorderColor: "rgba(35, 45, 75, 1)",
       pointHitRadius: 10,
       pointBorderWidth: 2,
-      data: [100, 100.2, 99, 99.6, 99.7, 100.3, 100.5, 100.2, 100.3],
+      data: [],
     }],
   },
   options: {
@@ -116,3 +116,12 @@ var myLineChart = new Chart(ctx, {
     }
   }
 });
+
+function addData(chart, label, data) {
+  chart.data.labels.push(label);
+  chart.data.datasets.forEach((dataset) => {
+      dataset.data.push(data);
+  });
+  chart.update();
+}
+
