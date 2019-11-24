@@ -3,7 +3,6 @@ socket.on( 'connect', function() {
   socket.emit( 'my event', {
     data: 'User Connected'
   } )
-  
 } )
 socket.on( 'my response', function( msg ) {
   console.log( msg )
@@ -13,7 +12,8 @@ socket.on( 'my response', function( msg ) {
   }
   if( typeof msg.rpm !== 'undefined' ) {
     $( '#rpm' ).text(msg.rpm)
-    socket.emit( 'my event', {'rpm': msg.rpm})
   }
-})
 
+  socket.emit( 'my event', {'rpm': msg.rpm})
+
+})

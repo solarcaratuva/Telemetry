@@ -5,6 +5,21 @@
  * Copyright 2011-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
+ table,td,tr{
+   border: 0px;
+ }
+
+ td#solarCell{
+   width:15vw;
+   height:15vh;
+   text-align:center;
+   background:'/static/images/solar.png';
+   background-image: url('/static/images/solar.png');
+   background-size: 100% 100%;
+
+ }
+
+ 
 :root {
   --blue: #232D4B;
   --indigo: #6610f2;
