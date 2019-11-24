@@ -37,10 +37,11 @@ def messageReceived(methods=['GET', 'POST']):
 @socketio.on('my event')
 def handle_my_custom_event(json, methods=['GET', 'POST']):
     print('received my event: ' + str(json))
-    speed = input('speed: ')
-    rpm = input('rpm: ')
+    speed =0
+     #input('speed: ')
+    rpm =0
+     #input('rpm: ')
     socketio.emit('my response', {'speed': speed, 'rpm': rpm}, callback=messageReceived)
-
 
 
 if __name__ == '__main__':
