@@ -3,7 +3,7 @@
 To launch application, complete the following:
 
 - pip install -r requirements.txt
-- python app.py
+- python main.py
 - Go to localhost:5000
 
 
