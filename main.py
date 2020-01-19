@@ -1,16 +1,14 @@
 from flask import Flask, render_template
 from flask_socketio import SocketIO
 import random
-#from gevent.pywsgi import WSGIServer
+import data
+from engineio.payload import Payload
 
+Payload.max_decode_packets = 500
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
-#http_server = WSGIServer(('127.0.0.1', 5000), app)
-#http_server.serve_forever()
 socketio = SocketIO(app)
-
-
 
 @app.route('/')
 def sessions():
@@ -29,21 +27,10 @@ def motor():
     return render_template('motor.html')
 
 
-def messageReceived(methods=['GET', 'POST']):
-    print('message was received!!!')
-
-
-
-@socketio.on('my event')
-def handle_my_custom_event(json, methods=['GET', 'POST']):
-    socketio.sleep(2)
-    print('received my event: ' + str(json))
-    mph = random.randint(10,20)
-     #input('speed: ')
-    rpm = random.randint(11,20)
-     #input('rpm: ')
-    miles = random.randint(11,20)
-    socketio.emit('my response', {'mph': mph, 'rpm': rpm, 'miles':miles}, callback=messageReceived)
+@socketio.on('dataEvent')
+def handle_data(msg):
+    data_json = data.Info().to_json()
+    socketio.emit('dataEvent', data_json)
     socketio.sleep(2)
 
 if __name__ == '__main__':
