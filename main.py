@@ -36,14 +36,15 @@ def messageReceived(methods=['GET', 'POST']):
 
 @socketio.on('my event')
 def handle_my_custom_event(json, methods=['GET', 'POST']):
+    socketio.sleep(2)
     print('received my event: ' + str(json))
-    speed =0
+    mph = random.randint(10,20)
      #input('speed: ')
-    rpm =0
+    rpm = random.randint(11,20)
      #input('rpm: ')
-    socketio.emit('my response', {'speed': speed, 'rpm': rpm}, callback=messageReceived)
-
+    miles = random.randint(11,20)
+    socketio.emit('my response', {'mph': mph, 'rpm': rpm, 'miles':miles}, callback=messageReceived)
+    socketio.sleep(2)
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)
-
