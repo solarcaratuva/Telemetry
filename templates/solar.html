@@ -154,7 +154,7 @@
 
                   <div class = row>
                                        <!-- Area Chart -->
-                                       <div class="col-xl-11 col-lg-11 ml-4 mb-4">
+                                       <div class="col-xl-8 col-lg-8 ml-4 mb-4">
                                         <div class="card shadow mb-4">
                                           <!-- Card Header - Dropdown -->
                                           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -163,55 +163,64 @@
                                               <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                                               </a>
-                                              <ul class="nav nav-tabs card-header-tabs">
+                                              <ul class="nav nav-tabs card-header-tabs" id="solar-list" role="tablist">
                                                   <li class="nav-item">
-                                                    <a class="nav-link active" href="#">Voltage</a>
+                                                      <a class="nav-link active" href="#voltageTab" role="tab" aria-controls="voltageTab" aria-selected="true">Voltage</a>
                                                   </li>
                                                   <li class="nav-item">
-                                                    <a class="nav-link" href="#">Light</a>
+                                                      <a class="nav-link" href="#lightTab" role="tab" aria-controls="lightTab" aria-selected="false">Light</a>
                                                   </li>
                                                   <li class="nav-item">
-                                                    <a class="nav-link" href="#">Temperature</a>
+                                                      <a class="nav-link" href="#temperatureTab" role="tab" aria-controls="lightTab" aria-selected="false" aria-labelledby="temperatureTab">Temperature</a>
                                                   </li>
                                                 </ul>
                                             </div>
                                           </div>
                                           <!-- Card Body -->
                                           <div class="card-body">
-                                            <div class="tab-content" id="voltageTab" role='tabpanel'>
-                                            <table>
-                                              <tr>
-                                                 <td id='solarCell'> 0.00</td>
-                                                 <td id='solarCell' rowspan=1> 0.00</td>
-                                                 <td id='solarCell'  background='/static/images/solar.png'>0.00</td>
-                                                 <td id='solarCell' > 0.00</td>
-                                                 <td id='solarCell'> 0.00</td>
-                                              </tr>
-                                              <tr>
-                                                <td id='solarCell' > 0.00</td>
-                                              </tr>
-                                              <tr>
-                                                  <td id='solarCell'> 0.00</td>
-                                                </tr>
-                                              <tr>
-                                                  <td id='solarCell'> 0.00</td>
-                                                  <td  colspan=3> </td>
-                                              </tr>
-                                              <tr>
-                                                  <td id='solarCell'> 0.00</td>
-                                                  <td id='solarCell'> 0.00</td>
-                                                  <td id='solarCell'> 0.00</td>
-                                                  <td id='solarCell'> 0.00</td>
-                                                  
-                                                      <td id='solarCell'> 0.00</td>
-                                                  
-                                               </tr>
-                                           </table>
-                                           </div>
+                                              <div class="tab-content">
+                                                  <div class="tab-pane active" id="voltageTab" role="tabpanel">
+                                                      <table>
+                                                          <tr>
+                                                             <td id='solarCell'> 0.00</td>
+                                                             <td id='solarCell' rowspan=1> 0.00</td>
+                                                             <td id='solarCell'  background='/static/images/solar.png'>0.00</td>
+                                                             <td id='solarCell' > 0.00</td>
+                                                             <td id='solarCell'> 0.00</td>
+                                                          </tr>
+                                                          <tr>
+                                                            <td id='solarCell' > 0.00</td>
+                                                          </tr>
+                                                          <tr>
+                                                              <td id='solarCell'> 0.00</td>
+                                                            </tr>
+                                                          <tr>
+                                                              <td id='solarCell'> 0.00</td>
+                                                              <td  colspan=3> </td>
+                                                          </tr>
+                                                          <tr>
+                                                              <td id='solarCell'> 0.00</td>
+                                                              <td id='solarCell'> 0.00</td>
+                                                              <td id='solarCell'> 0.00</td>
+                                                              <td id='solarCell'> 0.00</td>
+                                                              
+                                                                  <td id='solarCell'> 0.00</td>
+                                                              
+                                                           </tr>
+                                                       </table>
+                                                      </div>
+                                                <div class="tab-pane" id="lightTab" role="tabpanel">
+                                                  <p>light</p>
+                                                </div>
+                                                <div class="tab-pane" id="temperatureTab" role="tabpanel">
+                                                  <p> temp</p>
+                                                </div>
 
                                           </div>
                                         </div>
                                       </div> 
+
+
                   </div>
                       
                     
@@ -246,7 +255,16 @@
             <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
             
+            <script>
+            $('#solar-list a').on('click', function (e) {
+  e.preventDefault()
+  $(this).tab('show')
+})
+</script>
           </body>
           
           </html>
