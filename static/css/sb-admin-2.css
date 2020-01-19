@@ -10,8 +10,8 @@
  }
 
  td#solarCell{
-   width:15vw;
-   height:15vh;
+   width:10vw;
+   height:10vh;
    text-align:center;
    background:'/static/images/solar.png';
    background-image: url('/static/images/solar.png');
