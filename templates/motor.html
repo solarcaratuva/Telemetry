@@ -96,10 +96,113 @@
                   <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h1 class="h3 mb-0 text-gray-800">Motor</h1>
                   </div>
-
+                  <!-- Content Row -->
+                  <div class="row">
+                  <!-- Regen Status -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                      <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                          <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                              <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Regen Status
+                                <span class="badge badge-pill badge-danger">!</span>
+                              </div>
+                            </div>
+                            <div class="col-auto">
+                              <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <!-- Throttle -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                      <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                          <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                              <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Throttle
+                              <div class="h5 mb-0 font-weight-bold text-gray-800" id='throttle'>0.00</div>
+                              </div>
+                            </div>
+                            <div class="col-auto">
+                              <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div> 
+                  <!--Motor Temp-->   
+                    <div class="col-xl-3 col-md-6 mb-4">
+                      <div class="card border-left-secondary shadow h-100 py-2">
+                        <div class="card-body">
+                          <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                              <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Motor Temp</div>
+                              <div class="h5 mb-0 font-weight-bold text-gray-800" id='motor_temp'>0.00</div>
+                            </div>
+                            <div class="col-auto">
+                              <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <!--Motor-->
+                    <div class="col-xl-4 col-lg-4">
+                      <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                          <h6 class="m-0 font-weight-bold text-primary">Motor</h6>
+                        </div>
+                        <div class="card-body">
+                          <div class="row">
+                            <div class='col'>
+                              <div class="h8 mb-2 font-weight-bold text-primary">RPM: </div>
+                              
+                            </div>
+                            <div class='col'>
+                              <div class='ml-2 mb-2 font-weight-bold text-gray-600' id='rpm_motor'>0.00</div>
+                            </div>
+                          </div>
+                          
+                          <hr class="sidebar-divider">
+                          <div class="row">
+                            <div class='col'>
+                              <div class="h8 mb-2 font-weight-bold text-primary">Voltage: </div>
+                              <div class="h8 mb-2 font-weight-bold text-gray-800">Min: </div>
+                              <div class="h8 mb-2 font-weight-bold text-gray-800">Max: </div>
+                              
+                            </div>
+                            <div class='col'>
+                              <div class='ml-2 mb-2 font-weight-bold text-gray-600' id='voltage_motor'>0.00V</div>
+                              <div class='ml-2 mb-2 text-gray-600' id='minVoltage_motor'>0.00V</div>
+                              <div class='ml-2 mb-2 text-gray-600' id='maxVoltage_motor' > 0.00V</div>
+                            </div>
+                          </div>
+                          
+                          <hr class="sidebar-divider">
+                          
+                          <div class="row">
+                            <div class='col'>
+                              <div class="h8 mb-2 font-weight-bold text-primary">Current: </div>
+                              <div class="h8 mb-2 font-weight-bold text-gray-800">Min: </div>
+                              <div class="h8 mb-2 font-weight-bold text-gray-800">Max: </div>
+                              
+                            </div>
+                            <div class='col'>
+                              <div class='ml-2 mb-2 font-weight-bold text-gray-600' id='current_motor'>0A</div>
+                              <div class='ml-2 mb-2 text-gray-600' id='minCurrent_motor' > 0A </div>
+                              <div class='ml-2 mb-2 text-gray-600' id='maxCurrent_motor' > 0A </div>
+                            </div>
+                          </div>
                       
-                    
+                        </div>
+                      </div>  
+                    </div>
                   </div>
+                
+                  </div>
+                  
                   <!-- /.container-fluid -->
                   
                 </div>
