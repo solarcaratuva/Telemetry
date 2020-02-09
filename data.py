@@ -1,5 +1,12 @@
 #handle and store data from xbee here
 import random
+#from digi.xbee.devices import XBeeDevice
+
+#PORT = "COM6"
+#BAUD_RATE = 9600
+
+#device = XBeeDevice("COM6", 9600)
+#device.open()
 
 class Info(object):
     def __init__(self):
