@@ -2,11 +2,16 @@ from flask import Flask, render_template
 from flask_socketio import SocketIO
 import random
 import data
-import json
 from engineio.payload import Payload
-#from digi.xbee.devices import XBeeDevice
+from digi.xbee.devices import XBeeDevice
+import msgpack
+import json
+
+PORT = "COM3"
+BAUD_RATE = 9600
 
 Payload.max_decode_packets = 500
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
@@ -28,20 +33,29 @@ def solar():
 def motor():
     return render_template('motor.html')
 
-
 @socketio.on('dataEvent')
 def handle_data(msg):
-    data_json = data.Info().to_json()
-    socketio.sleep(2)
+    device = XBeeDevice(PORT, BAUD_RATE)
+    print("Waiting for data... \n")
+    try:
+        device.open()
 
-    with open('data.txt', 'a') as file:
-        file.write(json.dumps(data_json))
-        file.write('\n')
+        def data_receive_callback(xbee_message):
+            data2 = msgpack.unpackb(xbee_message.data, use_list = False, raw = False)
+            print(data2)
+            socketio.emit('dataEvent', data2)
 
-    socketio.emit('dataEvent', data_json)
+        device.add_data_received_callback(data_receive_callback)
 
+        print("Waiting for data...\n")
+        input()
+
+    finally:
+        if device is not None and device.is_open():
+            device.close()
 
 
 if __name__ == '__main__':
-    #readData();
+    device = XBeeDevice(PORT, BAUD_RATE)
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+
