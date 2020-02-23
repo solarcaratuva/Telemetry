@@ -33,6 +33,14 @@ def solar():
 def motor():
     return render_template('motor.html')
 
+@app.route('/control')
+def control():
+    return render_template('control.html')
+
+@app.route('/graph')
+def graph():
+    return render_template('graph.html')
+
 @socketio.on('dataEvent')
 def handle_data(msg):
     device = XBeeDevice(PORT, BAUD_RATE)
@@ -58,4 +66,3 @@ def handle_data(msg):
 if __name__ == '__main__':
     device = XBeeDevice(PORT, BAUD_RATE)
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)
-

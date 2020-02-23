@@ -19,6 +19,17 @@
 
  }
 
+ td#module{
+  width:600vw;
+  height:10vh;
+  color:white;
+  font-weight:bold;
+  text-align:center;
+  background:'/static/images/module-right.png';
+  background-image: url('/static/images/module-right.png');
+  background-size: 100% 100%;
+
+}
  
 :root {
   --blue: #232D4B;
@@ -4095,7 +4106,7 @@ input[type=button].btn-block {
 .navbar-dark .navbar-text a:hover, .navbar-dark .navbar-text a:focus {
   color: #fff;
 }
-
+.mrow { height: 30px; }
 .card {
   position: relative;
   display: flex;
