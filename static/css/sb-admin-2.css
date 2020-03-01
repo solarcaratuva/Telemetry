@@ -20,14 +20,15 @@
  }
 
  td#module{
-  width:600vw;
-  height:10vh;
+  width:220vw;
+  height:5vh;
   color:white;
   font-weight:bold;
   text-align:center;
   background:'/static/images/module-right.png';
-  background-image: url('/static/images/module-right.png');
+  background-image: url('/static/images/module.png');
   background-size: 100% 100%;
+  margin:auto;
 
 }
  
