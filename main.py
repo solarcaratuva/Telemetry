@@ -33,9 +33,9 @@ def solar():
 def motor():
     return render_template('motor.html')
 
-@app.route('/control')
-def control():
-    return render_template('control.html')
+@app.route('/faults')
+def faults():
+    return render_template('faults.html')
 
 @app.route('/graph')
 def graph():
