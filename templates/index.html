@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -20,6 +19,10 @@
 
   <!-- Custom styles for this template-->
   <link href="{{ url_for('static', filename='css/sb-admin-2.css') }}" rel="stylesheet">
+  <script type="text/javascript" src="../dist/dygraph.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.js"></script>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.css" />
+
 
 </head>
 
@@ -72,9 +75,9 @@
         </li>
 
         <li class="nav-item active">
-          <a class="nav-link" href="control">
+          <a class="nav-link" href="faults">
             <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Controls</span></a>
+            <span>Faults</span></a>
         </li>
         <li class="nav-item active">
           <a class="nav-link" href="graph">
@@ -184,15 +187,13 @@
                 </div>
               </div>
             </div>
-          </div>
 
 
           <!-- Content Row -->
 
-          <div class="row">
-
+          
             <!-- Area Chart -->
-            <div class="col-xl-6 col-lg-6 ml-2 mb-2">
+            <div class="col-xl-8 col-lg-6 ml-2 mb-2">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -214,12 +215,34 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                  <div class="chart-area">
-                    <canvas id="myAreaChart"></canvas>
-                  </div>
+                  <div id="div_g" style="width:700px; height:200px;"></div>
+                  <script type="text/javascript">
+                    var data = [];
+                    var t = new Date();
+                    for (var i = 10; i >= 0; i--) {
+                      var x = new Date(t.getTime() - i * 1000);
+                      data.push([x, Math.random()]);
+                    }
+
+                    var g = new Dygraph(document.getElementById("div_g"), data,
+                      {
+                        drawPoints: true,
+                        showRoller: true,
+                        valueRange: [0.0, 1.2],
+                        labels: ['Time', 'Random']
+                      });
+                    setInterval(function () {
+                      var x = new Date();  // current time
+                      var y = Math.random();
+                      data.push([x, y]);
+                      g.updateOptions({ 'file': data });
+                    }, 1000);
+
+                  </script>
                 </div>
               </div>
             </div>
+
 
             <!-- Approach -->
             <div class="col-xl-4 col-lg-4">
@@ -286,28 +309,28 @@
             </div>
           </div>
 
-          <!-- Content Row -->
-          <div class="row"></div>
+        <!-- Content Row -->
+        <div class="row"></div>
 
-
-        </div>
-        <!-- /.container-fluid -->
 
       </div>
-      <!-- End of Main Content -->
-
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Copyright &copy; UVA Solar Car 2019</span>
-          </div>
-        </div>
-      </footer>
-      <!-- End of Footer -->
+      <!-- /.container-fluid -->
 
     </div>
-    <!-- End of Content Wrapper -->
+    <!-- End of Main Content -->
+
+    <!-- Footer -->
+    <footer class="sticky-footer bg-white">
+      <div class="container my-auto">
+        <div class="copyright text-center my-auto">
+          <span>Copyright &copy; UVA Solar Car 2019</span>
+        </div>
+      </div>
+    </footer>
+    <!-- End of Footer -->
+
+  </div>
+  <!-- End of Content Wrapper -->
 
   </div>
   <!-- End of Page Wrapper -->
