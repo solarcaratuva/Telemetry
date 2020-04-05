@@ -6,6 +6,9 @@ from engineio.payload import Payload
 from digi.xbee.devices import XBeeDevice
 import msgpack
 import json
+from flask_sqlalchemy import SQLAlchemy
+import pymysql
+
 
 PORT = "COM3"
 BAUD_RATE = 9600
@@ -14,8 +17,25 @@ Payload.max_decode_packets = 500
 
 
 app = Flask(__name__)
+
 app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///telemetry.db'
+
+db = SQLAlchemy(app)
 socketio = SocketIO(app)
+
+db.create_all()
+
+class TelemetryData(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    miles = db.Column(db.Integer)
+    rpm = db.Column(db.Integer)
+    mph = db.Column(db.Integer)
+
+    def __repr__(self):
+        return f"Data:('{self.miles}', '{self.rpm}', '{self.mph}')"
+
+
 
 @app.route('/')
 def sessions():
@@ -43,7 +63,10 @@ def graph():
 
 @socketio.on('dataEvent')
 def handle_data(msg):
-    device = XBeeDevice(PORT, BAUD_RATE)
+    data_json = data.Info().to_json()
+    socketio.emit('dataEvent', data_json)
+    socketio.sleep(2)
+"""     device = XBeeDevice(PORT, BAUD_RATE)
     print("Waiting for data... \n")
     try:
         device.open()
@@ -60,9 +83,9 @@ def handle_data(msg):
 
     finally:
         if device is not None and device.is_open():
-            device.close()
+            device.close() """
 
-
+    
 if __name__ == '__main__':
     device = XBeeDevice(PORT, BAUD_RATE)
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)
