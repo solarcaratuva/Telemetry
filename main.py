@@ -26,11 +26,53 @@ socketio = SocketIO(app)
 
 db.create_all()
 
-class TelemetryData(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    miles = db.Column(db.Integer)
-    rpm = db.Column(db.Integer)
-    mph = db.Column(db.Integer)
+class BMS(db.Model):
+    current = db.Column(db.Integer, primary_key=True)
+    voltage = db.Column(db.Integer)
+    soc = db.Column(db.Integer)
+    max_temperature = db.Column(db.Integer)
+    temperature = db.Column(db.Integer)
+    charge_limit = db.Column(db.Integer)
+    discharge_limit = db.Column(db.Integer)
+    current_limit = db.Column(db.Integer)
+    disch_bool = db.Column(db.Boolean, default = False)
+    charge_bool = db.Column(db.Boolean, default = False)
+    safety_bool = db.Column(db.Boolean, default = False)
+    malfunction = db.Column(db.Boolean, default = False)
+    multi_purpose_out = db.Column(db.Boolean, default = False)
+    always_on_signal = db.Column(db.Boolean, default = False)
+    ready_signal = db.Column(db.Boolean, default = False)
+    charge_signal = db.Column(db.Boolean, default = False)
+    P0A1F = db.Column(db.Boolean, default = False)
+    P0A00 = db.Column(db.Boolean, default = False)
+    P0A80 = db.Column(db.Boolean, default = False)
+    P0AFA = db.Column(db.Boolean, default = False)
+    U0100 = db.Column(db.Boolean, default = False)
+    P0A04 = db.Column(db.Boolean, default = False)
+    P0AC0 = db.Column(db.Boolean, default = False)
+    P0A01 = db.Column(db.Boolean, default = False)
+    P0A02 = db.Column(db.Boolean, default = False)
+    P0A03 = db.Column(db.Boolean, default = False)
+    P0A81 = db.Column(db.Boolean, default = False)
+    P0A9C = db.Column(db.Boolean, default = False)
+    P0560 = db.Column(db.Boolean, default = False)
+    P0AA6 = db.Column(db.Boolean, default = False)
+    P0A05 = db.Column(db.Boolean, default = False)
+    P0A06 = db.Column(db.Boolean, default = False)
+    P0A07 = db.Column(db.Boolean, default = False)
+    P0A08 = db.Column(db.Boolean, default = False)
+    P0A09 = db.Column(db.Boolean, default = False)
+    P0A0A = db.Column(db.Boolean, default = False)
+    P0A0B = db.Column(db.Boolean, default = False)
+
+class KLS(db.Model):
+    command_status = db.Column(db.Boolean, default = False)
+    feedback_status = db.Column(db.Integer)
+    hall_a = db.Column(db.Boolean, default = False)
+    hall_b = db.Column(db.Boolean, default = False)
+    hall_c = db.Column(db.Boolean, default = False)
+    brake = db.Column(db.Boolean, default = False)
+
 
     def __repr__(self):
         return f"Data:('{self.miles}', '{self.rpm}', '{self.mph}')"
@@ -66,6 +108,8 @@ def handle_data(msg):
     data_json = data.Info().to_json()
     socketio.emit('dataEvent', data_json)
     socketio.sleep(2)
+
+    
 """     device = XBeeDevice(PORT, BAUD_RATE)
     print("Waiting for data... \n")
     try:
