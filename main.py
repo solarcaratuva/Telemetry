@@ -72,6 +72,15 @@ class KLS(db.Model):
     hall_b = db.Column(db.Boolean, default = False)
     hall_c = db.Column(db.Boolean, default = False)
     brake = db.Column(db.Boolean, default = False)
+    backward = db.Column(db.Boolean, default = False)
+    forward = db.Column(db.Boolean, default = False)
+    foot = db.Column(db.Boolean, default = False)
+    boost = db.Column(db.Boolean, default = False)
+    rpm = db.Column(db.Integer)
+    current_limit_status = db.Column(db.Integer)
+    voltage = db.Column(db.Integer)
+    throttle = db.Column(db.Integer)
+    controller_temp = db.Column(db.Integer)
 
 
     def __repr__(self):
