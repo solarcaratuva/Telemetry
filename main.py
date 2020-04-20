@@ -33,7 +33,7 @@ class TelemetryData(db.Model):
     mph = db.Column(db.Integer)
 
     def __repr__(self):
-        return f"Data:('{self.miles}', '{self.rpm}', '{self.mph}')"
+       return f"Data:('{self.miles}', '{self.rpm}', '{self.mph}')"
 
 
 
