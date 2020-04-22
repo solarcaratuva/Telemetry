@@ -21,12 +21,11 @@ Payload.max_decode_packets = 500
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///telemetry.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///telemetry2.db'
 
 db = SQLAlchemy(app)
 socketio = SocketIO(app)
 
-db.create_all()
 
 class BMS(db.Model):
     current = db.Column(db.Float, primary_key=True)
@@ -92,6 +91,9 @@ class KLS(db.Model):
 
 
 
+db.create_all()
+
+
 @app.route('/')
 def sessions():
     return render_template('index.html')
@@ -119,10 +121,17 @@ def graph():
 @socketio.on('dataEvent')
 def handle_data(msg):
     data_json = data.Info().to_json()
+    storeData(data_json)
     socketio.emit('dataEvent', data_json)
     socketio.sleep(2)
 
-    
+
+def storeData(data):
+    d = KLS(rpm=data['rpm'])
+    db.session.add(d)
+    db.session.commit()
+
+
 """     device = XBeeDevice(PORT, BAUD_RATE)
     print("Waiting for data... \n")
     try:
@@ -142,7 +151,7 @@ def handle_data(msg):
         if device is not None and device.is_open():
             device.close() """
 
-    
+
 if __name__ == '__main__':
     device = XBeeDevice(PORT, BAUD_RATE)
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)
