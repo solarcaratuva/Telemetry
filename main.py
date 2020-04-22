@@ -88,7 +88,7 @@ class KLS(db.Model):
 
 
     def __repr__(self):
-        return f"Data:('{self.miles}', '{self.rpm}', '{self.mph}')"
+       return f"Data:('{self.miles}', '{self.rpm}', '{self.mph}')"
 
 
 
