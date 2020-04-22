@@ -56,8 +56,11 @@ class Info(object):
 		ser = serial.Serial(port, 115200, timeout=1)
 
 		while True:
-			print(type(self.to_json()))
-			ser.write(self.to_json())
+			d = self.to_json()
+			print(type(d))
+			ser.write(d)
+			print(d)
+			print(msgpack.unpackb(d, raw="False"))
 			time.sleep(.2)
 			print("sent")
 
