@@ -68,7 +68,7 @@ class BMS(db.Model):
     P0A0B = db.Column(db.Boolean, default = False)
 
 class KLS(db.Model):
-    command_status = db.Column(db.Boolean, default = False)
+    command_status = db.Column(db.Boolean, default = False, primary_key = True)
     feedback_status = db.Column(db.Integer)
     hall_a = db.Column(db.Boolean, default = False)
     hall_b = db.Column(db.Boolean, default = False)
@@ -88,7 +88,7 @@ class KLS(db.Model):
 
 
     def __repr__(self):
-       return f"Data:('{self.miles}', '{self.rpm}', '{self.mph}')"
+        return f"Data:('{self.miles}', '{self.rpm}', '{self.mph}')"
 
 
 
