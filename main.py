@@ -7,6 +7,8 @@ from digi.xbee.devices import XBeeDevice
 import msgpack
 import json
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+from sqlalchemy.dialects.mysql import INTEGER
 import pymysql
 
 
@@ -27,14 +29,14 @@ socketio = SocketIO(app)
 db.create_all()
 
 class BMS(db.Model):
-    current = db.Column(db.Integer, primary_key=True)
-    voltage = db.Column(db.Integer)
-    soc = db.Column(db.Integer)
-    max_temperature = db.Column(db.Integer)
-    temperature = db.Column(db.Integer)
-    charge_limit = db.Column(db.Integer)
-    discharge_limit = db.Column(db.Integer)
-    current_limit = db.Column(db.Integer)
+    current = db.Column(db.Float, primary_key=True)
+    voltage = db.Column(db.Float)
+    soc = db.Column(db.Float)
+    max_temperature = db.Column(INTEGER(unsigned=True))
+    temperature = db.Column(INTEGER(unsigned=True))
+    charge_limit = db.Column(INTEGER(unsigned=True))
+    discharge_limit = db.Column(INTEGER(unsigned=True))
+    current_limit = db.Column(INTEGER(unsigned=True))
     disch_bool = db.Column(db.Boolean, default = False)
     charge_bool = db.Column(db.Boolean, default = False)
     safety_bool = db.Column(db.Boolean, default = False)
@@ -76,11 +78,13 @@ class KLS(db.Model):
     forward = db.Column(db.Boolean, default = False)
     foot = db.Column(db.Boolean, default = False)
     boost = db.Column(db.Boolean, default = False)
-    rpm = db.Column(db.Integer)
-    current_limit_status = db.Column(db.Integer)
-    voltage = db.Column(db.Integer)
-    throttle = db.Column(db.Integer)
-    controller_temp = db.Column(db.Integer)
+    rpm = db.Column(INTEGER(unsigned=True))
+    current_limit_status = db.Column(db.Float)
+    voltage = db.Column(db.Float)
+    throttle = db.Column(db.Float)
+    controller_temp = db.Column(INTEGER(unsigned=True))
+    motor_temp = db.Column(INTEGER(unsigned=True))
+    timestamp = db.Column(db.DateTime, default = datetime.now)
 
 
     def __repr__(self):
