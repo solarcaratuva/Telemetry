@@ -67,7 +67,7 @@ class BMS(db.Model):
     P0A0B = db.Column(db.Boolean, default = False)
 
 class KLS(db.Model):
-    command_status = db.Column(db.Boolean, default = False, primary_key=True)
+    command_status = db.Column(db.Boolean, default = False, primary_key = True)
     feedback_status = db.Column(db.Integer)
     hall_a = db.Column(db.Boolean, default = False)
     hall_b = db.Column(db.Boolean, default = False)
@@ -87,7 +87,7 @@ class KLS(db.Model):
 
 
     def __repr__(self):
-       return f"Data:('{self.miles}', '{self.rpm}', '{self.mph}')"
+        return f"Data:('{self.miles}', '{self.rpm}', '{self.mph}')"
 
 
 
@@ -127,11 +127,11 @@ def handle_data(msg):
 
 
 def storeData(data):
-    d = KLS(rpm=data['rpm'])   
+    d = KLS(rpm=data['rpm'])
     db.session.add(d)
     db.session.commit()
 
-    
+
 """     device = XBeeDevice(PORT, BAUD_RATE)
     print("Waiting for data... \n")
     try:
@@ -151,7 +151,7 @@ def storeData(data):
         if device is not None and device.is_open():
             device.close() """
 
-    
+
 if __name__ == '__main__':
     device = XBeeDevice(PORT, BAUD_RATE)
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)
