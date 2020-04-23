@@ -5,6 +5,8 @@ import msgpack
 from openpyxl import load_workbook
 import serial
 import time
+import sys
+
 
 
 
@@ -60,7 +62,11 @@ class Info(object):
 			print(type(d))
 			ser.write(d)
 			print(d)
-			print(msgpack.unpackb(d, raw="False"))
+			print(ser.send_break)
+			#print(sys.getsizeof(d))
+			dict_pr = msgpack.unpackb(d, raw="False")
+			print(type(dict_pr))
+			print(dict_pr[b'b'])
 			time.sleep(.2)
 			print("sent")
 

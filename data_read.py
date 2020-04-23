@@ -11,6 +11,6 @@ serial_port = 'ttyS11'
 ser = serial.Serial(serial_port, 115200, timeout=1)
 
 while True:
-	s = ser.readline()
+	s = ser.read(135)
 	print(s)	
-	#print(msgpack.unpackb(s,raw=False))
+	print(msgpack.unpackb(s,raw=False))
