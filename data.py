@@ -6,6 +6,7 @@ from openpyxl import load_workbook
 import serial
 import time
 import sys
+import pickle
 
 
 
@@ -51,7 +52,7 @@ class Info(object):
 					array_bool.append(random.randint(0,1))		
 				msgpack_data[label] = array_bool
 
-		return msgpack.packb(msgpack_data, use_bin_type=True)
+		return msgpack.packb(msgpack_data, use_bin_type=False)
 
 
 	def output(self, port):
@@ -59,15 +60,22 @@ class Info(object):
 
 		while True:
 			d = self.to_json()
+			pickled = pickle.dumps(d)
+						
 			print(type(d))
 			ser.write(d)
-			print(d)
-			print(ser.send_break)
+			print(pickled)
+			
+
+
+			#print(ser.send_break)
 			#print(sys.getsizeof(d))
-			dict_pr = msgpack.unpackb(d, raw="False")
+			unpickled = pickle.loads(pickled)
+			dict_pr = msgpack.unpackb(unpickled)
+			
 			print(type(dict_pr))
 			print(dict_pr[b'b'])
-			time.sleep(.2)
+			time.sleep(.5)
 			print("sent")
 
 
