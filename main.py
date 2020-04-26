@@ -10,7 +10,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sqlalchemy.dialects.mysql import INTEGER
 import pymysql
-
+import serial
 
 PORT = "COM3"
 BAUD_RATE = 9600
@@ -26,6 +26,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///telemetry2.db'
 db = SQLAlchemy(app)
 socketio = SocketIO(app)
 
+serial_port = 'ttyS11'
+ser = serial.Serial(serial_port, 115200, timeout=1)
 
 class BMS(db.Model):
     current = db.Column(db.Float, primary_key=True)
@@ -120,8 +122,11 @@ def graph():
 
 @socketio.on('dataEvent')
 def handle_data(msg):
-    data_json = data.Info().to_json()
-    storeData(data_json)
+    data = ser.read(104)
+    print(data)
+    data_json = msgpack.unpackb(data, raw=False)
+    print(data_json)
+    #storeData(data_json)
     socketio.emit('dataEvent', data_json)
     socketio.sleep(2)
 
