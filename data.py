@@ -52,17 +52,12 @@ class Info(object):
                     array_bool.append(random.randint(0,1))      
                 msgpack_data[label] = array_bool
 
-<<<<<<< HEAD
         return msgpack.packb(msgpack_data, use_bin_type=True)
-=======
-		return msgpack.packb(msgpack_data, use_bin_type=False)
->>>>>>> c66ffcb1a95b902e159a9f6d819db3847a77751f
 
 
     def output(self, port):
         ser = serial.Serial(port, 115200, timeout=1)
 
-<<<<<<< HEAD
         while True:
             d = self.to_json()
             print(type(d))
@@ -71,27 +66,7 @@ class Info(object):
             print(msgpack.unpackb(d,raw="False"))
             time.sleep(.01)
             print("sent")
-=======
-		while True:
-			d = self.to_json()
-			pickled = pickle.dumps(d)
-						
-			print(type(d))
-			ser.write(d)
-			print(pickled)
-			
 
-
-			#print(ser.send_break)
-			#print(sys.getsizeof(d))
-			unpickled = pickle.loads(pickled)
-			dict_pr = msgpack.unpackb(unpickled)
-			
-			print(type(dict_pr))
-			print(dict_pr[b'b'])
-			time.sleep(.5)
-			print("sent")
->>>>>>> c66ffcb1a95b902e159a9f6d819db3847a77751f
 
 
 if __name__ == "__main__":
