@@ -8,7 +8,6 @@ import time
 
 
 
-
 class Info(object):
 	def __init__(self):
 		self.workbook = load_workbook(filename="data_label.xlsx")
@@ -25,7 +24,7 @@ class Info(object):
 
 
 		self.mph = random.randint(10,20);
-		self.rpm = random.randint(10,20),
+		self.rpm = random.randint(10,20);
 		self.miles = random.randint(10,20);
 		self.socTime = str(datetime.now().strftime("%H:%M:%S")),
 		self.socVal = random.randint(10,200);

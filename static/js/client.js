@@ -14,7 +14,7 @@ socket.on('dataEvent', function(data) {
 
   
 
-
+  //graph
   if(localStorage.getItem("graphData") != undefined) {
     var gd = JSON.parse(localStorage.getItem("graphData"));
     var val1 = data.socVal;
@@ -47,48 +47,48 @@ socket.on('dataEvent', function(data) {
 
 function displayData(data){
   //Main Dashboard
-  $('#current').text(data.ba)
-  $('#voltage').text(data.bb)
-  $('#soc').text(data.bc)
-  $('#max_temperature').text(data.bd)
-  $('#temperature').text(data.be)
-  $('#charge_limit').text(data.bf)  //charge_limit
-  $('#discharge_limit').text(data.bg)  //discharge_limit
-  $('#current_limit').text(data.bh)
+  $('#current').text(data.b[0])
+  $('#voltage').text(data.b[1])
+  $('#soc').text(data.b[2])
+  $('#max_temperature').text(data.b[3])
+  $('#temperature').text(data.b[4])
+  $('#charge_limit').text(data.b[5])  
+  $('#discharge_limit').text(data.b[6]) 
+  $('#current_limit').text(data.b[7])
 
-  $('#disch_bool').text(data.ca)
-  $('#charge_bool').text(data.cb)
-  $('#safety_bool').text(data.cc)
-  $('#malfunction').text(data.cd)
-  $('#multi-purpose_out').text(data.ce)
-  $('#always_on_signal').text(data.cf)
-  $('#ready_signal').text(data.cg)
-  $('#charge_signal').text(data.ch)
+  $('#disch_bool').text(data.c[0])
+  $('#charge_bool').text(data.c[1])
+  $('#safety_bool').text(data.c[2])
+  $('#malfunction').text(data.c[3])
+  $('#multi-purpose_out').text(data.c[4])
+  $('#always_on_signal').text(data.c[5])
+  $('#ready_signal').text(data.c[6])
+  $('#charge_signal').text(data.c[7])
   
-  $('#P0A1F').text(data.fa)
-  $('#P0A00').text(data.fb)
-  $('#P0A80').text(data.fc)
-  $('#P0AFA').text(data.fd)
-  $('#U0100').text(data.fe)
-  $('#P0A04').text(data.ff)
-  $('#P0AC0').text(data.fg)
-  $('#P0A01').text(data.fh)
-  $('#P0A02').text(data.fi)
-  $('#P0A03').text(data.fj)
-  $('#P0A81').text(data.fk)
-  $('#P0A9C').text(data.fl)
-  $('#P0560').text(data.fm)
-  $('#P0AA6').text(data.fn)
-  $('#P0A05').text(data.fo)
-  $('#P0A06').text(data.fp)
-  $('#P0A07').text(data.fq)
-  $('#P0A08').text(data.fr)
-  $('#P0A09').text(data.fs)
-  $('#P0A0A').text(data.ft)
-  $('#P0A0B').text(data.fu)
+  $('#P0A1F').text(data.f[0])
+  $('#P0A00').text(data.f[1])
+  $('#P0A80').text(data.f[2])
+  $('#P0AFA').text(data.f[3])
+  $('#U0100').text(data.f[4])
+  $('#P0A04').text(data.f[5])
+  $('#P0AC0').text(data.f[6])
+  $('#P0A01').text(data.f[7])
+  $('#P0A02').text(data.f[8])
+  $('#P0A03').text(data.f[9])
+  $('#P0A81').text(data.f[10])
+  $('#P0A9C').text(data.f[11])
+  $('#P0560').text(data.f[12])
+  $('#P0AA6').text(data.f[13])
+  $('#P0A05').text(data.f[14])
+  $('#P0A06').text(data.f[15])
+  $('#P0A07').text(data.f[16])
+  $('#P0A08').text(data.f[17])
+  $('#P0A09').text(data.f[18])
+  $('#P0A0A').text(data.f[19])
+  $('#P0A0B').text(data.f[20])
 
-  $('#command_status').text(data.kg)
-  $('#feedback_status').text(data.kh)
+  $('#command_status').text(data.k[6])
+  $('#feedback_status').text(data.k[7])
 
   $('#hall_a').text(data.sa)
   $('#hall_b').text(data.sb)
@@ -100,13 +100,13 @@ function displayData(data){
   $('#boost').text(data.sh)
 
 
-  $('#rpm').text(data.ka)
-  $('#mph').text(data.ka * 7 * 60 / 5280)
-  $('#current_limit_status').text(data.kb)
-  $('#voltage').text(data.kc)
-  $('#throttle').text(data.kd)
-  $('#controller_temp').text(data.ke)
-  $('#motor_temp').text(data.kf)
+  $('#rpm').text(data.k[0])
+  $('#mph').text(data.k[0] * 7 * 60 / 5280)
+  $('#current_limit_status').text(data.k[1])
+  $('#voltage').text(data.k[2])
+  $('#throttle').text(data.k[3])
+  $('#controller_temp').text(data.k[4])
+  $('#motor_temp').text(data.k[5])
 
   $('#').text(data.t)
 

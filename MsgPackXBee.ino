@@ -15,60 +15,60 @@ StaticJsonDocument<capacity> telemetryData;
 
 void changeDoc() {
   // Timestamp
-  telemetryData["t"] = millis(); 
+  telemetryData.t = millis(); 
   
   // BMS numbers
-  telemetryData["ba"] = (float)random(25,30);
-  telemetryData["bb"] = (float)random(80,100);
-  telemetryData["bc"] = (float)random(90,100);
-  telemetryData["bd"] = random(65,70);
-  telemetryData["be"] = random(55,60);
-  telemetryData["bf"] = random(80,90);
-  telemetryData["bg"] = random(50,60);
-  telemetryData["bh"] = random(60,70);
+  telemetryData.b[0] = (float)random(25,30);
+  telemetryData.b[1] = (float)random(80,100);
+  telemetryData.b[2] = (float)random(90,100);
+  telemetryData.b[3] = random(65,70);
+  telemetryData.b[4] = random(55,60);
+  telemetryData.b[5] = random(80,90);
+  telemetryData.b[6] = random(50,60);
+  telemetryData.b[7] = random(60,70);
 
   // BMS bools
-  telemetryData["ca"] = false;
-  telemetryData["cb"] = false;
-  telemetryData["cc"] = false;
-  telemetryData["cd"] = false;
-  telemetryData["ce"] = false;
-  telemetryData["cf"] = false;
-  telemetryData["cg"] = false;
-  telemetryData["ch"] = false;
+  telemetryData.c[0] = false;
+  telemetryData.c[1] = false;
+  telemetryData.c[2] = false;
+  telemetryData.c[3] = false;
+  telemetryData.c[4] = false;
+  telemetryData.c[5] = false;
+  telemetryData.c[6] = false;
+  telemetryData.c[7] = false;
   
   // BMS faults
-  telemetryData["fa"] = false;
-  telemetryData["fb"] = false;
-  telemetryData["fc"] = false;
-  telemetryData["fd"] = false;
-  telemetryData["fe"] = false;
-  telemetryData["ff"] = false;
-  telemetryData["fg"] = false;
-  telemetryData["fh"] = false;
-  telemetryData["fi"] = false;
-  telemetryData["fj"] = false;
-  telemetryData["fk"] = false;
-  telemetryData["fl"] = false;
-  telemetryData["fm"] = false;
-  telemetryData["fn"] = false;
-  telemetryData["fo"] = false;
-  telemetryData["fp"] = false;
-  telemetryData["fq"] = false;
-  telemetryData["fr"] = false;
-  telemetryData["fs"] = false;
-  telemetryData["ft"] = false;
-  telemetryData["fu"] = false;
+  telemetryData.f[0] = false;
+  telemetryData.f[1] = false;
+  telemetryData.f[2] = false;
+  telemetryData.f[3] = false;
+  telemetryData.f[4] = false;
+  telemetryData.f[5] = false;
+  telemetryData.f[6] = false;
+  telemetryData.f[7] = false;
+  telemetryData.f[8] = false;
+  telemetryData.f[9] = false;
+  telemetryData.f[10] = false;
+  telemetryData.f[11] = false;
+  telemetryData.f[12] = false;
+  telemetryData.f[13] = false;
+  telemetryData.f[14] = false;
+  telemetryData.f[15] = false;
+  telemetryData.f[16] = false;
+  telemetryData.f[17] = false;
+  telemetryData.f[18] = false;
+  telemetryData.f[19] = false;
+  telemetryData.f[20] = false;
 
   // KLS status
-  telemetryData["ka"] = random(100,150);
-  telemetryData["kb"] = (float)random(50,60);
-  telemetryData["kc"] = (float)random(80,100);
-  telemetryData["kd"] = (float)random(50,60);
-  telemetryData["le"] = random(90,100);
-  telemetryData["kf"] = random(80,90);
-  telemetryData["kg"] = false;
-  telemetryData["kf"] = false;
+  telemetryData.k[0] = random(100,150);
+  telemetryData.k[1] = (float)random(50,60);
+  telemetryData.k[2] = (float)random(80,100);
+  telemetryData.k[3] = (float)random(50,60);
+  telemetryData.k[4] = random(90,100);
+  telemetryData.k[5] = random(80,90);
+  telemetryData.k[6] = false;
+  telemetryData.k[7] = false;
 
   //KLS switch
   telemetryData["sa"] = false;

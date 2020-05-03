@@ -10,8 +10,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sqlalchemy.dialects.mysql import INTEGER
 import pymysql
-
-
+from models import Base, KLS
 PORT = "COM3"
 BAUD_RATE = 9600
 
@@ -22,73 +21,15 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///telemetry2.db'
-
 db = SQLAlchemy(app)
+db.Model = Base
+
 socketio = SocketIO(app)
 
-
-class BMS(db.Model):
-    current = db.Column(db.Float, primary_key=True)
-    voltage = db.Column(db.Float)
-    soc = db.Column(db.Float)
-    max_temperature = db.Column(INTEGER(unsigned=True))
-    temperature = db.Column(INTEGER(unsigned=True))
-    charge_limit = db.Column(INTEGER(unsigned=True))
-    discharge_limit = db.Column(INTEGER(unsigned=True))
-    current_limit = db.Column(INTEGER(unsigned=True))
-    disch_bool = db.Column(db.Boolean, default = False)
-    charge_bool = db.Column(db.Boolean, default = False)
-    safety_bool = db.Column(db.Boolean, default = False)
-    malfunction = db.Column(db.Boolean, default = False)
-    multi_purpose_out = db.Column(db.Boolean, default = False)
-    always_on_signal = db.Column(db.Boolean, default = False)
-    ready_signal = db.Column(db.Boolean, default = False)
-    charge_signal = db.Column(db.Boolean, default = False)
-    P0A1F = db.Column(db.Boolean, default = False)
-    P0A00 = db.Column(db.Boolean, default = False)
-    P0A80 = db.Column(db.Boolean, default = False)
-    P0AFA = db.Column(db.Boolean, default = False)
-    U0100 = db.Column(db.Boolean, default = False)
-    P0A04 = db.Column(db.Boolean, default = False)
-    P0AC0 = db.Column(db.Boolean, default = False)
-    P0A01 = db.Column(db.Boolean, default = False)
-    P0A02 = db.Column(db.Boolean, default = False)
-    P0A03 = db.Column(db.Boolean, default = False)
-    P0A81 = db.Column(db.Boolean, default = False)
-    P0A9C = db.Column(db.Boolean, default = False)
-    P0560 = db.Column(db.Boolean, default = False)
-    P0AA6 = db.Column(db.Boolean, default = False)
-    P0A05 = db.Column(db.Boolean, default = False)
-    P0A06 = db.Column(db.Boolean, default = False)
-    P0A07 = db.Column(db.Boolean, default = False)
-    P0A08 = db.Column(db.Boolean, default = False)
-    P0A09 = db.Column(db.Boolean, default = False)
-    P0A0A = db.Column(db.Boolean, default = False)
-    P0A0B = db.Column(db.Boolean, default = False)
-
-class KLS(db.Model):
-    command_status = db.Column(db.Boolean, default = False, primary_key = True)
-    feedback_status = db.Column(db.Integer)
-    hall_a = db.Column(db.Boolean, default = False)
-    hall_b = db.Column(db.Boolean, default = False)
-    hall_c = db.Column(db.Boolean, default = False)
-    brake = db.Column(db.Boolean, default = False)
-    backward = db.Column(db.Boolean, default = False)
-    forward = db.Column(db.Boolean, default = False)
-    foot = db.Column(db.Boolean, default = False)
-    boost = db.Column(db.Boolean, default = False)
-    rpm = db.Column(INTEGER(unsigned=True))
-    current_limit_status = db.Column(db.Float)
-    voltage = db.Column(db.Float)
-    throttle = db.Column(db.Float)
-    controller_temp = db.Column(INTEGER(unsigned=True))
-    motor_temp = db.Column(INTEGER(unsigned=True))
-    timestamp = db.Column(db.DateTime, default = datetime.now)
-
-
+'''
     def __repr__(self):
         return f"Data:('{self.miles}', '{self.rpm}', '{self.mph}')"
-
+'''
 
 
 db.create_all()
