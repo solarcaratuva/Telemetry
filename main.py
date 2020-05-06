@@ -28,6 +28,9 @@ db.Model = Base
 
 socketio = SocketIO(app)
 
+serial_port = 'ttyS11'
+ser = serial.Serial(serial_port, 115200, timeout=1)
+
 '''
     def __repr__(self):
         return f"Data:('{self.miles}', '{self.rpm}', '{self.mph}')"

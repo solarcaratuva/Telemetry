@@ -2,13 +2,13 @@ var socket = io.connect('http://' + document.domain + ':' + location.port);
 
 socket.on('connect', function() {
   socket.emit('dataEvent', "User Connected")
-  getStoredData();
+  //getStoredData();
 });
 
 socket.on('dataEvent', function(data) {
   console.log(data);
   displayData(data);
-
+/*
   //local storage 
   localStorage.setItem("data", JSON.stringify(data));
 
@@ -41,7 +41,7 @@ socket.on('dataEvent', function(data) {
     localStorage.setItem("time", JSON.stringify(time));
   }
 
-  
+  */
   socket.emit('dataEvent', "Data Received")
 })
 
