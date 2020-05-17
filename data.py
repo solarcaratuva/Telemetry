@@ -26,13 +26,6 @@ class Info(object):
                 self.labels[i.value] += 1
 
 
-        self.mph = random.randint(10,20);
-        self.rpm = random.randint(10,20),
-        self.miles = random.randint(10,20);
-        self.socTime = str(datetime.now().strftime("%H:%M:%S")),
-        self.socVal = random.randint(10,200);
-
-
     def to_json(self):
 
         msgpack_data = {}

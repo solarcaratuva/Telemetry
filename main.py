@@ -64,11 +64,19 @@ def faults():
 def graph():
     return render_template('graph.html')
 
+
+useSerial = False
+
 @socketio.on('dataEvent')
 def handle_data(msg):
-    data = ser.read(104)
-    print(data)
-    data_json = msgpack.unpackb(data, raw=False)
+    print(msg)
+
+    if(useSerial):
+        info = ser.read(104) 
+    else:
+        info = data.Info().to_json()
+
+    data_json = msgpack.unpackb(info, raw=False)
     print(data_json)
     storeData(data_json)
     socketio.emit('dataEvent', data_json)
