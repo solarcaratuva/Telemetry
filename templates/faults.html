@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+{% extends "sidebar.html" %}
+
+{% block content %}
 
 <head>
 
@@ -23,380 +26,324 @@
 
 </head>
 
-<body id="page-top">
 
-  <!-- Page Wrapper -->
-  <div id="wrapper">
+<!-- Main Content -->
+<div id="content">
 
-    <!-- Sidebar -->
-    <ul class="navbar-nav bg-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+  <!-- Topbar -->
+  <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-      <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
-        <img src="{{ url_for('static', filename='images/RotundaLogo.png') }}" width=50px height=50px />
-      </a>
+    <img src="{{ url_for('static', filename='images/SolarCarTeamLogo.png') }}" height=80% />
 
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
 
-      <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="/">
-          <i class="fas fa-space-shuttle"></i>
-          <span>TELEMETRY DASHBOARD</span></a>
-      </li>
 
-      <!-- Divider -->
-      <hr class="sidebar-divider">
+  </nav>
+  <!-- End of Topbar -->
+  <!-- Begin Page Content -->
+  <div class='row'>
+    <!-- Horns and Lights-->
+    <div class="col-xl-4 col-md-9 mb-4">
+      <div class="card text-center">
+        <div class="card-header">
+          Numerical variables (BMS)
+        </div>
 
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Sub-Systems
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-1">
+              <div class="text-m text-gray-900 text-uppercase mb-20">Pack current
+                <span class="badge badge badge-info" id='current'>0.0</span>
+              </div>
 
-        <li class="nav-item active">
-          <a class="nav-link" href="battery">
-            <i class="fas fa-car-battery"></i>
-            <span>Battery</span></a>
-        </li>
+              <div class="text-m text-gray-900 text-uppercase mb-20">Pack voltage
+                <span class="badge badge badge-info" id='voltage'>0.0</span>
+              </div>
 
-        <li class="nav-item active">
-          <a class="nav-link" href="solar">
-            <i class="fas fa-solar-panel"></i>
-            <span>Solar</span></a>
-        </li>
+              <div class="text-m text-gray-900 text-uppercase mb-20">State of charge
+                <span class="badge badge badge-info" id='soc'>0.0</span>
+              </div>
 
-        <li class="nav-item active">
-          <a class="nav-link" href="motor">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Motor</span></a>
-        </li>
-        
-        <li class="nav-item active">
-          <a class="nav-link" href="faults">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Faults</span></a>
-        </li>
+              <div class="text-m text-gray-900 text-uppercase mb-20">Battery highest temp
+                <span class="badge badge badge-info" id='max_temperature'>0</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Battery avg. temp
+                <span class="badge badge badge-info" id='temperature'>0</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20"> Charge limit
+                <span class="badge badge badge-info" id=charge_limit>0</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Discharge limit
+                <span class="badge badge badge-info" id='discharge_limit'>0</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Current limit
+                <span class="badge badge badge-info" id='current_limit'>0</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
+    <div class="col-xl-4 col-md-9 mb-4">
+      <div class="card text-center">
+        <div class="card-header">
+          Boolean status variables (BMS)
+        </div>
 
-
-    </ul>
-    <!-- End of Sidebar -->
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-
-      <!-- Main Content -->
-      <div id="content">
-
-        <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-          <img src="{{ url_for('static', filename='images/SolarCarTeamLogo.png') }}" height=80% />
-
-
-
-        </nav>
-        <!-- End of Topbar -->
-        <!-- Begin Page Content -->
-        <div class='row'>
-          <!-- Horns and Lights-->
-          <div class="col-xl-4 col-md-9 mb-4">
-            <div class="card text-center">
-              <div class="card-header">
-                Numerical variables (BMS)
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-1">
+              <div class="text-m text-gray-900 text-uppercase mb-20">Discharge enable
+                <span class="badge badge badge-info" id='disch_bool'>F</span>
               </div>
 
-              <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                  <div class="col mr-1">
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Pack current
-                      <span class="badge badge badge-info" id = 'current'>0.0</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Pack voltage
-                      <span class="badge badge badge-info" id = 'voltage'>0.0</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">State of charge
-                      <span class="badge badge badge-info" id = 'soc'>0.0</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Battery highest temp
-                      <span class="badge badge badge-info"id = 'max_temperature'>0</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Battery avg. temp
-                      <span class="badge badge badge-info" id = 'temperature'>0</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20"> Charge limit
-                      <span class="badge badge badge-info" id = charge_limit>0</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Discharge limit
-                      <span class="badge badge badge-info" id = 'discharge_limit'>0</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Current limit
-                      <span class="badge badge badge-info" id = 'current_limit'>0</span>
-                    </div>
-
-                  </div>
-                </div>
+              <div class="text-m text-gray-900 text-uppercase mb-20">Charge enable
+                <span class="badge badge badge-info" id='charge_bool'>F</span>
               </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Charge safety enable
+                <span class="badge badge badge-info" id='safety_bool'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Malfunction
+                <span class="badge badge badge-info" id='malfunction'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Multi-purpose out enable
+                <span class="badge badge badge-info" id='multi_purpose_out'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20"> Always on signal
+                <span class="badge badge badge-info" id='always_on_signal'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Ready signal
+                <span class="badge badge badge-info" id='ready_signal'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Charge signal
+                <span class="badge badge badge-info" id=charge_signal>F</span>
+              </div>
+
             </div>
           </div>
-          <div class="col-xl-4 col-md-9 mb-4">
-            <div class="card text-center">
-              <div class="card-header">
-                Boolean status variables (BMS)
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4 col-md-9 mb-4">
+      <div class="card text-center">
+        <div class="card-header">
+          Faults (BMS)
+        </div>
+
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-1">
+              <div class="text-m text-gray-900 text-uppercase mb-20">Internal Comm.
+                <span class="badge badge badge-info" id='P0A1F'>F</span>
               </div>
 
-              <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                  <div class="col mr-1">
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Discharge enable
-                      <span class="badge badge badge-info" id = 'disch_bool'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Charge enable
-                      <span class="badge badge badge-info" id = 'charge_bool'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Charge safety enable
-                      <span class="badge badge badge-info" id = 'safety_bool'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Malfunction
-                      <span class="badge badge badge-info" id = 'malfunction'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Multi-purpose out enable
-                      <span class="badge badge badge-info" id = 'multi_purpose_out'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20"> Always on signal
-                      <span class="badge badge badge-info" id = 'always_on_signal'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Ready signal
-                      <span class="badge badge badge-info" id = 'ready_signal'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Charge signal
-                      <span class="badge badge badge-info" id = charge_signal>F</span>
-                    </div>
-
-                  </div>
-                </div>
+              <div class="text-m text-gray-900 text-uppercase mb-20">Internal Conversion
+                <span class="badge badge badge-info" id='P0A00'>F</span>
               </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Weak Cell
+                <span class="badge badge badge-info" id='P0A80'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Low Cell Volt
+                <span class="badge badge badge-info" id='P0AFA'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Comm. Fault
+                <span class="badge badge badge-info" id='U0100'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Open Wiring
+                <span class="badge badge badge-info" id='P0A04'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20"> Current sensor
+                <span class="badge badge badge-info" id='P0AC0'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Pack Volt sensor
+                <span class="badge badge badge-info" id='P0A01'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Weak pack
+                <span class="badge badge badge-info" id='P0A02'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Volt redundancy
+                <span class="badge badge badge-info" id='P0A03'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Fan monitor
+                <span class="badge badge badge-info" id='P0A81'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Thermistor
+                <span class="badge badge badge-info" id='P0A9C'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Always on supply
+                <span class="badge badge badge-info" id='P0560'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">High volt isolation
+                <span class="badge badge badge-info" id='P0AA6'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">12V power supply
+                <span class="badge badge badge-info" id='P0A05'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Charge limit enforcement
+                <span class="badge badge badge-info" id='P0A06'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Discharge limit enforcement
+                <span class="badge badge badge-info" id='P0A07'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Charger safety relay
+                <span class="badge badge badge-info" id='P0A08'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Internal memory
+                <span class="badge badge badge-info" id='P0A09'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Internal thermistor
+                <span class="badge badge badge-info" id='P0A0A'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Internal logic
+                <span class="badge badge badge-info" id='P0A0B'>F</span>
+              </div>
+
             </div>
           </div>
-          <div class="col-xl-4 col-md-9 mb-4">
-            <div class="card text-center">
-              <div class="card-header">
-                Faults (BMS)
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--End first row-->
+  <div class='row'>
+    <div class="col-xl-4 col-md-9 mb-4">
+      <div class="card text-center">
+        <div class="card-header">
+          Boolean status variables (KLS)
+        </div>
+
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-1">
+              <div class="text-m text-gray-900 text-uppercase mb-20">Command Status
+                <span class="badge badge badge-info" id='command_status'>F</span>
               </div>
 
-              <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                  <div class="col mr-1">
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Internal Comm.
-                      <span class="badge badge badge-info" id = 'P0A1F'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Internal Conversion
-                      <span class="badge badge badge-info" id = 'P0A00'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Weak Cell
-                      <span class="badge badge badge-info" id = 'P0A80'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Low Cell Volt
-                      <span class="badge badge badge-info" id = 'P0AFA'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Comm. Fault
-                      <span class="badge badge badge-info" id = 'U0100'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Open Wiring
-                      <span class="badge badge badge-info" id = 'P0A04'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20"> Current sensor
-                      <span class="badge badge badge-info" id = 'P0AC0'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Pack Volt sensor
-                      <span class="badge badge badge-info" id = 'P0A01'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Weak pack
-                      <span class="badge badge badge-info" id = 'P0A02'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Volt redundancy
-                      <span class="badge badge badge-info" id = 'P0A03'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Fan monitor
-                      <span class="badge badge badge-info" id = 'P0A81'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Thermistor
-                      <span class="badge badge badge-info" id = 'P0A9C'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Always on supply
-                      <span class="badge badge badge-info" id = 'P0560'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">High volt isolation
-                      <span class="badge badge badge-info" id = 'P0AA6'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">12V power supply
-                      <span class="badge badge badge-info" id = 'P0A05'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Charge limit enforcement
-                      <span class="badge badge badge-info" id = 'P0A06'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Discharge limit enforcement
-                      <span class="badge badge badge-info" id = 'P0A07'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Charger safety relay
-                      <span class="badge badge badge-info" id = 'P0A08'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Internal memory
-                      <span class="badge badge badge-info" id = 'P0A09'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Internal thermistor
-                      <span class="badge badge badge-info" id = 'P0A0A'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Internal logic
-                      <span class="badge badge badge-info" id = 'P0A0B'>F</span>
-                    </div> 
-
-                  </div>
-                </div>
+              <div class="text-m text-gray-900 text-uppercase mb-20">Feedback status
+                <span class="badge badge badge-info" id='feedback_status'>0.0</span>
               </div>
             </div>
           </div>
         </div>
-        <!--End first row-->
-        <div class='row'>
-          <div class="col-xl-4 col-md-9 mb-4">
-            <div class="card text-center">
-              <div class="card-header">
-                Boolean status variables (KLS)
-              </div>
-
-              <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                  <div class="col mr-1">
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Command Status
-                      <span class="badge badge badge-info" id = 'command_status'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Feedback status
-                      <span class="badge badge badge-info" id = 'feedback_status'>0.0</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-4 col-md-9 mb-4">
-            <div class="card text-center">
-              <div class="card-header">
-                KLS Switch
-              </div>
-
-              <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                  <div class="col mr-1">
-                    <div class="text-m text-gray-900 text-uppercase mb-20">hall_a
-                      <span class="badge badge badge-info" id = 'hall_a'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">hall_b
-                      <span class="badge badge badge-info" id = 'hall_b'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">hall_c
-                      <span class="badge badge badge-info" id = 'hall_c'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Brake
-                      <span class="badge badge badge-info" id = 'brake'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Backward
-                      <span class="badge badge badge-info" id = 'backward'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Forward
-                      <span class="badge badge badge-info" id = 'forward'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Foot
-                      <span class="badge badge badge-info" id = 'foot'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Boost
-                      <span class="badge badge badge-info" id = 'boost'>F</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-xl-4 col-md-9 mb-4">
-            <div class="card text-center">
-              <div class="card-header">
-                Numerical Variables (KLS)
-              </div>
-
-              <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                  <div class="col mr-1">
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Motor RPM
-                      <span class="badge badge badge-info" id = 'rpm'>0</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Motor Current
-                      <span class="badge badge badge-info" id = 'current_limit_status'>F</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Motor Voltage
-                      <span class="badge badge badge-info" id = 'voltage'>0.0</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Motor Throttle
-                      <span class="badge badge badge-info" id = 'throttle'>0.0</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Motor Controller Temp.
-                      <span class="badge badge badge-info" id = 'controller_temp'>0</span>
-                    </div>
-
-                    <div class="text-m text-gray-900 text-uppercase mb-20">Motor Temp.
-                      <span class="badge badge badge-info" id = 'motor_temp'>0</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
+      </div>
+    </div>
+    <div class="col-xl-4 col-md-9 mb-4">
+      <div class="card text-center">
+        <div class="card-header">
+          KLS Switch
         </div>
-        <!--End Second row-->
+
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-1">
+              <div class="text-m text-gray-900 text-uppercase mb-20">hall_a
+                <span class="badge badge badge-info" id='hall_a'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">hall_b
+                <span class="badge badge badge-info" id='hall_b'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">hall_c
+                <span class="badge badge badge-info" id='hall_c'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Brake
+                <span class="badge badge badge-info" id='brake'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Backward
+                <span class="badge badge badge-info" id='backward'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Forward
+                <span class="badge badge badge-info" id='forward'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Foot
+                <span class="badge badge badge-info" id='foot'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Boost
+                <span class="badge badge badge-info" id='boost'>F</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-4 col-md-9 mb-4">
+      <div class="card text-center">
+        <div class="card-header">
+          Numerical Variables (KLS)
+        </div>
+
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-1">
+              <div class="text-m text-gray-900 text-uppercase mb-20">Motor RPM
+                <span class="badge badge badge-info" id='rpm'>0</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Motor Current
+                <span class="badge badge badge-info" id='current_limit_status'>F</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Motor Voltage
+                <span class="badge badge badge-info" id='voltage'>0.0</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Motor Throttle
+                <span class="badge badge badge-info" id='throttle'>0.0</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Motor Controller Temp.
+                <span class="badge badge badge-info" id='controller_temp'>0</span>
+              </div>
+
+              <div class="text-m text-gray-900 text-uppercase mb-20">Motor Temp.
+                <span class="badge badge badge-info" id='motor_temp'>0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+  <!--End Second row-->
+  {% endblock %}
+</div>
+
+</html>

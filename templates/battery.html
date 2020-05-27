@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+  {% extends "sidebar.html" %}
 
+  {% block content %}
 <head>
 
   <meta charset="utf-8">
@@ -23,176 +25,115 @@
 
 </head>
 
-<body id="page-top">
 
-  <!-- Page Wrapper -->
-  <div id="wrapper">
+<!-- Main Content -->
+<div id="content">
 
-    <!-- Sidebar -->
-    <ul class="navbar-nav bg-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+  <!-- Topbar -->
+  <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-      <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
-        <img src="{{ url_for('static', filename='images/RotundaLogo.png') }}" width=50px height=50px />
-      </a>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
-
-      <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="/">
-          <i class="fas fa-space-shuttle"></i>
-          <span>TELEMETRY DASHBOARD</span></a>
-      </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Sub-Systems
-
-        <li class="nav-item active">
-          <a class="nav-link" href="battery">
-            <i class="fas fa-car-battery"></i>
-            <span>Battery</span></a>
-        </li>
-
-        <li class="nav-item active">
-          <a class="nav-link" href="solar">
-            <i class="fas fa-solar-panel"></i>
-            <span>Solar</span></a>
-        </li>
-
-        <li class="nav-item active">
-          <a class="nav-link" href="motor">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Motor</span></a>
-        </li>
-
-        <li class="nav-item active">
-          <a class="nav-link" href="faults">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Faults</span></a>
-        </li>
-      </div>
-
-
-    </ul>
-    <!-- End of Sidebar -->
-
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-
-      <!-- Main Content -->
-      <div id="content">
-
-        <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-          <img src="{{ url_for('static', filename='images/SolarCarTeamLogo.png') }}" height=80% />
+    <img src="{{ url_for('static', filename='images/SolarCarTeamLogo.png') }}" height=80% />
 
 
 
-        </nav>
-        <!-- End of Topbar -->
+  </nav>
+  <!-- End of Topbar -->
 
-        <!-- Begin Page Content -->
-        <div class=row>
-          <!-- Area Chart -->
-          <div class="col-xl-11 col-lg-11 ml-4 mb-4">
-            <div class="card shadow mb-4">
-              <!-- Card Header - Dropdown -->
-              <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Battery Modules</h6>
-                <div class="dropdown no-arrow">
-                  <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                  </a>
-                </div>
-              </div>
-              <!-- Card Body -->
-              <div class="card-body">
-                <table>
-                  <tr>
-                    <td id='module'> 0.00</td>
-                    <td id='module' rowspan=1> 0.00</td>
-                    <td id='module' background='/static/images/module.png'>0.00</td>
-
-
-                  </tr>
-                  <tr>
-                    <td id='module'> 0.00</td>
-                    <td id='module'> 0.00</td>
-                    <td id='module'> 0.00</td>
-
-                  </tr>
-                  <tr>
-                    <td id='module'> 0.00</td>
-                    <td id='module'> 0.00</td>
-                    <td id='module'> 0.00</td>
-
-                  </tr>
-                  <tr>
-                    <td id='module'> 0.00</td>
-                    <td id='module'> 0.00</td>
-                    <td id='module'> 0.00</td>
-
-                  </tr>
-                  <tr>
-                    <td id='module'> 0.00</td>
-                    <td id='module'> 0.00</td>
-                  </tr>
-                  <tr>
-                    <td id='module'> 0.00</td>
-                    <td id='module'> 0.00</td>
-                  </tr>
-                  <tr>
-                    <td class="mrow"></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td id='module'> 0.00</td>
-                    <td id='module'> 0.00</td>
-
-                  </tr>
-                  <tr>
-                    <td id='module'> 0.00</td>
-                    <td id='module'> 0.00</td>
-                  </tr>
-                  <tr>
-                    <td id='module'> 0.00</td>
-                    <td id='module'> 0.00</td>
-                    <td id='module'> 0.00</td>
-
-                  </tr>
-                  <tr>
-                    <td id='module'> 0.00</td>
-                    <td id='module'> 0.00</td>
-                    <td id='module'> 0.00</td>
-
-                  </tr>
-                  <tr>
-                    <td id='module'> 0.00</td>
-                    <td id='module'> 0.00</td>
-                    <td id='module'> 0.00</td>
-
-                  </tr>
-                  <tr>
-                    <td id='module'> 0.00</td>
-                    <td id='module'> 0.00</td>
-                    <td id='module'> 0.00</td>
-
-                  </tr>
-                </table>
-              </div>
-            </div>
+  <!-- Begin Page Content -->
+  <div class=row>
+    <!-- Area Chart -->
+    <div class="col-xl-11 col-lg-11 ml-4 mb-4">
+      <div class="card shadow mb-4">
+        <!-- Card Header - Dropdown -->
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">Battery Modules</h6>
+          <div class="dropdown no-arrow">
+            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+            </a>
           </div>
         </div>
-        <!--
+        <!-- Card Body -->
+        <div class="card-body">
+          <table>
+            <tr>
+              <td id='module'> 0.00</td>
+              <td id='module' rowspan=1> 0.00</td>
+              <td id='module' background='/static/images/module.png'>0.00</td>
+
+
+            </tr>
+            <tr>
+              <td id='module'> 0.00</td>
+              <td id='module'> 0.00</td>
+              <td id='module'> 0.00</td>
+
+            </tr>
+            <tr>
+              <td id='module'> 0.00</td>
+              <td id='module'> 0.00</td>
+              <td id='module'> 0.00</td>
+
+            </tr>
+            <tr>
+              <td id='module'> 0.00</td>
+              <td id='module'> 0.00</td>
+              <td id='module'> 0.00</td>
+
+            </tr>
+            <tr>
+              <td id='module'> 0.00</td>
+              <td id='module'> 0.00</td>
+            </tr>
+            <tr>
+              <td id='module'> 0.00</td>
+              <td id='module'> 0.00</td>
+            </tr>
+            <tr>
+              <td class="mrow"></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td id='module'> 0.00</td>
+              <td id='module'> 0.00</td>
+
+            </tr>
+            <tr>
+              <td id='module'> 0.00</td>
+              <td id='module'> 0.00</td>
+            </tr>
+            <tr>
+              <td id='module'> 0.00</td>
+              <td id='module'> 0.00</td>
+              <td id='module'> 0.00</td>
+
+            </tr>
+            <tr>
+              <td id='module'> 0.00</td>
+              <td id='module'> 0.00</td>
+              <td id='module'> 0.00</td>
+
+            </tr>
+            <tr>
+              <td id='module'> 0.00</td>
+              <td id='module'> 0.00</td>
+              <td id='module'> 0.00</td>
+
+            </tr>
+            <tr>
+              <td id='module'> 0.00</td>
+              <td id='module'> 0.00</td>
+              <td id='module'> 0.00</td>
+
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--
         <div class="container-fluid">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Live Cell Data</h1>
@@ -270,115 +211,106 @@
           </table>
         </div>
       -->
-        <!--Live Parameter Data-->
-        <table class="table table-bordered table-dark">
-          <thead>
-            <tr>
-              <th scope="col">Parameter</th>
-              <th scope="col">Value</th>
-              <th scope="col">Unit</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">Average Battery Temperature</th>
-              <td id = bat_avg_temp>0.0</td>
-              <td>C</td>
-            </tr>
-            <tr>
-              <th scope="row">Pack state of charge</th>
-              <td id = soc>0.0</td>
-              <td>%</td>
-            </tr>
-            <tr>
-              <th scope="row">Pack discharge current limit</th>
-              <td id = discharge_limit>0.0</td>
-              <td>A</td>
-            </tr>
-            <tr>
-              <th scope="row">Pack charge current limit</th>
-              <td id = charge_limit>0.0</td>
-              <td>A</td>
-            </tr>
-            <tr>
-              <th scope="row">Lowest cell voltage</th>
-              <td id = cell_voltage_lowest>0.0</td>
-              <td>V</td>
-            </tr>
-            <tr>
-              <th scope="row">Highest cell voltage</th>
-              <td id = cell_voltage_highest>0.0</td>
-              <td>V</td>
-            </tr>
-            <tr>
-              <th scope="row">Highest battery temperature</th>
-              <td id = bat_high_temp>0.0</td>
-              <td>C</td>
-            </tr>
-            <tr>
-              <th scope="row">Lowest battery temperature</th>
-              <td id = bat_low_temp>0.0</td>
-              <td>C</td>
-            </tr>
-            <tr>
-              <th scope="row">Pack amperage (current)</th>
-              <td id = pack_amperage>0.0</td>
-              <td>A</td>
-            </tr>
-            <tr>
-              <th scope="row">Pack voltage</th>
-              <td id = pack_voltage>0.0</td>
-              <td>V</td>
-            </tr>
-            <tr>
-              <th scope="row">Pack amphours</th>
-              <td id = pack_amphours>0.0</td>
-              <td>Ahr</td>
-            </tr>
-            <tr>
-              <th scope="row">12v supply</th>
-              <td id = twelveV_supply>0.0</td>
-              <td>V</td>
-            </tr>
-            <tr>
-              <th scope="row">Run time</th>
-              <td id = runTime>0.0</td>
-              <td>Sec</td>
-            </tr>
+  <!--Live Parameter Data-->
+  <table class="table table-bordered table-dark">
+    <thead>
+      <tr>
+        <th scope="col">Parameter</th>
+        <th scope="col">Value</th>
+        <th scope="col">Unit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">Average Battery Temperature</th>
+        <td id=bat_avg_temp>0.0</td>
+        <td>C</td>
+      </tr>
+      <tr>
+        <th scope="row">Pack state of charge</th>
+        <td id=soc>0.0</td>
+        <td>%</td>
+      </tr>
+      <tr>
+        <th scope="row">Pack discharge current limit</th>
+        <td id=discharge_limit>0.0</td>
+        <td>A</td>
+      </tr>
+      <tr>
+        <th scope="row">Pack charge current limit</th>
+        <td id=charge_limit>0.0</td>
+        <td>A</td>
+      </tr>
+      <tr>
+        <th scope="row">Lowest cell voltage</th>
+        <td id=cell_voltage_lowest>0.0</td>
+        <td>V</td>
+      </tr>
+      <tr>
+        <th scope="row">Highest cell voltage</th>
+        <td id=cell_voltage_highest>0.0</td>
+        <td>V</td>
+      </tr>
+      <tr>
+        <th scope="row">Highest battery temperature</th>
+        <td id=bat_high_temp>0.0</td>
+        <td>C</td>
+      </tr>
+      <tr>
+        <th scope="row">Lowest battery temperature</th>
+        <td id=bat_low_temp>0.0</td>
+        <td>C</td>
+      </tr>
+      <tr>
+        <th scope="row">Pack amperage (current)</th>
+        <td id=pack_amperage>0.0</td>
+        <td>A</td>
+      </tr>
+      <tr>
+        <th scope="row">Pack voltage</th>
+        <td id=pack_voltage>0.0</td>
+        <td>V</td>
+      </tr>
+      <tr>
+        <th scope="row">Pack amphours</th>
+        <td id=pack_amphours>0.0</td>
+        <td>Ahr</td>
+      </tr>
+      <tr>
+        <th scope="row">12v supply</th>
+        <td id=twelveV_supply>0.0</td>
+        <td>V</td>
+      </tr>
+      <tr>
+        <th scope="row">Run time</th>
+        <td id=runTime>0.0</td>
+        <td>Sec</td>
+      </tr>
 
-          </tbody>
-        </table>
-        <!-- /.container-fluid -->
+    </tbody>
+  </table>
+  <!-- /.container-fluid -->
 
-      </div>
-      <!-- End of Main Content -->
+</div>
+<!-- End of Main Content -->
 
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Copyright &copy; UVA Solar Car 2019</span>
-          </div>
-        </div>
-      </footer>
-      <!-- End of Footer -->
-
+<!-- Footer -->
+<footer class="sticky-footer bg-white">
+  <div class="container my-auto">
+    <div class="copyright text-center my-auto">
+      <span>Copyright &copy; UVA Solar Car 2019</span>
     </div>
-    <!-- End of Content Wrapper -->
-
   </div>
-  <!-- End of Page Wrapper -->
+</footer>
+<!-- End of Footer -->
+<!-- Page level plugins -->
+<script src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/soc-chart.js') }}"></script>
 
 
-  <!-- Page level plugins -->
-  <script src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/soc-chart.js') }}"></script>
-
-
-  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
-
-</body>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+{% endblock %}
 
 </html>

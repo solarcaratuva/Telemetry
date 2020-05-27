@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Sidebar -->
+
+<body>
+  <!-- Page Wrapper -->
+  <div id=wrapper>
+    <ul class="navbar-nav bg-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+      <!-- Sidebar - Brand -->
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+        <img src="{{ url_for('static', filename='images/RotundaLogo.png') }}" width=50px height=50px />
+      </a>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0">
+
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item active">
+        <a class="nav-link" href="/">
+          <i class="fas fa-space-shuttle"></i>
+          <span>TELEMETRY DASHBOARD</span></a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Sub-Systems
+
+        <li class="nav-item active">
+          <a class="nav-link" href="battery">
+            <i class="fas fa-car-battery"></i>
+            <span>Battery</span></a>
+        </li>
+
+        <li class="nav-item active">
+          <a class="nav-link" href="solar">
+            <i class="fas fa-solar-panel"></i>
+            <span>Solar</span></a>
+        </li>
+
+        <li class="nav-item active">
+          <a class="nav-link" href="motor">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Motor</span></a>
+        </li>
+
+        <li class="nav-item active">
+          <a class="nav-link" href="faults">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Faults</span></a>
+        </li>
+      </div>
+    </ul>
+    <!-- End of Sidebar -->
+    <div id="content-wrapper" class="d-flex flex-column">
+      {% block content %}{% endblock %}
+    </div>
+
+</body>
+
+</html>

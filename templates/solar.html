@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+{% extends "sidebar.html" %}
+
+{% block content %}
 
 <head>
 
@@ -23,261 +26,195 @@
 
 </head>
 
-<body id="page-top">
 
-  <!-- Page Wrapper -->
-  <div id="wrapper">
+<!-- Main Content -->
+<div id="content">
 
-    <!-- Sidebar -->
-    <ul class="navbar-nav bg-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+  <!-- Topbar -->
+  <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-      <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
-        <img src="{{ url_for('static', filename='images/RotundaLogo.png') }}" width=50px height=50px />
-      </a>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
-
-      <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="/">
-          <i class="fas fa-space-shuttle"></i>
-          <span>TELEMETRY DASHBOARD</span></a>
-      </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Sub-Systems
-
-        <li class="nav-item active">
-          <a class="nav-link" href="battery">
-            <i class="fas fa-car-battery"></i>
-            <span>Battery</span></a>
-        </li>
-
-        <li class="nav-item active">
-          <a class="nav-link" href="solar">
-            <i class="fas fa-solar-panel"></i>
-            <span>Solar</span></a>
-        </li>
-
-        <li class="nav-item active">
-          <a class="nav-link" href="motor">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Motor</span></a>
-        </li>
-
-        <li class="nav-item active">
-          <a class="nav-link" href="faults">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Faults</span></a>
-        </li>
-      </div>
-
-
-    </ul>
-    <!-- End of Sidebar -->
-
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-
-      <!-- Main Content -->
-      <div id="content">
-
-        <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-          <img src="{{ url_for('static', filename='images/SolarCarTeamLogo.png') }}" height=80% />
+    <img src="{{ url_for('static', filename='images/SolarCarTeamLogo.png') }}" height=80% />
 
 
 
-        </nav>
-        <!-- End of Topbar -->
+  </nav>
+  <!-- End of Topbar -->
 
-        <!-- Begin Page Content -->
-        <div class="container-fluid">
+  <!-- Begin Page Content -->
+  <div class="container-fluid">
 
-          <!-- Page Heading -->
-          <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Solar</h1>
-          </div>
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+      <h1 class="h3 mb-0 text-gray-800">Solar</h1>
+    </div>
 
-          <!-- Content Row -->
-          <div class="row">
+    <!-- Content Row -->
+    <div class="row">
 
-            <!-- Voltage Card -->
-            <div class="col-xl-4 col-md-6 mb-4">
-              <div class="card border-left-secondary shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Avg. Voltage</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800" id='solarVoltage'>0.00</div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
+      <!-- Voltage Card -->
+      <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card border-left-secondary shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Avg. Voltage</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800" id='solarVoltage'>0.00</div>
               </div>
-            </div>
-
-            <!-- Light Card -->
-            <div class="col-xl-4 col-md-6 mb-4">
-              <div class="card border-left-secondary shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Avg. Light</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800" id='solarLight'>0.00</div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Miles Card -->
-            <div class="col-xl-4 col-md-6 mb-4">
-              <div class="card border-left-secondary shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Avg.Temperature</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800" id='solarTemperature'>0.00</div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
+              <div class="col-auto">
+                <i class="fas fa-calendar fa-2x text-gray-300"></i>
               </div>
             </div>
           </div>
-
-          <div class=row>
-            <!-- Area Chart -->
-            <div class="col-xl-8 col-lg-8 ml-4 mb-4">
-              <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Solar Array</h6>
-                  <div class="dropdown no-arrow">
-                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                      aria-haspopup="true" aria-expanded="false">
-                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                    </a>
-                    <ul class="nav nav-tabs card-header-tabs" id="solar-list" role="tablist">
-                      <li class="nav-item">
-                        <a class="nav-link active" href="#voltageTab" role="tab" aria-controls="voltageTab"
-                          aria-selected="true">Voltage</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="#lightTab" role="tab" aria-controls="lightTab"
-                          aria-selected="false">Light</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="#temperatureTab" role="tab" aria-controls="lightTab"
-                          aria-selected="false" aria-labelledby="temperatureTab">Temperature</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                  <div class="tab-content">
-                    <div class="tab-pane active" id="voltageTab" role="tabpanel">
-                      <table>
-                        <tr>
-                          <td id='solarCell'> 0.00</td>
-                          <td id='solarCell' rowspan=1> 0.00</td>
-                          <td id='solarCell' background='/static/images/solar.png'>0.00</td>
-                          <td id='solarCell'> 0.00</td>
-                          <td id='solarCell'> 0.00</td>
-                        </tr>
-                        <tr>
-                          <td id='solarCell'> 0.00</td>
-                        </tr>
-                        <tr>
-                          <td id='solarCell'> 0.00</td>
-                        </tr>
-                        <tr>
-                          <td id='solarCell'> 0.00</td>
-                          <td colspan=3> </td>
-                        </tr>
-                        <tr>
-                          <td id='solarCell'> 0.00</td>
-                          <td id='solarCell'> 0.00</td>
-                          <td id='solarCell'> 0.00</td>
-                          <td id='solarCell'> 0.00</td>
-
-                          <td id='solarCell'> 0.00</td>
-
-                        </tr>
-                      </table>
-                    </div>
-                    <div class="tab-pane" id="lightTab" role="tabpanel">
-                      <p>light</p>
-                    </div>
-                    <div class="tab-pane" id="temperatureTab" role="tabpanel">
-                      <p> temp</p>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-
-
-            </div>
-
-
-          </div>
-          <!-- /.container-fluid -->
-
         </div>
-        <!-- End of Main Content -->
+      </div>
 
-        <!-- Footer -->
-        <footer class="sticky-footer bg-white">
-          <div class="container my-auto">
-            <div class="copyright text-center my-auto">
-              <span>Copyright &copy; UVA Solar Car 2019</span>
+      <!-- Light Card -->
+      <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card border-left-secondary shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Avg. Light</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800" id='solarLight'>0.00</div>
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+              </div>
             </div>
           </div>
-        </footer>
-        <!-- End of Footer -->
+        </div>
+      </div>
+
+      <!-- Miles Card -->
+      <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card border-left-secondary shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Avg.Temperature</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800" id='solarTemperature'>0.00</div>
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class=row>
+      <!-- Area Chart -->
+      <div class="col-xl-8 col-lg-8 ml-4 mb-4">
+        <div class="card shadow mb-4">
+          <!-- Card Header - Dropdown -->
+          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Solar Array</h6>
+            <div class="dropdown no-arrow">
+              <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+              </a>
+              <ul class="nav nav-tabs card-header-tabs" id="solar-list" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" href="#voltageTab" role="tab" aria-controls="voltageTab"
+                    aria-selected="true">Voltage</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#lightTab" role="tab" aria-controls="lightTab"
+                    aria-selected="false">Light</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#temperatureTab" role="tab" aria-controls="lightTab" aria-selected="false"
+                    aria-labelledby="temperatureTab">Temperature</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- Card Body -->
+          <div class="card-body">
+            <div class="tab-content">
+              <div class="tab-pane active" id="voltageTab" role="tabpanel">
+                <table>
+                  <tr>
+                    <td id='solarCell'> 0.00</td>
+                    <td id='solarCell' rowspan=1> 0.00</td>
+                    <td id='solarCell' background='/static/images/solar.png'>0.00</td>
+                    <td id='solarCell'> 0.00</td>
+                    <td id='solarCell'> 0.00</td>
+                  </tr>
+                  <tr>
+                    <td id='solarCell'> 0.00</td>
+                  </tr>
+                  <tr>
+                    <td id='solarCell'> 0.00</td>
+                  </tr>
+                  <tr>
+                    <td id='solarCell'> 0.00</td>
+                    <td colspan=3> </td>
+                  </tr>
+                  <tr>
+                    <td id='solarCell'> 0.00</td>
+                    <td id='solarCell'> 0.00</td>
+                    <td id='solarCell'> 0.00</td>
+                    <td id='solarCell'> 0.00</td>
+
+                    <td id='solarCell'> 0.00</td>
+
+                  </tr>
+                </table>
+              </div>
+              <div class="tab-pane" id="lightTab" role="tabpanel">
+                <p>light</p>
+              </div>
+              <div class="tab-pane" id="temperatureTab" role="tabpanel">
+                <p> temp</p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
 
       </div>
-      <!-- End of Content Wrapper -->
+
 
     </div>
-    <!-- End of Page Wrapper -->
+    <!-- /.container-fluid -->
+
+  </div>
+  <!-- End of Main Content -->
+
+  <!-- Footer -->
+  <footer class="sticky-footer bg-white">
+    <div class="container my-auto">
+      <div class="copyright text-center my-auto">
+        <span>Copyright &copy; UVA Solar Car 2019</span>
+      </div>
+    </div>
+  </footer>
+  <!-- End of Footer -->
 
 
-    <!-- Page level plugins -->
-    <script src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/soc-chart.js') }}"></script>
+
+<!-- Page level plugins -->
+<script src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/soc-chart.js') }}"></script>
 
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-    <script>
-      $('#solar-list a').on('click', function (e) {
-        e.preventDefault()
-        $(this).tab('show')
-      })
-    </script>
-</body>
+<script>
+  $('#solar-list a').on('click', function (e) {
+    e.preventDefault()
+    $(this).tab('show')
+  })
+</script>
+{% endblock %}
 
 </html>

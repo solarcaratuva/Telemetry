@@ -12,6 +12,7 @@ from sqlalchemy.dialects.mysql import INTEGER
 import pymysql
 from models import Base, BMS, KLS
 import serial
+from flask_basicauth import BasicAuth
 
 #XBee
 PORT = "COM3"
@@ -27,6 +28,7 @@ app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
 db = SQLAlchemy(app)
 db.Model = Base
 
+
 POSTGRES = {
     'user': 'postgres',
     'pw': '1234',
@@ -36,6 +38,11 @@ POSTGRES = {
 }
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:\
 %(pw)s@%(host)s:%(port)s/%(db)s' % POSTGRES
+
+app.config['BASIC_AUTH_USERNAME'] = 'byoon'
+app.config['BASIC_AUTH_PASSWORD'] = '123'
+basic_auth = BasicAuth(app)
+
 
 socketio = SocketIO(app)
 
@@ -83,7 +90,7 @@ def handle_data(msg):
     print(msg)
 
     if(useSerial):
-        info = ser.read(104) 
+        info = ser.read(104)
     else:
         info = data.Info().to_json()
 
