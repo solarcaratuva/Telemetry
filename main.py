@@ -13,23 +13,35 @@ import pymysql
 from models import Base, BMS, KLS
 import serial
 
+#XBee
 PORT = "COM3"
 BAUD_RATE = 9600
 
 Payload.max_decode_packets = 500
-
-
 app = Flask(__name__)
 
+#Database Setup
 app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///telemetry2.db'
+#app.config['DEBUG'] = True
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///telemetry2.db'
 db = SQLAlchemy(app)
 db.Model = Base
 
+POSTGRES = {
+    'user': 'postgres',
+    'pw': '1234',
+    'db': 'telemetry',
+    'host': 'localhost',
+    'port': '5432',
+}
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:\
+%(pw)s@%(host)s:%(port)s/%(db)s' % POSTGRES
+
 socketio = SocketIO(app)
 
-serial_port = 'ttyS11'
-ser = serial.Serial(serial_port, 115200, timeout=1)
+#Serial Ports
+#serial_port = 'ttyS11'
+#ser = serial.Serial(serial_port, 115200, timeout=1)
 
 '''
     def __repr__(self):
@@ -38,7 +50,6 @@ ser = serial.Serial(serial_port, 115200, timeout=1)
 
 
 db.create_all()
-
 
 @app.route('/')
 def sessions():
