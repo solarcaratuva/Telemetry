@@ -12,6 +12,7 @@ from sqlalchemy.dialects.mysql import INTEGER
 import pymysql
 from models import Base, BMS, KLS
 import serial
+from flask_basicauth import BasicAuth
 
 PORT = "COM3"
 BAUD_RATE = 9600
@@ -25,6 +26,10 @@ app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///telemetry2.db'
 db = SQLAlchemy(app)
 db.Model = Base
+
+app.config['BASIC_AUTH_USERNAME'] = 'byoon'
+app.config['BASIC_AUTH_PASSWORD'] = '123'
+basic_auth = BasicAuth(app)
 
 socketio = SocketIO(app)
 

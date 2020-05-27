@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+{% extends "sidebar.html" %}
+
+{% block content %}
 
 <head>
 
@@ -23,226 +26,166 @@
 
 </head>
 
-<body id="page-top">
 
-  <!-- Page Wrapper -->
-  <div id="wrapper">
+<!-- Main Content -->
+<div id="content">
 
-    <!-- Sidebar -->
-    <ul class="navbar-nav bg-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+  <!-- Topbar -->
+  <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-      <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
-        <img src="{{ url_for('static', filename='images/RotundaLogo.png') }}" width=50px height=50px />
-      </a>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
-
-      <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="/">
-          <i class="fas fa-space-shuttle"></i>
-          <span>TELEMETRY DASHBOARD</span></a>
-      </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Sub-Systems
-
-        <li class="nav-item active">
-          <a class="nav-link" href="battery">
-            <i class="fas fa-car-battery"></i>
-            <span>Battery</span></a>
-        </li>
-
-        <li class="nav-item active">
-          <a class="nav-link" href="solar">
-            <i class="fas fa-solar-panel"></i>
-            <span>Solar</span></a>
-        </li>
-
-        <li class="nav-item active">
-          <a class="nav-link" href="motor">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Motor</span></a>
-        </li>
-
-        <li class="nav-item active">
-          <a class="nav-link" href="faults">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Faults</span></a>
-        </li>
-      </div>
-
-
-    </ul>
-    <!-- End of Sidebar -->
-
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-
-      <!-- Main Content -->
-      <div id="content">
-
-        <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-          <img src="{{ url_for('static', filename='images/SolarCarTeamLogo.png') }}" height=80% />
+    <img src="{{ url_for('static', filename='images/SolarCarTeamLogo.png') }}" height=80% />
 
 
 
-        </nav>
-        <!-- End of Topbar -->
+  </nav>
+  <!-- End of Topbar -->
 
-        <!-- Begin Page Content -->
-        <div class="container-fluid">
+  <!-- Begin Page Content -->
+  <div class="container-fluid">
 
-          <!-- Page Heading -->
-          <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Motor</h1>
-          </div>
-          <!-- Content Row -->
-          <div class="row">
-            <!-- Regen Status -->
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Regen Status
-                        <span class="badge badge-pill badge-danger">!</span>
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- Throttle -->
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Throttle
-                        <div class="h5 mb-0 font-weight-bold text-gray-800" id='throttle'>0.00</div>
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!--Motor Temp-->
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-secondary shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Motor Temp</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800" id='motor_temp'>0.00</div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!--Motor-->
-            <div class="col-xl-4 col-lg-4">
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Motor</h6>
-                </div>
-                <div class="card-body">
-                  <div class="row">
-                    <div class='col'>
-                      <div class="h8 mb-2 font-weight-bold text-primary">RPM: </div>
-
-                    </div>
-                    <div class='col'>
-                      <div class='ml-2 mb-2 font-weight-bold text-gray-600' id='rpm_motor'>0.00</div>
-                    </div>
-                  </div>
-
-                  <hr class="sidebar-divider">
-                  <div class="row">
-                    <div class='col'>
-                      <div class="h8 mb-2 font-weight-bold text-primary">Voltage: </div>
-                      <div class="h8 mb-2 font-weight-bold text-gray-800">Min: </div>
-                      <div class="h8 mb-2 font-weight-bold text-gray-800">Max: </div>
-
-                    </div>
-                    <div class='col'>
-                      <div class='ml-2 mb-2 font-weight-bold text-gray-600' id='voltage_motor'>0.00V</div>
-                      <div class='ml-2 mb-2 text-gray-600' id='minVoltage_motor'>0.00V</div>
-                      <div class='ml-2 mb-2 text-gray-600' id='maxVoltage_motor'> 0.00V</div>
-                    </div>
-                  </div>
-
-                  <hr class="sidebar-divider">
-
-                  <div class="row">
-                    <div class='col'>
-                      <div class="h8 mb-2 font-weight-bold text-primary">Current: </div>
-                      <div class="h8 mb-2 font-weight-bold text-gray-800">Min: </div>
-                      <div class="h8 mb-2 font-weight-bold text-gray-800">Max: </div>
-
-                    </div>
-                    <div class='col'>
-                      <div class='ml-2 mb-2 font-weight-bold text-gray-600' id='current_motor'>0A</div>
-                      <div class='ml-2 mb-2 text-gray-600' id='minCurrent_motor'> 0A </div>
-                      <div class='ml-2 mb-2 text-gray-600' id='maxCurrent_motor'> 0A </div>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- /.container-fluid -->
-
-      </div>
-      <!-- End of Main Content -->
-
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Copyright &copy; UVA Solar Car 2019</span>
-          </div>
-        </div>
-      </footer>
-      <!-- End of Footer -->
-
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+      <h1 class="h3 mb-0 text-gray-800">Motor</h1>
     </div>
-    <!-- End of Content Wrapper -->
+    <!-- Content Row -->
+    <div class="row">
+      <!-- Regen Status -->
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Regen Status
+                  <span class="badge badge-pill badge-danger">!</span>
+                </div>
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Throttle -->
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Throttle
+                  <div class="h5 mb-0 font-weight-bold text-gray-800" id='throttle'>0.00</div>
+                </div>
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Motor Temp-->
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-secondary shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Motor Temp</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800" id='motor_temp'>0.00</div>
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Motor-->
+      <div class="col-xl-4 col-lg-4">
+        <div class="card shadow mb-4">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Motor</h6>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class='col'>
+                <div class="h8 mb-2 font-weight-bold text-primary">RPM: </div>
+
+              </div>
+              <div class='col'>
+                <div class='ml-2 mb-2 font-weight-bold text-gray-600' id='rpm_motor'>0.00</div>
+              </div>
+            </div>
+
+            <hr class="sidebar-divider">
+            <div class="row">
+              <div class='col'>
+                <div class="h8 mb-2 font-weight-bold text-primary">Voltage: </div>
+                <div class="h8 mb-2 font-weight-bold text-gray-800">Min: </div>
+                <div class="h8 mb-2 font-weight-bold text-gray-800">Max: </div>
+
+              </div>
+              <div class='col'>
+                <div class='ml-2 mb-2 font-weight-bold text-gray-600' id='voltage_motor'>0.00V</div>
+                <div class='ml-2 mb-2 text-gray-600' id='minVoltage_motor'>0.00V</div>
+                <div class='ml-2 mb-2 text-gray-600' id='maxVoltage_motor'> 0.00V</div>
+              </div>
+            </div>
+
+            <hr class="sidebar-divider">
+
+            <div class="row">
+              <div class='col'>
+                <div class="h8 mb-2 font-weight-bold text-primary">Current: </div>
+                <div class="h8 mb-2 font-weight-bold text-gray-800">Min: </div>
+                <div class="h8 mb-2 font-weight-bold text-gray-800">Max: </div>
+
+              </div>
+              <div class='col'>
+                <div class='ml-2 mb-2 font-weight-bold text-gray-600' id='current_motor'>0A</div>
+                <div class='ml-2 mb-2 text-gray-600' id='minCurrent_motor'> 0A </div>
+                <div class='ml-2 mb-2 text-gray-600' id='maxCurrent_motor'> 0A </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
 
   </div>
-  <!-- End of Page Wrapper -->
+
+  <!-- /.container-fluid -->
+
+</div>
+<!-- End of Main Content -->
+
+<!-- Footer -->
+<footer class="sticky-footer bg-white">
+  <div class="container my-auto">
+    <div class="copyright text-center my-auto">
+      <span>Copyright &copy; UVA Solar Car 2019</span>
+    </div>
+  </div>
+</footer>
+<!-- End of Footer -->
+
+</div>
+<!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
 
 
-  <!-- Page level plugins -->
-  <script src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/soc-chart.js') }}"></script>
+<!-- Page level plugins -->
+<script src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/soc-chart.js') }}"></script>
 
 
-  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
 
 </body>
+{% endblock %}
 
 </html>
