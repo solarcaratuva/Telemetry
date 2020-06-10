@@ -73,7 +73,7 @@ function displayData(data){
   $('#controller_temp').text(data.k[4])
   $('#motor_temp').text(data.k[5])
 
-  $('#').text(data.t)
+  //$('#').text(data.t)
 
   //state of charge chart
   addData(chart, data.b[2]);
