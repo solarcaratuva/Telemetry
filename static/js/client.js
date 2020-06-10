@@ -66,7 +66,7 @@ function displayData(data){
 
 
   $('#rpm').text(data.k[0])
-  $('#mph').text(data.k[0] * 7 * 60 / 5280)
+  $('#mph').text((data.k[0] * 7 * 60 / 5280).toFixed(2))
   $('#current_limit_status').text(data.k[1])
   $('#voltage').text(data.k[2])
   $('#throttle').text(data.k[3])
@@ -75,8 +75,8 @@ function displayData(data){
 
   $('#').text(data.t)
 
-    //state of charge chart
-    //addData(myLineChart, data.t, data.bc);
+  //state of charge chart
+  addData(chart, data.b[2]);
 
 
 }

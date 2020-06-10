@@ -108,7 +108,7 @@
       </div>
 
       <!-- Miles Card -->
-      <div class="col-xl-3 col-md-6 mb-4">
+      <div class="col-xl-3 col-md-5 mb-4">
         <div class="card border-left-secondary shadow h-100 py-2">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
@@ -129,7 +129,7 @@
 
 
       <!-- Area Chart -->
-      <div class="col-xl-8 col-lg-6 ml-2 mb-2">
+      <div class="col-xl-6 col-lg-6 ml-2 mb-4">
         <div class="card shadow mb-4">
           <!-- Card Header - Dropdown -->
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -151,37 +151,15 @@
           </div>
           <!-- Card Body -->
           <div class="card-body">
-            <div id="div_g" style="width:700px; height:200px;">
-              <script type="text/javascript">
-                var data = [];
-                var t = new Date();
-                for (var i = 10; i >= 0; i--) {
-                  var x = new Date(t.getTime() - i * 1000);
-                  data.push([x, Math.random()]);
-                }
-
-                var g = new Dygraph(document.getElementById("div_g"), data,
-                  {
-                    drawPoints: true,
-                    showRoller: true,
-                    valueRange: [0.0, 1.2],
-                    labels: ['Time', 'Random']
-                  });
-                setInterval(function () {
-                  var x = new Date();  // current time
-                  var y = Math.random();
-                  data.push([x, y]);
-                  g.updateOptions({ 'file': data });
-                }, 1000);
-
-              </script>
-            </div>
+            <canvas id="socChart"></canvas>
           </div>
         </div>
+      </div>
+
 
 
         <!-- Approach -->
-        <div class="col-xl-4 col-lg-4">
+        <div class="col-xl-4 col-lg-4 ml-2 mb-4">
           <div class="card shadow mb-4">
             <div class="card-header py-3">
               <h6 class="m-0 font-weight-bold text-primary">Battery</h6>
@@ -266,12 +244,14 @@
   <!-- End of Footer -->
 
   <!-- Page level plugins -->
-
+  <script src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/soc-chart.js') }}"></script>
 
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
   <script src="{{ url_for('static', filename='js/client.js') }}"></script>
+
 
 {% endblock %}
 

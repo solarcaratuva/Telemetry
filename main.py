@@ -98,7 +98,7 @@ def handle_data(msg):
     print(data_json)
     storeData(data_json)
     socketio.emit('dataEvent', data_json)
-    socketio.sleep(2)
+    socketio.sleep(5)
 
 
 def storeData(data):
