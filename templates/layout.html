@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 {% extends "sidebar.html" %}
 
 {% block content %}
 
 <head>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -23,23 +23,72 @@
 
     <!-- Custom styles for this template-->
     <link href="{{ url_for('static', filename='css/sb-admin-2.css') }}" rel="stylesheet">
-    <script type="text/javascript" src="../dist/dygraph.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.js"></script>
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.css" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
 
 </head>
+<!-- Main Content -->
 <div id="content">
+
     <!-- Topbar -->
     <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
         <img src="{{ url_for('static', filename='images/SolarCarTeamLogo.png') }}" height=80% />
-
-
-
     </nav>
+    <!-- End of Topbar -->
+
+    <!-- Begin Page Content -->
+    
+    <div class="container-fluid">
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Telemetry Dashboard</h1>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <div class="row">
+                    <div class="col m-1 p-0">
+                        <div class="card shadow-sm" style="height: 10rem;">
+                            1
+                        </div>
+                    </div>
+                    <div class="col m-1 p-0">
+                        <div class="card shadow-sm h-100">
+                            2
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col m-1 p-0">
+                        <div class="card shadow-sm" style="height: 30rem;">
+                            3
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col m-1 p-0">
+                <div class="card shadow-sm h-100">
+                    4
+                </div>
+            </div>
+            <div class="col m-1 p-0">
+                <div class="card shadow-sm h-100">
+                    5
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col m-1 p-0">
+                <div class="card shadow-sm" style="height: 30rem;">
+                    6
+                </div>
+            </div>
+            <div class="col m-1 p-0">
+                <div class="card shadow-sm h-100">
+                    7
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+<!-- End of Main Content -->
 
 <!-- Footer -->
 <footer class="sticky-footer bg-white">
@@ -55,10 +104,11 @@
 <script src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/soc-chart.js') }}"></script>
 
+
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
-<script src="{{ url_for('static', filename='js/client.js') }}"></script>
+
 
 {% endblock %}
 
