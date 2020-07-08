@@ -82,6 +82,9 @@ def faults():
 def graph():
     return render_template('graph.html')
 
+@app.route('/layout')
+def layout():
+    return render_template('layout.html')
 
 useSerial = False
 
