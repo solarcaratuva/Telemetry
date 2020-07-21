@@ -1,15 +1,61 @@
 var socket = io.connect('http://' + document.domain + ':' + location.port);
-
 socket.on('connect', function() {
   socket.emit('dataEvent', "User Connected") 
 });
-
 socket.on('dataEvent', function(data) {
   console.log(data);
   displayData(data);
   socket.emit('dataEvent', "Data Received")
 });
 
+var rpmWarn = false; 
+function checkData(current,ideal,warnText,resolutionText,error) {
+  var today = new Date();
+  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  var br = document.createElement("br");
+  var warning = document.createElement("warn")
+  warning.style.color = "red";
+  warning.textContent = warnText + "\n"
+  var resolved = document.createElement("res")
+  resolved.style.color = "green";
+  resolved.textContent = resolutionText + "\n"
+  var warnBox = document.getElementById("warning")
+
+  if (current < ideal && window[error] == false) {
+    warnBox.appendChild(warning);
+    warnBox.appendChild(br);
+    window[error] = true 
+  }
+  else if (current > ideal && window[error] == true) {
+    warnBox.appendChild(resolved)
+    warnBox.appendChild(br);
+    window[error] = false
+  }
+}
+
+function checkFault(current,ideal,warnText,resolutionText,error) {
+  var today = new Date();
+  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  var br = document.createElement("br");
+  var warning = document.createElement("warn")
+  warning.style.color = "red";
+  warning.textContent = warnText + "\n"
+  var resolved = document.createElement("res")
+  resolved.style.color = "green";
+  resolved.textContent = resolutionText + "\n"
+  var warnBox = document.getElementById("warning")
+
+  if (current != ideal && window[error] == false) {
+    warnBox.appendChild(warning);
+    warnBox.appendChild(br);
+    window[error] = true 
+  }
+  else if (current == ideal && window[error] == true) {
+    warnBox.appendChild(resolved)
+    warnBox.appendChild(br);
+    window[error] = false
+  }
+}
 function displayData(data){
   //Main Dashboard
   $('#current').text(data.b[0])
@@ -63,9 +109,9 @@ function displayData(data){
   $('#forward').text(data.sf)
   $('#foot').text(data.sg)
   $('#boost').text(data.sh)
-
-
   $('#rpm').text(data.k[0])
+  checkData(data.k[0],12,"Warning: Car is lower than 10 rpm","Warning resolved",'rpmWarn');
+
   $('#mph').text(data.k[0] * 7 * 60 / 5280)
   $('#current_limit_status').text(data.k[1])
   $('#voltage').text(data.k[2])

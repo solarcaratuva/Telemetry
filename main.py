@@ -60,6 +60,7 @@ db.create_all()
 
 @app.route('/')
 def sessions():
+    
     return render_template('index.html')
 
 @app.route('/battery')
