@@ -83,6 +83,9 @@ def faults():
 def graph():
     return render_template('graph.html')
 
+@app.route('/layout')
+def layout():
+    return render_template('layout.html')
 
 useSerial = False
 
@@ -99,7 +102,7 @@ def handle_data(msg):
     print(data_json)
     storeData(data_json)
     socketio.emit('dataEvent', data_json)
-    socketio.sleep(2)
+    socketio.sleep(5)
 
 
 def storeData(data):

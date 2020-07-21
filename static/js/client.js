@@ -1,6 +1,6 @@
 var socket = io.connect('http://' + document.domain + ':' + location.port);
 socket.on('connect', function() {
-  socket.emit('dataEvent', "User Connected") 
+  socket.emit('dataEvent', "User Connected")
 });
 socket.on('dataEvent', function(data) {
   console.log(data);
@@ -8,7 +8,7 @@ socket.on('dataEvent', function(data) {
   socket.emit('dataEvent', "Data Received")
 });
 
-var rpmWarn = false; 
+var rpmWarn = false;
 function checkData(current,ideal,warnText,resolutionText,error) {
   var today = new Date();
   var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
@@ -24,7 +24,7 @@ function checkData(current,ideal,warnText,resolutionText,error) {
   if (current < ideal && window[error] == false) {
     warnBox.appendChild(warning);
     warnBox.appendChild(br);
-    window[error] = true 
+    window[error] = true
   }
   else if (current > ideal && window[error] == true) {
     warnBox.appendChild(resolved)
@@ -48,7 +48,7 @@ function checkFault(current,ideal,warnText,resolutionText,error) {
   if (current != ideal && window[error] == false) {
     warnBox.appendChild(warning);
     warnBox.appendChild(br);
-    window[error] = true 
+    window[error] = true
   }
   else if (current == ideal && window[error] == true) {
     warnBox.appendChild(resolved)
@@ -63,8 +63,8 @@ function displayData(data){
   $('#soc').text(data.b[2])
   $('#max_temperature').text(data.b[3])
   $('#temperature').text(data.b[4])
-  $('#charge_limit').text(data.b[5])  
-  $('#discharge_limit').text(data.b[6]) 
+  $('#charge_limit').text(data.b[5])
+  $('#discharge_limit').text(data.b[6])
   $('#current_limit').text(data.b[7])
 
   $('#disch_bool').text(data.c[0])
@@ -75,7 +75,7 @@ function displayData(data){
   $('#always_on_signal').text(data.c[5])
   $('#ready_signal').text(data.c[6])
   $('#charge_signal').text(data.c[7])
-  
+
   $('#P0A1F').text(data.f[0])
   $('#P0A00').text(data.f[1])
   $('#P0A80').text(data.f[2])
@@ -110,19 +110,17 @@ function displayData(data){
   $('#foot').text(data.sg)
   $('#boost').text(data.sh)
   $('#rpm').text(data.k[0])
-  checkData(data.k[0],12,"Warning: Car is lower than 10 rpm","Warning resolved",'rpmWarn');
-
-  $('#mph').text(data.k[0] * 7 * 60 / 5280)
+  $('#mph').text((data.k[0] * 7 * 60 / 5280).toFixed(2))
   $('#current_limit_status').text(data.k[1])
   $('#voltage').text(data.k[2])
   $('#throttle').text(data.k[3])
   $('#controller_temp').text(data.k[4])
   $('#motor_temp').text(data.k[5])
 
-  $('#').text(data.t)
+  //$('#').text(data.t)
 
-    //state of charge chart
-    //addData(myLineChart, data.t, data.bc);
+  //state of charge chart
+  addData(chart, data.b[2]);
 
 
 }
@@ -134,9 +132,9 @@ function getStoredData(){
     //update graph
     var soc = JSON.parse(localStorage.getItem("graphData"));
     var time = JSON.parse(localStorage.getItem("time"));
-    
+
     for(var i = 0; i < soc.length; i++){
       addData(myLineChart, time[i], soc[i]);
     }
- 
+
 }
