@@ -111,6 +111,7 @@ function displayData(data){
   $('#boost').text(data.sh)
   $('#rpm').text(data.k[0])
   $('#mph').text((data.k[0] * 7 * 60 / 5280).toFixed(2))
+  checkData(data.k[0],12,"Warning: RPM is less than 12","RPM warning resolved","rpmWarn")
   $('#current_limit_status').text(data.k[1])
   $('#voltage').text(data.k[2])
   $('#throttle').text(data.k[3])
