@@ -10849,3 +10849,7 @@ body.sidebar-toggled footer.sticky-footer {
 }
 
 /*# sourceMappingURL=sb-admin-2.css.map */
+.scroll {
+  max-height: 50vh;
+  overflow-y: auto;
+}

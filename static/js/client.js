@@ -58,6 +58,7 @@ function checkFault(current,ideal,warnText,resolutionText,error) {
 }
 function displayData(data){
   //Main Dashboard
+  //$('#module').text(data.b[0])
   $('#current').text(data.b[0])
   $('#voltage').text(data.b[1])
   $('#soc').text(data.b[2])
