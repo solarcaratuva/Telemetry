@@ -3,12 +3,15 @@ from sqlalchemy import Boolean, Column
 from sqlalchemy import DateTime, Integer, String, Text, Float
 from sqlalchemy.ext.declarative import declarative_base 
 from sqlalchemy.dialects.mysql import INTEGER
+from sqlalchemy.types import JSON
 Base = declarative_base()
+
 
 class BMS(Base):
     __tablename__ = 'BMS'
 
     id = Column(Integer, primary_key=True)
+    run_id = Column(Integer)
     current = Column(Float)
     voltage = Column(Float)
     soc = Column(Float)
@@ -46,10 +49,12 @@ class BMS(Base):
     P0A09 = Column(Boolean, default = False)
     P0A0A = Column(Boolean, default = False)
     P0A0B = Column(Boolean, default = False)
+    json = Column(JSON)
 
 class KLS(Base):
     __tablename__ = 'KLS'
     id = Column(Integer, primary_key=True)
+    run_id = Column(Integer)
     command_status = Column(Boolean, default = False)
     feedback_status = Column(Integer)
     hall_a = Column(Boolean, default = False)
@@ -66,4 +71,13 @@ class KLS(Base):
     throttle = Column(Integer)
     controller_temp = Column(INTEGER(unsigned=True))
     motor_temp = Column(INTEGER(unsigned=True))
+    timestamp = Column(DateTime, default = datetime.now)
+
+class Runs(Base):
+    __tablename__ = 'Runs'
+    run_id = Column(Integer, primary_key=True, unique=True)
+    title = Column(String)
+    driver = Column(String)
+    location = Column(String)
+    description = Column(Text)
     timestamp = Column(DateTime, default = datetime.now)

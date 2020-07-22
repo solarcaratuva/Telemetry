@@ -1,13 +1,27 @@
 var socket = io.connect('http://' + document.domain + ':' + location.port);
 
 socket.on('connect', function() {
-  socket.emit('dataEvent', "User Connected") 
+  socket.emit('connectEvent', 'Connected') 
 });
 
 socket.on('dataEvent', function(data) {
   console.log(data);
-  displayData(data);
+  if(data != 'connected'){
+    displayData(data);  
+  }
   socket.emit('dataEvent', "Data Received")
+});
+
+socket.on('loadData', function(data){
+  console.log('SOCKETIO LOADGRAPH RECEIVED')
+  console.log(data);
+  for (var i = 0; i < data.length; i++){
+    console.log(data[i][0])
+    displayData(data[i][0])
+  }
+  //setData(chart, data);
+  socket.emit('loadData', "Data Received")
+
 });
 
 function displayData(data){
