@@ -36,27 +36,45 @@
     <!-- End of Topbar -->
 
     <!-- Begin Page Content -->
-    
+
     <div class="container-fluid">
-        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <div class="d-sm-flex align-items-center justify-content-between mb-2">
             <h1 class="h3 mb-0 text-gray-800">Telemetry Dashboard</h1>
         </div>
         <div class="row">
             <div class="col-6">
                 <div class="row">
                     <div class="col m-1 p-0">
+                        <!--Box 1: Run Information-->
                         <div class="card shadow-sm" style="height: 10rem;">
                             1
                         </div>
                     </div>
                     <div class="col m-1 p-0">
+                        <!--Box 2: General Status-->
                         <div class="card shadow-sm h-100">
-                            2
+                            <div class="text-s font-weight-bold text-primary text-uppercase ml-2 mb-1 mt-2">Status
+                                <span class="badge badge-pill badge-success">!</span>
+                            </div>
+                            <div class="text-s text-gray-800 text-uppercase mb-1 ml-3">BMS
+                                <span class="badge badge-pill badge-success">!</span>
+                            </div>
+                            <div class="text-s text-gray-800 text-uppercase mb-1 ml-3">KLS
+                                <span class="badge badge-pill badge-success">!</span>
+                            </div>
+                            <div class="text-s text-gray-800 text-uppercase mb-1 ml-3">Solar
+                                <span class="badge badge-pill badge-success">!</span>
+                            </div>
+                            <div class="text-s text-gray-800 text-uppercase mb-1 ml-3">Motor
+                                <span class="badge badge-pill badge-success">!</span>
+                            </div>
+
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col m-1 p-0">
+                        <!--Box 3: SOC Graph-->
                         <div class="card shadow-sm" style="height: 30rem;">
                             3
                         </div>
@@ -64,11 +82,114 @@
                 </div>
             </div>
             <div class="col m-1 p-0">
+                <!--Box 4: Battery Pack Information-->
                 <div class="card shadow-sm h-100">
-                    4
+
+
+                    <div class="card-header">
+                        <div class="row">
+                            <h2 class="ml-0 text-gray-800">Battery Pack</h2>
+                        </div>
+                        <div class="row">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase ml-1">Lowest cell voltage
+                                (V):
+                            </div>
+                            <div class="text-xs font-weight-bold text-primary text-uppercase ml-1"
+                                id=cell_voltage_lowest>
+                                0.0</div>
+                        </div>
+                        <div class="row">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase ml-1">Highest cell voltage
+                                (V):
+                            </div>
+                            <div class="text-xs font-weight-bold text-primary text-uppercase ml-1 mb-2"
+                                id=cell_voltage_highest>
+                                0.0</div>
+                        </div>
+                        <div class="row">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase ml-1">Highest battery
+                                temperature (C):
+                            </div>
+                            <div class="text-xs font-weight-bold text-primary text-uppercase ml-1" id=bat_high_temp>
+                                0.0</div>
+                        </div>
+                        <div class="row">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase ml-1">Lowest battery
+                                temperature (C):
+                            </div>
+                            <div class="text-xs font-weight-bold text-primary text-uppercase ml-1 mb-2" id=bat_low_temp>
+                                0.0</div>
+                        </div>
+                        <div class="row">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase ml-1">Pack discharge
+                                current limit (A):
+                            </div>
+                            <div class="text-xs font-weight-bold text-primary text-uppercase ml-1" id=discharge_limit>
+                                0.0</div>
+                        </div>
+                        <div class="row">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase ml-1">Pack charge current
+                                limit (A):
+                            </div>
+                            <div class="text-xs font-weight-bold text-primary text-uppercase ml-1 mb-2" id=charge_limit>
+                                0.0</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table>
+                            <tr>
+                                <td id='module'> 0.00</td>
+                                <td id='module' rowspan=1> 0.00</td>
+                                <td id='module' background='/static/images/module.png'>0.00</td>
+                                <td id='module'> 0.00</td>
+                                <td id='module'> 0.00</td>
+                                <td id='module'> 0.00</td>
+
+                            </tr>
+                            <tr>
+                                <td id='module'> 0.00</td>
+                                <td id='module'> 0.00</td>
+                                <td id='module'> 0.00</td>
+                                <td id='module'> 0.00</td>
+                                <td id='module'> 0.00</td>
+                                <td id='module'> 0.00</td>
+
+                            </tr>
+                            <tr>
+                                <td id='module'> 0.00</td>
+                                <td id='module'> 0.00</td>
+                                <td id='module'> 0.00</td>
+                                <td id='module'> 0.00</td>
+                            </tr>
+                            <tr>
+                                <td id='module'> 0.00</td>
+                                <td id='module'> 0.00</td>
+                                <td id='module'> 0.00</td>
+                                <td id='module'> 0.00</td>
+                            </tr>
+                            <tr>
+                                <td id='module'> 0.00</td>
+                                <td id='module'> 0.00</td>
+                                <td id='module'> 0.00</td>
+                                <td id='module'> 0.00</td>
+                                <td id='module'> 0.00</td>
+                                <td id='module'> 0.00</td>
+
+                            </tr>
+                            <tr>
+                                <td id='module'> 0.00</td>
+                                <td id='module'> 0.00</td>
+                                <td id='module'> 0.00</td>
+                                <td id='module'> 0.00</td>
+                                <td id='module'> 0.00</td>
+                                <td id='module'> 0.00</td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
             <div class="col m-1 p-0">
+                <!--Box 5: Past Run Loader-->
                 <div class="card shadow-sm h-100">
                     5
                 </div>
@@ -76,17 +197,80 @@
         </div>
         <div class="row">
             <div class="col m-1 p-0">
+                <!--Box 6: Motor Graph-->
                 <div class="card shadow-sm" style="height: 30rem;">
-                    6
+                    <div class="card-header">
+                        <h2 class="h3 mb-0 text-gray-800">Motor</h2>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="socChart"></canvas>
+                    </div>
                 </div>
             </div>
             <div class="col m-1 p-0">
+                <!--Box 7: Solar Array-->
                 <div class="card shadow-sm h-100">
-                    7
+                    <div class="card-header">
+                        <h2 class="h3 mb-3 text-gray-800">Solar Array</h2>
+                        <div class="row">
+                            <div class="col">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Avg. Voltage
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800" id='solarVoltage'>0.00</div>
+                            </div>
+                            <div class="col">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Avg. Light</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800" id='solarLight'>0.00</div>
+                            </div>
+                            <div class="col">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Avg.Temperature
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800" id='solarTemperature'>0.00</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table>
+                            <tr>
+                                <td id='solarCell'> 0.00</td>
+                                <td id='solarCell' rowspan=1> 0.00</td>
+                                <td id='solarCell' background='/static/images/solar.png'>0.00</td>
+                                <td id='solarCell'> 0.00</td>
+                                <td id='solarCell'> 0.00</td>
+                            </tr>
+                            <tr>
+                                <td id='solarCell'> 0.00</td>
+                            </tr>
+                            <tr>
+                                <td id='solarCell'> 0.00</td>
+                            </tr>
+                            <tr>
+                                <td id='solarCell'> 0.00</td>
+                                <td colspan=3> </td>
+                            </tr>
+                            <tr>
+                                <td id='solarCell'> 0.00</td>
+                                <td id='solarCell'> 0.00</td>
+                                <td id='solarCell'> 0.00</td>
+                                <td id='solarCell'> 0.00</td>
+
+                                <td id='solarCell'> 0.00</td>
+
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
+
+
         </div>
+
+
     </div>
+</div>
+</div>
+</div>
+</div>
 </div>
 <!-- End of Main Content -->
 
