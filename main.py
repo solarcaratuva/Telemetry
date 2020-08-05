@@ -39,8 +39,10 @@ POSTGRES = {
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:\
 %(pw)s@%(host)s:%(port)s/%(db)s' % POSTGRES
 
+#Authentication
 app.config['BASIC_AUTH_USERNAME'] = 'byoon'
 app.config['BASIC_AUTH_PASSWORD'] = '123'
+#app.config['BASIC_AUTH_FORCE'] = True
 basic_auth = BasicAuth(app)
 
 
@@ -79,15 +81,14 @@ def motor():
 def faults():
     return render_template('faults.html')
 
-@app.route('/graph')
-def graph():
-    return render_template('graph.html')
-
 @app.route('/layout')
 def layout():
     return render_template('layout.html')
 
-useSerial = False
+@app.route('/admin')
+@basic_auth.required
+def secret_view():
+    return render_template('admin.html')
 
 @socketio.on('dataEvent')
 def handle_data(msg):
