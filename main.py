@@ -15,14 +15,13 @@ import serial
 from flask_basicauth import BasicAuth
 from flask_session import Session
 from sqlalchemy.ext.serializer import loads, dumps
-from handleData import storeData
 
 
 #XBee
 PORT = "COM3"
 BAUD_RATE = 9600
 
-Payload.max_decode_packets = 500
+Payload.max_decode_packets = 5000
 app = Flask(__name__)
 
 Runs()
@@ -40,13 +39,13 @@ POSTGRES = {
     'host': 'localhost',
     'port': '5432',
 }
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:\
 %(pw)s@%(host)s:%(port)s/%(db)s' % POSTGRES
 
 app.config['BASIC_AUTH_USERNAME'] = 'byoon'
 app.config['BASIC_AUTH_PASSWORD'] = '123'
 basic_auth = BasicAuth(app)
-
 
 #Session config
 SESSION_TYPE = 'filesystem'
@@ -64,8 +63,28 @@ socketio = SocketIO(app)
         return f"Data:('{self.miles}', '{self.rpm}', '{self.mph}')"
 '''
 
-
 db.create_all()
+
+class RunTracker(object):
+    def __init__(self):
+        self.runID = None
+        self.recording = False
+
+    def startRun(self, runID):
+        self.runID = runID
+        self.recording = True
+
+    def stopRun(self):
+        self.runID = None
+        self.recording = False
+
+    def getID(self):
+        return self.runID
+
+    def isRecording(self):
+        return self.recording
+     
+runTracker = RunTracker()
 
 @app.route('/')
 def sessions():
@@ -91,91 +110,89 @@ def faults():
 def graph():
     return render_template('graph.html')
 
+@app.route('/id')
+def get_id():
+    id = runTracker.getID()
+    return str(id)
+
 @app.route('/stop')
 def stop_recording():    
-    session['run_id'] = None
+    runTracker.stopRun()
     return render_template('test.html', runs_list = db.session.query(Runs).all()
 )
 
 @app.route('/load')
 def load_run():
-    run_id = 58
     runs_list = db.session.query(Runs).all()
-    BMS_data = db.session.query(BMS).filter_by(run_id=run_id)
-    KLS_data = db.session.query(KLS).filter_by(run_id=run_id)
-    data_json = db.session.query(BMS.json).filter_by(run_id=run_id).all()
-    print(data_json)
-    socketio.emit('loadData', data_json)
-    load_data(run_id)
-    print("--------------------------EMITTED-------------------------------------")
-    return render_template('load.html', runs_list = runs_list, BMS = BMS_data, KLS = KLS_data)
+    return render_template('load.html', runs_list = runs_list)
 
-@app.route('/test', methods=['GET','POST'])
+@app.route('/test')
 def submit():
     runs_list = db.session.query(Runs).all()
-    if request.method == 'POST':
-        if request.form['submit'] == 'start':
-            title = request.form['title']
-            driver = request.form['driver']
-            location = request.form['location']
-            description = request.form['description']
-
-            print(title, driver, location, description)
-
-            run = Runs(title=title, driver=driver, location=location, description=description)
-            print(type(run))
-            db.session.add(run)
-            db.session.commit()
-
-            session['run_id'] = run.run_id
-            print('----------------------------------------')
-            print(session.get('run_id'))
-            print('----------------------------------------')
-
-            return render_template('test.html', recording=True, run=run, runs_list = runs_list)
-        elif request.form['submit'] == 'stop':
-            session['run_id'] = None
-            return render_template('test.html', runs_list = runs_list)
-    else:
-        return render_template('test.html', runs_list = runs_list)
-
+    recording = runTracker.isRecording()
+    return render_template('test.html', runs_list = runs_list, recording = recording)
 
 useSerial = False
-
 @socketio.on('loadData')
 def load_data(run_id):
     if(run_id != None):
         data_json = db.session.query(BMS.json).filter_by(run_id=run_id).all()
-        print(data_json)
-        print("**************************************************************************************************")
+        print("Loading run #" + str(run_id))
         socketio.emit('loadData', data_json)
 
 @socketio.on('connectEvent')
 def handle_connect(msg):
-    run_id = session.get('run_id')
-    print('connected' + str(run_id))
+    run_id = runTracker.getID()
+    print("Connect run #" + str(run_id))
     if(run_id != None):
         data_json = db.session.query(BMS.json).filter_by(run_id=run_id).all()
-        print(data_json)
         if(data_json == []):
             socketio.emit('dataEvent', 'connected')
         else:
-            socketio.emit('loadData', data_json)
+            print("Restoring run #" + str(run_id))
+            socketio.emit('restoreData', data_json)
         socketio.sleep(5)
 
 @socketio.on('dataEvent')
 def handle_data(msg):
-    #print(msg)
-    if(useSerial):
-        info = ser.read(104)
-    else:
-        info = data.Info().to_json()
+    print("runID == " + str(runTracker.getID()))
+    run_id = runTracker.getID()
+    if(run_id != None):
+        if(useSerial):
+            info = ser.read(104)
+        else:
+            info = data.Info().to_json()
 
-    data_json = msgpack.unpackb(info, raw=False)
-    #print(data_json)
-    storeData(data_json)
-    socketio.emit('dataEvent', data_json)
-    socketio.sleep(5)
+        data_json = msgpack.unpackb(info, raw=False)
+        storeData(data_json)
+        socketio.emit('dataEvent', data_json)
+        socketio.sleep(5)
+
+@socketio.on('new_run')
+def create_run(run):
+    title = run['title']
+    driver = run['driver']
+    location = run['location']
+    description = run['description']
+
+    print(title, driver, location, description)
+
+    run = Runs(title=title, driver=driver, location=location, description=description)
+
+    db.session.add(run)
+    db.session.commit()
+
+    runID = runTracker.startRun(run.run_id)
+    print("runID = " + str(runID))
+    socketio.emit('toggleRecording')
+    socketio.emit('dataEvent', 'connected')
+
+@socketio.on('stop_run')
+def stop_run():
+    runTracker.stopRun()
+    print("Stopped run #" + str(runTracker.getID()))
+    socketio.emit('toggleRecording')
+
 
 def storeData(data):
     BMS_data = BMS(current=data['b'][0],
@@ -215,7 +232,7 @@ def storeData(data):
                     P0A09=data['f'][18],
                     P0A0A=data['f'][19],
                     P0A0B=data['f'][20],
-                    run_id = session.get('run_id'),
+                    run_id = runTracker.getID(),
                     json=data
                     )
 
@@ -235,10 +252,10 @@ def storeData(data):
                     throttle=data['k'][3],
                     controller_temp=data['k'][4],
                     motor_temp=data['k'][5],
-                    run_id = session.get('run_id')
+                    run_id = runTracker.getID()
                     )
 
-    if(session.get('run_id') != None):
+    if(runTracker.getID() != None):
         db.session.add(BMS_data)
         db.session.add(KLS_data)
         db.session.commit()

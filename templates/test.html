@@ -47,9 +47,7 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
       <h1 class="h3 mb-0 text-gray-800">Telemetry Dashboard</h1>
-      {% if recording %}
-      <span class="badge badge-pill badge-success">RECORDING</span>
-      {% endif %}
+      <span class="badge badge-pill badge-success {% if not recording %} d-none {% endif %}" id='recording'>RECORDING</span>
     </div>
 
     <!-- Content Row -->
@@ -161,173 +159,98 @@
 
 
 
-         <!-- Approach -->
-         <div class="col-xl-3 col-lg-3  mb-1">
-          <div class="card shadow mb-4">
-            <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">New Run</h6>
+      <!-- Approach -->
+      <div class="col-xl-3 col-lg-3  mb-1">
+        <div class="card shadow mb-4">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">New Run</h6>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <form>
+                <div class="form-group">
+                <input autocomplete="off" class="form-control" name="title" placeholder="Run name" id="name" />
             </div>
-            <div class="card-body">
-              <div class="row">
-                <form action="/test" method="POST">
-                  <div class="form-group">
-                  {% if recording %}
-                  <input
-                  autocomplete="off"
-                  class="form-control" 
-                  name="title"
-                  placeholder="{{run.title}}"
-                  readonly
-                />
-              </div>
-              <div class="form-group">
-                <input
-                  autocomplete="off"
-                  class="form-control" 
-                  name="driver"
-                  placeholder="{{run.driver}}"
-                  readonly
-                />
-              </div>
-              <div class="form-group">
-                <input
-                  autocomplete="off"
-                  class="form-control" 
-                  name="location"
-                  placeholder="{{run.location}}"
-                  readonly
-
-                />
-              </div>
-              <div class="form-group">
-                <textarea
-                  autocomplete="off"
-                  class="form-control" 
-                  name="description"
-                  placeholder="{{run.description}}"
-                  rows="2"
-                  readonly
-                ></textarea>
-              </div>
-                  <button type="submit" class="btn btn-danger mb-0" name='submit' value='stop'>Stop</button>
-                  {% else %}
-                  <input
-                  autocomplete="off"
-                  class="form-control" 
-                  name="title"
-                  placeholder="Run name"
-                />
-              </div>
-              <div class="form-group">
-                <input
-                  autocomplete="off"
-                  class="form-control" 
-                  name="driver"
-                  placeholder="Driver name"
-                />
-              </div>
-              <div class="form-group">
-                <input
-                  autocomplete="off"
-                  class="form-control" 
-                  name="location"
-                  placeholder="Location"
-                />
-              </div>
-              <div class="form-group">
-                <textarea
-                  autocomplete="off"
-                  class="form-control" 
-                  name="description"
-                  placeholder="Description"
-                  rows="2"
-                ></textarea>
-              </div>
-                  <button type="submit" class="btn btn-primary mb-0" name='submit' value='start'>Start</button>
-                  {% endif %}
-                </form>
-              </div>
+            <div class="form-group">
+              <input autocomplete="off" class="form-control" name="driver" placeholder="Driver name" id="driver" />
             </div>
+            <div class="form-group">
+              <input autocomplete="off" class="form-control" name="location" placeholder="Location" id="location" />
+            </div>
+            <div class="form-group">
+              <textarea autocomplete="off" class="form-control" name="description" placeholder="Description"
+                rows="2" id="description"></textarea>
+            </div>
+            <button class="btn btn-primary mb-0 {% if recording %} d-none {% endif %}"  type='submit' value='start' id="startBtn">Start</button>
+            <button class="btn btn-danger mb-0 {% if not recording %} d-none {% endif %}" type='submit' value='stop' id="stopBtn">Stop</button>
+            </form>
           </div>
         </div>
-
-        <!-- -->
-        <!-- Approach -->
-        <div class="col-xl-3 col-lg-3 mb-1 h-100 overflow-auto">
-          <div class="card shadow mb-4 h-2 overflow-auto">
-            <div class="card-header py-3 h-2">
-              <h6 class="m-0 font-weight-bold text-primary">New Run</h6>
-            </div>
-            <div class="card-body">
-              <div class="row">
-                <div class="overflow-y:scroll">
-                  <div class="overflow-auto">
-                  <table class="table table-bordered table-striped mb-0 list">
-                    <tbody>
-                      {% for run in runs_list %}
-                      <tr> <th>{{run.title}}</th> </tr> 
-                      {% endfor %}
-                    </tbody>
-                  </table>
-                </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        
-
-                <!-- Run Info Card -->
-                <div class="col-xl-3 col-lg-3 ml-1 mb-1">
-                  <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                      <h6 class="m-0 font-weight-bold text-primary">New Run</h6>
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                        {% if recording %}
-                          <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">{{run.title}}</div>
-                          <div class="h5 mb-0 font-weight-bold text-gray-800" id='miles'>{{run.driver}}</div>
-                        {% endif %}
-                      </div> 
-                    </div>
-                  </div>
-                </div>
-
-
-
-
-      <!-- Content Row -->
-      <div class="row"></div>
-
-
-    </div>
-    <!-- /.container-fluid -->
-
-  </div>
-  <!-- End of Main Content -->
-
-  <!-- Footer -->
-  <footer class="sticky-footer bg-white">
-    <div class="container my-auto">
-      <div class="copyright text-center my-auto">
-        <span>Copyright &copy; UVA Solar Car 2019</span>
       </div>
     </div>
-  </footer>
-  <!-- End of Footer -->
 
-  <!-- Page level plugins -->
-  <script src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/soc-chart.js') }}"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- -->
+    <!-- Approach -->
+    <div class="col-xl-3 col-lg-3 mb-1 h-100 overflow-auto">
+      <div class="card shadow mb-4 h-2 overflow-auto">
+        <div class="card-header py-3 h-2">
+          <h6 class="m-0 font-weight-bold text-primary">New Run</h6>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="scroll">
+                <table class="table table-bordered table-striped mb-0 list">
+                  <tbody>
+                    {% for run in runs_list %}
+                    <tr>
+                      <th>{{run.title}}</th>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
-  <script src="{{ url_for('static', filename='js/client.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/load.js') }}"></script>
+
+
+
+
+
+
+    <!-- Content Row -->
+    <div class="row"></div>
+
+
+  </div>
+  <!-- /.container-fluid -->
+
+</div>
+<!-- End of Main Content -->
+
+<!-- Footer -->
+<footer class="sticky-footer bg-white">
+  <div class="container my-auto">
+    <div class="copyright text-center my-auto">
+      <span>Copyright &copy; UVA Solar Car 2019</span>
+    </div>
+  </div>
+</footer>
+<!-- End of Footer -->
+
+<!-- Page level plugins -->
+<script src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/soc-chart.js') }}"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+<script src="{{ url_for('static', filename='js/client.js') }}"></script>
 
 
 

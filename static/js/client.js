@@ -9,20 +9,43 @@ socket.on('dataEvent', function(data) {
   if(data != 'connected'){
     displayData(data);  
   }
-  socket.emit('dataEvent', "Data Received")
+  socket.emit('dataEvent', -1)
 });
 
-socket.on('loadData', function(data){
+socket.on('restoreData', function(data){
   console.log('SOCKETIO LOADGRAPH RECEIVED')
   console.log(data);
+  clearGraph(chart);
   for (var i = 0; i < data.length; i++){
     console.log(data[i][0])
     displayData(data[i][0])
   }
-  //setData(chart, data);
-  socket.emit('loadData', "Data Received")
+  socket.emit('dataEvent', -1)
+});
+
+socket.on('toggleRecording', function(){
+  $("#startBtn, #stopBtn, #recording").toggleClass("d-none")
 
 });
+
+$('form').submit(function(event){
+  event.preventDefault();
+  console.log("FORM SUBMITTED");
+  if($('#stopBtn').hasClass('d-none')){
+    socket.emit('new_run', { 
+                             title: $('#name').val(),
+                             driver: $('#driver').val(),
+                             location: $('#location').val(),
+                             description: $('#description').val(),
+                            });
+  }
+  else{
+    socket.emit('stop_run')
+  }
+
+});
+
+
 
 function displayData(data){
   //Main Dashboard
@@ -108,3 +131,4 @@ function getStoredData(){
     }
  
 }
+

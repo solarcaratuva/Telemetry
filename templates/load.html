@@ -258,9 +258,11 @@
               <h6 class="m-0 font-weight-bold text-primary">Load Run</h6>
             </div>
             <div class="card-body">
+              <div class="scroll">
                   {% for run in runs_list %}
                   <button class="run_btn btn btn-light" id='{{run.run_id}}'>{{ run.title }} </button>
                   {% endfor %}
+                </div>
               </div>
             </div>
           </div>
@@ -298,7 +300,7 @@
   <!-- End of Main Content -->
 
   <!-- Footer -->
-  <footer class="sticky-footer bg-white">
+  <footer class="sticky-footer bg-white" >
     <div class="container my-auto">
       <div class="copyright text-center my-auto">
         <span>Copyright &copy; UVA Solar Car 2019</span>
