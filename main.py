@@ -15,6 +15,7 @@ import serial
 from flask_basicauth import BasicAuth
 
 #XBee
+useSerial = False
 PORT = "COM3"
 BAUD_RATE = 9600
 

@@ -9,6 +9,7 @@ socket.on('dataEvent', function(data) {
 });
 
 var rpmWarn = false;
+//For numerical values
 function checkData(current,ideal,warnText,resolutionText,error) {
   var today = new Date();
   var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
@@ -32,7 +33,7 @@ function checkData(current,ideal,warnText,resolutionText,error) {
     window[error] = false
   }
 }
-
+//For booleans 
 function checkFault(current,ideal,warnText,resolutionText,error) {
   var today = new Date();
   var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
