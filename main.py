@@ -16,7 +16,6 @@ from flask_basicauth import BasicAuth
 from flask_session import Session
 from sqlalchemy.ext.serializer import loads, dumps
 
-
 #XBee
 PORT = "COM3"
 BAUD_RATE = 9600
@@ -46,11 +45,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:\
 app.config['BASIC_AUTH_USERNAME'] = 'byoon'
 app.config['BASIC_AUTH_PASSWORD'] = '123'
 basic_auth = BasicAuth(app)
-
-#Session config
-SESSION_TYPE = 'filesystem'
-app.config.from_object(__name__)
-Session(app)
 
 socketio = SocketIO(app)
 
@@ -83,9 +77,10 @@ class RunTracker(object):
 
     def isRecording(self):
         return self.recording
-     
+
 runTracker = RunTracker()
 
+#Routes
 @app.route('/')
 def sessions():
     return render_template('index.html')
@@ -110,17 +105,6 @@ def faults():
 def graph():
     return render_template('graph.html')
 
-@app.route('/id')
-def get_id():
-    id = runTracker.getID()
-    return str(id)
-
-@app.route('/stop')
-def stop_recording():    
-    runTracker.stopRun()
-    return render_template('test.html', runs_list = db.session.query(Runs).all()
-)
-
 @app.route('/load')
 def load_run():
     runs_list = db.session.query(Runs).all()
@@ -132,68 +116,80 @@ def submit():
     recording = runTracker.isRecording()
     return render_template('test.html', runs_list = runs_list, recording = recording)
 
-useSerial = False
+#API endpoint for getting random json data
+@app.route('/data', methods = ['GET'])
+def getData():
+        info = data.Info().to_json()
+        data_json = msgpack.unpackb(info, raw=False)
+        return data_json
+
+#endpoint for getting current run id
+@app.route('/id')
+def get_id():
+    id = runTracker.getID()
+    return str(id)
+
+#endpoint for stopping current run
+@app.route('/stop')
+def stop_recording():    
+    runTracker.stopRun()
+    return render_template('test.html', runs_list = db.session.query(Runs).all()
+)
+    
+
+#SocketIO Events
+#Restore data on connect/refresh
+@socketio.on('connect')
+def handle_connect():
+    if(runTracker.isRecording()):
+        data_json = db.session.query(BMS.json).filter_by(run_id=runTracker.getID()).all()
+        socketio.emit('restoreData', data_json)
+
+#Emit data for given run_id
 @socketio.on('loadData')
 def load_data(run_id):
-    if(run_id != None):
-        data_json = db.session.query(BMS.json).filter_by(run_id=run_id).all()
-        print("Loading run #" + str(run_id))
-        socketio.emit('loadData', data_json)
+    print("Loading run #" + str(run_id))
 
-@socketio.on('connectEvent')
-def handle_connect(msg):
-    run_id = runTracker.getID()
-    print("Connect run #" + str(run_id))
-    if(run_id != None):
-        data_json = db.session.query(BMS.json).filter_by(run_id=run_id).all()
-        if(data_json == []):
-            socketio.emit('dataEvent', 'connected')
-        else:
-            print("Restoring run #" + str(run_id))
-            socketio.emit('restoreData', data_json)
-        socketio.sleep(5)
+    data_json = db.session.query(BMS.json).filter_by(run_id=run_id).all()
+    socketio.emit('loadData', data_json)
 
-@socketio.on('dataEvent')
-def handle_data(msg):
-    print("runID == " + str(runTracker.getID()))
-    run_id = runTracker.getID()
-    if(run_id != None):
-        if(useSerial):
-            info = ser.read(104)
-        else:
-            info = data.Info().to_json()
-
-        data_json = msgpack.unpackb(info, raw=False)
-        storeData(data_json)
-        socketio.emit('dataEvent', data_json)
-        socketio.sleep(5)
-
+#Create and start new run
 @socketio.on('new_run')
 def create_run(run):
-    title = run['title']
-    driver = run['driver']
-    location = run['location']
-    description = run['description']
-
-    print(title, driver, location, description)
-
-    run = Runs(title=title, driver=driver, location=location, description=description)
+    run = Runs(title=run['title'], 
+               driver=run['driver'], 
+               location=run['location'], 
+               description=run['description'])
 
     db.session.add(run)
     db.session.commit()
 
     runID = runTracker.startRun(run.run_id)
-    print("runID = " + str(runID))
-    socketio.emit('toggleRecording')
-    socketio.emit('dataEvent', 'connected')
+    print("Starting run " + str(runID))
 
+    socketio.emit('toggleRecording')
+    emit_data()
+
+#Stop current run
 @socketio.on('stop_run')
 def stop_run():
     runTracker.stopRun()
     print("Stopped run #" + str(runTracker.getID()))
     socketio.emit('toggleRecording')
 
+#Loop to emit data to client
+def emit_data():
+        while(runTracker.isRecording()):
+            print("Emit runID " + str(runTracker.getID()))
 
+            info = data.Info().to_json()
+            data_json = msgpack.unpackb(info, raw=False)
+            storeData(data_json)
+
+            socketio.emit('dataEvent', data_json)
+            socketio.sleep(1)
+
+#Store data in db
 def storeData(data):
     BMS_data = BMS(current=data['b'][0],
                     voltage=data['b'][1],
@@ -255,13 +251,10 @@ def storeData(data):
                     run_id = runTracker.getID()
                     )
 
-    if(runTracker.getID() != None):
-        db.session.add(BMS_data)
-        db.session.add(KLS_data)
-        db.session.commit()
+    db.session.add(BMS_data)
+    db.session.add(KLS_data)
+    db.session.commit()
 
 
 if __name__ == '__main__':
-    #print(session.get('run_id'))
-    device = XBeeDevice(PORT, BAUD_RATE)
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)

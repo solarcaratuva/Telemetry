@@ -1,36 +1,32 @@
 var socket = io.connect('http://' + document.domain + ':' + location.port);
 
 socket.on('connect', function() {
-  socket.emit('connectEvent', 'Connected') 
+  console.log('Connected');
 });
 
 socket.on('dataEvent', function(data) {
   console.log(data);
-  if(data != 'connected'){
-    displayData(data);  
-  }
-  socket.emit('dataEvent', -1)
+  displayData(data);  
 });
 
 socket.on('restoreData', function(data){
-  console.log('SOCKETIO LOADGRAPH RECEIVED')
-  console.log(data);
+  console.log('RESTORING DATA');
   clearGraph(chart);
+
   for (var i = 0; i < data.length; i++){
-    console.log(data[i][0])
     displayData(data[i][0])
   }
-  socket.emit('dataEvent', -1)
+
 });
 
 socket.on('toggleRecording', function(){
-  $("#startBtn, #stopBtn, #recording").toggleClass("d-none")
-
+  $("#startBtn, #stopBtn, #recording, #startRecordingBtn, #stopRecordingBtn").toggleClass("d-none")
 });
 
 $('form').submit(function(event){
   event.preventDefault();
   console.log("FORM SUBMITTED");
+
   if($('#stopBtn').hasClass('d-none')){
     socket.emit('new_run', { 
                              title: $('#name').val(),
@@ -39,17 +35,16 @@ $('form').submit(function(event){
                              description: $('#description').val(),
                             });
   }
+
   else{
     socket.emit('stop_run')
   }
-
 });
 
-
-
+var c = 100;
 function displayData(data){
   //Main Dashboard
-  $('#current').text(data.b[0])
+  /* $('#current').text(data.b[0])
   $('#voltage').text(data.b[1])
   $('#soc').text(data.b[2])
   $('#max_temperature').text(data.b[3])
@@ -99,8 +94,8 @@ function displayData(data){
   $('#backward').text(data.se)
   $('#forward').text(data.sf)
   $('#foot').text(data.sg)
-  $('#boost').text(data.sh)
-
+  $('#boost').text(data.sh) */
+  
 
   $('#rpm').text(data.k[0])
   $('#mph').text((data.k[0] * 7 * 60 / 5280).toFixed(2))
@@ -110,25 +105,19 @@ function displayData(data){
   $('#controller_temp').text(data.k[4])
   $('#motor_temp').text(data.k[5])
 
-  //$('#').text(data.t)
-
   //state of charge chart
-  addData(chart, data.b[2]);
-
+  addData(chart, c - 0.1 * data.b[2]);
+  c -= 0.1 * data.b[2];
 
 }
 
-function getStoredData(){
-    data = JSON.parse(localStorage.getItem("data"));
-    displayData(data);
 
-    //update graph
-    var soc = JSON.parse(localStorage.getItem("graphData"));
-    var time = JSON.parse(localStorage.getItem("time"));
-    
-    for(var i = 0; i < soc.length; i++){
-      addData(myLineChart, time[i], soc[i]);
-    }
- 
+function get_api_data() {
+  $.getJSON('http://' + document.domain + ':' + location.port + '/data',
+    function(data){
+      console.log(data);
+      displayData(data);
+    })
 }
+
 
