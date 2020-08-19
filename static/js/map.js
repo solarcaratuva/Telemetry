@@ -5,22 +5,13 @@ style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
 center: [-78.5080, 38.0336], // starting position [lng, lat]
 zoom: 11 // starting zoom
 });
-
-
+/*
 map.on('load', function () {
-    // We use D3 to fetch the JSON here so that we can parse and use it separately
-    // from GL JS's use in the added source. You can use any request method (library
-    // or otherwise) that you want.
-    d3.json(
-        'https://docs.mapbox.com/mapbox-gl-js/assets/hike.geojson',
-        function (err, data) {
-            if (err) throw err;
-
-            // save full coordinate list for later
-            var coordinates = data.features[0].geometry.coordinates;
+        coordinates = [-78.5080, 38.0336]
+        
 
             // start by showing just the first coordinate
-            data.features[0].geometry.coordinates = [coordinates[0]];
+            //data.features[0].geometry.coordinates = [coordinates[0]];
 
             // add it to the map
             map.addSource('trace', { type: 'geojson', data: data });
@@ -36,23 +27,42 @@ map.on('load', function () {
             });
 
             // setup the viewport
-            map.jumpTo({ 'center': coordinates[0], 'zoom': 14 });
-            map.setPitch(30);
-
-            // on a regular basis, add more coordinates from the saved list and update the map
-            var i = 0;
-            var timer = window.setInterval(function () {
-                if (i < coordinates.length) {
-                    data.features[0].geometry.coordinates.push(
-                        coordinates[i]
-                    );
-                    map.getSource('trace').setData(data);
-                    map.panTo(coordinates[i]);
-                    i++;
-                } else {
-                    window.clearInterval(timer);
-                }
-            }, 10);
-        }
-    );
 });
+*/
+var coordinates = [[-78.5080, 38.0336]]
+
+map.on('load',function() {
+map.jumpTo({ 'center': coordinates[0], 'zoom': 14 });
+map.setPitch(30);
+/*
+map.addLayer({
+    'id': 'drone',
+    'type': 'symbol',
+    'source': 'drone',
+    'layout': {
+    'icon-image': 'rocket-15'
+        }
+    });
+*/
+});
+
+var markers = []
+
+function updateCoord(map) {
+    coordinates[0][0] += .0001
+    coordinates[0][1] += .0001
+    removeMarker();
+    var marker = new mapboxgl.Marker()
+    .setLngLat(coordinates[0])
+    .addTo(map);
+    markers.push(marker);
+    map.panTo(coordinates[0]);
+}
+
+function removeMarker() {
+    if (markers!==null) {
+        for (var i = markers.length - 1; i >= 0; i--) {
+          markers[i].remove();
+            }
+        }   
+}

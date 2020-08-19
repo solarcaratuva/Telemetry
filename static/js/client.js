@@ -126,6 +126,7 @@ function displayData(data){
 
   //state of charge chart
   addData(chart, data.b[2]);
+  updateCoord(map);
 
 
 }
