@@ -13,7 +13,7 @@ import pymysql
 from models import Base, BMS, KLS
 import serial
 from flask_basicauth import BasicAuth
-
+import os
 #XBee
 useSerial = False
 PORT = "COM3"
