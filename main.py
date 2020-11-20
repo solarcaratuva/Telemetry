@@ -23,7 +23,7 @@ Payload.max_decode_packets = 500
 app = Flask(__name__)
 
 #Database Setup
-app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
+app.config['SECRET_KEY'] = os.environ.get('SECRET')
 #app.config['DEBUG'] = True
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///telemetry2.db'
 db = SQLAlchemy(app)
@@ -37,9 +37,12 @@ POSTGRES = {
     'host': 'localhost',
     'port': '5432',
 }
+
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+'''
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:\
 %(pw)s@%(host)s:%(port)s/%(db)s' % POSTGRES
-
+'''
 #Authentication
 app.config['BASIC_AUTH_USERNAME'] = 'byoon'
 app.config['BASIC_AUTH_PASSWORD'] = '123'
@@ -191,5 +194,6 @@ def storeData(data):
 
 
 if __name__ == '__main__':
-    device = XBeeDevice(PORT, BAUD_RATE)
-    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+    #device = XBeeDevice(PORT, BAUD_RATE)
+    #socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+    app.run()
