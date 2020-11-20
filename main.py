@@ -196,4 +196,4 @@ def storeData(data):
 if __name__ == '__main__':
     #device = XBeeDevice(PORT, BAUD_RATE)
     #socketio.run(app, host='0.0.0.0', port=5000, debug=True)
-    app.run()
+    socketio.run()
