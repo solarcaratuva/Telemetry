@@ -1,11 +1,10 @@
 var socket = io.connect('http://' + document.domain + ':' + location.port);
 socket.on('connect', function() {
-  socket.emit('dataEvent', "User Connected")
+  console.log('Connected');
 });
 socket.on('dataEvent', function(data) {
   console.log(data);
-  displayData(data);
-  socket.emit('dataEvent', "Data Received")
+  displayData(data);  
 });
 
 var rpmWarn = false;
@@ -57,6 +56,40 @@ function checkFault(current,ideal,warnText,resolutionText,error) {
     window[error] = false
   }
 }
+socket.on('restoreData', function(data){
+  console.log('RESTORING DATA');
+  clearGraph(chart);
+
+  for (var i = 0; i < data.length; i++){
+    displayData(data[i][0])
+  }
+
+});
+
+socket.on('toggleRecording', function(){
+  console.log('ccccc');
+  $("#startBtn, #stopBtn, #recording, #startRecordingBtn, #stopRecordingBtn").toggleClass("d-none")
+});
+
+$('form').submit(function(event){
+  event.preventDefault();
+  console.log("FORM SUBMITTED");
+
+  if($('#stopBtn').hasClass('d-none')){
+    socket.emit('new_run', { 
+                             title: $('#name').val(),
+                             driver: $('#driver').val(),
+                             location: $('#location').val(),
+                             description: $('#description').val(),
+                            });
+  }
+
+  else{
+    socket.emit('stop_run')
+  }
+});
+
+var c = 100;
 function displayData(data){
   //Main Dashboard
   //$('#module').text(data.b[0])
@@ -125,21 +158,17 @@ function displayData(data){
   //$('#').text(data.t)
 
   //state of charge chart
-  addData(chart, data.b[2]);
-
-
-}
-
-function getStoredData(){
-    data = JSON.parse(localStorage.getItem("data"));
-    displayData(data);
-
-    //update graph
-    var soc = JSON.parse(localStorage.getItem("graphData"));
-    var time = JSON.parse(localStorage.getItem("time"));
-
-    for(var i = 0; i < soc.length; i++){
-      addData(myLineChart, time[i], soc[i]);
-    }
+  addData(chart, c - 0.1 * data.b[2]);
+  c -= 0.1 * data.b[2];
 
 }
+
+function get_api_data() {
+  $.getJSON('http://' + document.domain + ':' + location.port + '/data',
+    function(data){
+      console.log(data);
+      displayData(data);
+    })
+}
+
+

@@ -7,17 +7,8 @@ var chart = new Chart(ctx, {
     data: {
       labels: [],
       datasets: [{
-        //lineTension: 0.3,
         backgroundColor: "rgba(35, 45, 75, 0.05)",
         borderColor: "rgba(35, 45, 75, 1)",
-        //pointRadius: 1.5,
-        //pointBackgroundColor: "rgba(35, 45, 75, 1)",
-        //pointBorderColor: "rgba(35, 45, 75, 1)",
-        //pointHoverRadius: 3,
-        //pointHoverBackgroundColor: "rgba(35, 45, 75, 1)",
-        //pointHoverBorderColor: "rgba(35, 45, 75, 1)",
-        //pointHitRadius: 10,
-        //pointBorderWidth: 2,
         data: [],
       }]
     },
@@ -64,9 +55,16 @@ var n = 100;
 
 function addData(chart, data) {
     chart.data.labels.push('');
-    n = n - (n * (data * 0.0002));
-    chart.data.datasets[0].data.push(n);
+    chart.data.datasets[0].data.push(data);
 
     chart.update();
 }
 
+function setData(chart,data){
+    chart.data.datasets[0].data = data;
+}
+
+function clearGraph(chart){
+    chart.data.datasets[0].data = [];
+    chart.data.labels = [];
+}

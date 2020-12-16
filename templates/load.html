@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends "sidebar.html" %}
+
+{% block content %}
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Solar Car Telemetry</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="/node_modules/startbootstrap-sb-admin-2/vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
+    type="text/css">
+  <link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="{{ url_for('static', filename='css/sb-admin-2.css') }}" rel="stylesheet">
+
+
+</head>
+
+<!-- Main Content -->
+<div id="content">
+
+  <!-- Topbar -->
+  <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+    <img src="{{ url_for('static', filename='images/SolarCarTeamLogo.png') }}" height=80% />
+
+
+
+  </nav>
+  <!-- End of Topbar -->
+  <!-- Begin Page Content -->
+  <div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+      <h1 class="h3 mb-0 text-gray-800">Telemetry Dashboard</h1>
+      {% if recording %}
+      <span class="badge badge-pill badge-success">RECORDING</span>
+      {% endif %}
+    </div>
+    <!-- Content Row -->
+    <div class="row">
+      {% for x in data %}
+      <li>{{data[x]}}</li>
+      {% endfor %}
+      <!-- Earnings (Monthly) Card Example -->
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Status
+                  <span class="badge badge-pill badge-danger">!</span>
+                </div>
+                <div class="text-xs text-gray-600 text-uppercase mb-1">BMS
+                  <span class="badge badge-pill badge-success">!</span>
+                </div>
+
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MPH Card -->
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-secondary shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">MPH</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800" id='mph'> 0.00 </div>
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RPM Card -->
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-secondary shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">RPM</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800" id='rpm'>0.00</div>
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Miles Card -->
+      <div class="col-xl-3 col-md-5 mb-4">
+        <div class="card border-left-secondary shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Miles</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800" id='miles'>0.00</div>
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Content Row -->
+
+
+      <!-- Area Chart -->
+      <div class="col-xl-6 col-lg-6 ml-0 mr-0 mb-1">
+        <div class="card shadow mb-4">
+          <!-- Card Header - Dropdown -->
+          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">State of Charge</h6>
+            <div class="dropdown no-arrow">
+              <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                aria-labelledby="dropdownMenuLink">
+                <div class="dropdown-header">Dropdown Header:</div>
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Something else here</a>
+              </div>
+            </div>
+          </div>
+          <!-- Card Body -->
+          <div class="card-body">
+            <canvas id="socChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+
+
+        <!-- Approach -->
+        <div class="col-xl-3 col-lg-3  mb-1">
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">New Run</h6>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <form action="/test" method="POST">
+                  <div class="form-group">
+                  {% if recording %}
+                  <input
+                  autocomplete="off"
+                  class="form-control" 
+                  name="title"
+                  placeholder="{{run.title}}"
+                  readonly
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  autocomplete="off"
+                  class="form-control" 
+                  name="driver"
+                  placeholder="{{run.driver}}"
+                  readonly
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  autocomplete="off"
+                  class="form-control" 
+                  name="location"
+                  placeholder="{{run.location}}"
+                  readonly
+
+                />
+              </div>
+              <div class="form-group">
+                <textarea
+                  autocomplete="off"
+                  class="form-control" 
+                  name="description"
+                  placeholder="{{run.description}}"
+                  rows="2"
+                  readonly
+                ></textarea>
+              </div>
+                  <button type="submit" class="btn btn-danger mb-0" name='submit' value='stop'>Stop</button>
+                  {% else %}
+                  <input
+                  autocomplete="off"
+                  class="form-control" 
+                  name="title"
+                  placeholder="Run name"
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  autocomplete="off"
+                  class="form-control" 
+                  name="driver"
+                  placeholder="Driver name"
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  autocomplete="off"
+                  class="form-control" 
+                  name="location"
+                  placeholder="Location"
+                />
+              </div>
+              <div class="form-group">
+                <textarea
+                  autocomplete="off"
+                  class="form-control" 
+                  name="description"
+                  placeholder="Description"
+                  rows="2"
+                ></textarea>
+              </div>
+                  <button type="submit" class="btn btn-primary mb-0" name='submit' value='start'>Start</button>
+                  {% endif %}
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- -->
+        <!-- Approach -->
+        <div class="col-xl-3 col-lg-3 mb-1 h-100 overflow-auto">
+          <div class="card shadow mb-4 h-2 overflow-auto">
+            <div class="card-header py-3 h-2">
+              <h6 class="m-0 font-weight-bold text-primary">Load Run</h6>
+            </div>
+            <div class="card-body">
+              <div class="scroll">
+                  {% for run in runs_list %}
+                  <button class="run_btn btn btn-light" id='{{run.run_id}}'>{{ run.title }} </button>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        
+
+                <!-- Run Info Card -->
+                <div class="col-xl-3 col-lg-3 ml-1 mb-1">
+                  <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                      <h6 class="m-0 font-weight-bold text-primary">Run Info</h6>
+                    </div>
+                    <div class="card-body">
+                      <div class="row">
+                        {% if recording %}
+                          <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">{{run.title}}</div>
+                          <div class="h5 mb-0 font-weight-bold text-gray-800" id='miles'>{{run.driver}}</div>
+                        {% endif %}
+                      </div> 
+                    </div>
+                  </div>
+                </div>
+
+
+
+      <!-- Content Row -->
+      <div class="row"></div>
+
+
+    </div>
+    <!-- /.container-fluid -->
+
+  </div>
+  <!-- End of Main Content -->
+
+  <!-- Footer -->
+  <footer class="sticky-footer bg-white" >
+    <div class="container my-auto">
+      <div class="copyright text-center my-auto">
+        <span>Copyright &copy; UVA Solar Car 2019</span>
+      </div>
+    </div>
+  </footer>
+  <!-- End of Footer -->
+
+  <!-- Page level plugins -->
+  <script src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/soc-chart.js') }}"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+  <script src="{{ url_for('static', filename='js/load.js') }}"></script>
+
+
+
+{% endblock %}
+
+</html>
