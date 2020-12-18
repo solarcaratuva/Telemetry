@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, session
 from flask_socketio import SocketIO
 import random
-import data
+import app.data
 from engineio.payload import Payload
 from digi.xbee.devices import XBeeDevice
 import msgpack
@@ -10,7 +10,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sqlalchemy.dialects.mysql import INTEGER
 import pymysql
-from models import Base, BMS, KLS, Runs
+from app.models import Base, BMS, KLS, Runs
 import serial
 from flask_basicauth import BasicAuth
 from flask_session import Session
