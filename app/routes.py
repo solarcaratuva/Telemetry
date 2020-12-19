@@ -1,5 +1,6 @@
 from flask import render_template 
 from app import app, db, runTracker, basic_auth 
+from .models import Base, BMS, KLS, Runs
 
 #Routes
 @app.route('/')

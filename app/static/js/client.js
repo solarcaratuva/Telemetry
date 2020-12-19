@@ -20,7 +20,10 @@ function checkData(current,ideal,warnText,resolutionText,error) {
   resolved.style.color = "green";
   resolved.textContent = resolutionText + "\n"
   var warnBox = document.getElementById("warning")
-
+  console.log(warnBox)
+  if(warnBox == null){
+    return;
+  }
   if (current < ideal && window[error] == false) {
     warnBox.appendChild(warning);
     warnBox.appendChild(br);
@@ -44,7 +47,7 @@ function checkFault(current,ideal,warnText,resolutionText,error) {
   resolved.style.color = "green";
   resolved.textContent = resolutionText + "\n"
   var warnBox = document.getElementById("warning")
-
+  console.log(warnBox)
   if (current != ideal && window[error] == false) {
     warnBox.appendChild(warning);
     warnBox.appendChild(br);
@@ -57,7 +60,7 @@ function checkFault(current,ideal,warnText,resolutionText,error) {
   }
 }
 socket.on('restoreData', function(data){
-  console.log('RESTORING DATA');
+  console.log('RESTORING DATA', data);
   clearGraph(chart);
 
   for (var i = 0; i < data.length; i++){
@@ -158,8 +161,7 @@ function displayData(data){
   //$('#').text(data.t)
 
   //state of charge chart
-  addData(chart, c - 0.1 * data.b[2]);
-  c -= 0.1 * data.b[2];
+  addData(chart, data.b[2]);
 
 }
 

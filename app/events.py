@@ -1,5 +1,7 @@
-from app import db, socketio, runTracker
+from app import db, socketio, runTracker, randData
 from .models import Base, BMS, KLS, Runs
+from .data_handler import storeData
+import msgpack
 #SocketIO Events
 #Restore data on connect/refresh
 @socketio.on('connect')
@@ -14,6 +16,7 @@ def load_data(run_id):
     print("Loading run #" + str(run_id))
 
     data_json = db.session.query(BMS.json).filter_by(run_id=run_id).all()
+    print(data_json)
     socketio.emit('loadData', data_json)
 
 #Create and start new run
@@ -45,9 +48,10 @@ def emit_data():
         while(runTracker.isRecording()):
             print("Emit runID " + str(runTracker.getID()))
 
-            info = data.Info().to_json()
+            #info = data.Info().to_json()
+            info = randData.to_json()
             data_json = msgpack.unpackb(info, raw=False)
-            #storeData(data_json)
+            storeData(data_json)
 
             socketio.emit('dataEvent', data_json)
             socketio.sleep(1)

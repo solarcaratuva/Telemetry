@@ -13,7 +13,7 @@ import pickle
 
 class Info(object):
     def __init__(self):
-        self.workbook = load_workbook(filename="data_label.xlsx")
+        self.workbook = load_workbook(filename="app/data_label.xlsx")
         self.ws = self.workbook.active
         self.column = (self.ws['G'])[1:]
         self.labels = {}
