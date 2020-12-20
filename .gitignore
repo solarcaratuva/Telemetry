@@ -10,3 +10,4 @@ pyvenv.cfg
 pip-selfcheck.json
 __pycache__/
 telemetry2.db
+venv/
