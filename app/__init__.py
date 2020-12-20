@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO 
 from flask_basicauth import BasicAuth
 
-from app.runs import RunTracker
+from app.runtracker import RunTracker
 from app.data import Info
 
 
