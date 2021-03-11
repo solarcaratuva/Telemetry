@@ -1,15 +1,15 @@
 var socket = io.connect('http://' + document.domain + ':' + location.port);
-socket.on('connect', function() {
+socket.on('connect', function () {
   console.log('Connected');
 });
-socket.on('dataEvent', function(data) {
+socket.on('dataEvent', function (data) {
   console.log(data);
-  displayData(data);  
+  displayData(data);
 });
 
 var rpmWarn = false;
 //For numerical values
-function checkData(current,ideal,warnText,resolutionText,error) {
+function checkData(current, ideal, warnText, resolutionText, error) {
   var today = new Date();
   var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
   var br = document.createElement("br");
@@ -21,7 +21,7 @@ function checkData(current,ideal,warnText,resolutionText,error) {
   resolved.textContent = resolutionText + "\n"
   var warnBox = document.getElementById("warning")
   console.log(warnBox)
-  if(warnBox == null){
+  if (warnBox == null) {
     return;
   }
   if (current < ideal && window[error] == false) {
@@ -36,9 +36,10 @@ function checkData(current,ideal,warnText,resolutionText,error) {
   }
 }
 //For booleans 
-function checkFault(current,ideal,warnText,resolutionText,error) {
+function checkFault(current, ideal, warnText, resolutionText, error) {
   var today = new Date();
   var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
   var br = document.createElement("br");
   var warning = document.createElement("warn")
   warning.style.color = "red";
@@ -48,6 +49,7 @@ function checkFault(current,ideal,warnText,resolutionText,error) {
   resolved.textContent = resolutionText + "\n"
   var warnBox = document.getElementById("warning")
   console.log(warnBox)
+
   if (current != ideal && window[error] == false) {
     warnBox.appendChild(warning);
     warnBox.appendChild(br);
@@ -59,41 +61,42 @@ function checkFault(current,ideal,warnText,resolutionText,error) {
     window[error] = false
   }
 }
-socket.on('restoreData', function(data){
+
+socket.on('restoreData', function (data) {
   console.log('RESTORING DATA', data);
   clearGraph(chart);
 
-  for (var i = 0; i < data.length; i++){
+  for (var i = 0; i < data.length; i++) {
     displayData(data[i][0])
   }
 
 });
 
-socket.on('toggleRecording', function(){
+socket.on('toggleRecording', function () {
   console.log('ccccc');
   $("#startBtn, #stopBtn, #recording, #startRecordingBtn, #stopRecordingBtn").toggleClass("d-none")
 });
 
-$('form').submit(function(event){
+$('form').submit(function (event) {
   event.preventDefault();
   console.log("FORM SUBMITTED");
 
-  if($('#stopBtn').hasClass('d-none')){
-    socket.emit('new_run', { 
-                             title: $('#name').val(),
-                             driver: $('#driver').val(),
-                             location: $('#location').val(),
-                             description: $('#description').val(),
-                            });
+  if ($('#stopBtn').hasClass('d-none')) {
+    socket.emit('new_run', {
+      title: $('#name').val(),
+      driver: $('#driver').val(),
+      location: $('#location').val(),
+      description: $('#description').val(),
+    });
   }
 
-  else{
+  else {
     socket.emit('stop_run')
   }
 });
 
 var c = 100;
-function displayData(data){
+function displayData(data) {
   //Main Dashboard
   //$('#module').text(data.b[0])
   $('#current').text(data.b[0])
@@ -149,7 +152,7 @@ function displayData(data){
   $('#boost').text(data.sh)
   $('#rpm').text(data.k[0])
   $('#mph').text((data.k[0] * 7 * 60 / 5280).toFixed(2))
-  checkData(data.k[0],12,"Warning: RPM is less than 12","RPM warning resolved","rpmWarn")
+  checkData(data.k[0], 12, "Warning: RPM is less than 12", "RPM warning resolved", "rpmWarn")
   $('#current_limit_status').text(data.k[1])
   $('#voltage').text(data.k[2])
   $('#throttle').text(data.k[3])
@@ -158,16 +161,18 @@ function displayData(data){
 
   $('#solarCell').text(data.k[5])
   $('#module').text(data.k[5])
+
   //$('#').text(data.t)
 
   //state of charge chart
   addData(chart, data.b[2]);
+  $('#soc').text(data.b[2])
 
 }
 
 function get_api_data() {
   $.getJSON('http://' + document.domain + ':' + location.port + '/data',
-    function(data){
+    function (data) {
       console.log(data);
       displayData(data);
     })

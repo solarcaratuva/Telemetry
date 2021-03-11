@@ -76,7 +76,17 @@
                     <div class="col m-1 p-0">
                         <!--Box 3: SOC Graph-->
                         <div class="card shadow-sm" style="height: 30rem;">
-                            3
+                            <div class="card-header">
+                                <h2 class="h3 mb-0 text-gray-800">State of Charge</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class = "row">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase ml-1">Current SOC:</div>
+                                <div class="text-xs font-weight-bold text-primary text-uppercase ml-1 mb-2" id=soc>
+                                    0.0</div>
+                                </div>
+                                <canvas id="socChart"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -282,7 +292,18 @@
         </div>
         <div class = "row"> 
             <div class="col m-1 p-0">
-            <!--Box 7: Warnings -->
+                <!--Box 7: GPS-->
+                <div class="card shadow-sm" style="height: 30rem;">
+                    <div class="card-header">
+                        <h2 class="h3 mb-0 text-gray-800">GPS</h2>
+                    </div>
+                    <div class="card-body">
+                        map
+                    </div>
+                </div>
+            </div>
+            <div class="col m-1 p-0">
+            <!--Box 8: Warnings -->
             <div class="card shadow-sm" style="height: 30rem;">
                 <div class="card-header">
                     <h2 class="h3 mb-0 text-gray-800">Warnings</h2>
@@ -302,6 +323,7 @@
                         </div>
                       </div>
                 </div>
+                
             </div>
         </div>
 
