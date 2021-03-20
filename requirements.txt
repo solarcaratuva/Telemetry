@@ -9,7 +9,7 @@ future==0.18.2
 iso8601==0.1.13
 itsdangerous==1.1.0
 jdcal==1.4.1
-Jinja2==2.11.2
+Jinja2==2.11.3
 MarkupSafe==1.1.1
 msgpack==1.0.2
 openpyxl==3.0.5
