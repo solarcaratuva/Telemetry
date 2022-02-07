@@ -8,9 +8,9 @@ from flask_basicauth import BasicAuth
 from app.runtracker import RunTracker
 from app.data import Info
 
-
 app = Flask(__name__)
 app.config.from_object(Config)
+app.static_folder = 'static'
 db = SQLAlchemy(app)
 
 socketio = SocketIO(app)
@@ -23,3 +23,5 @@ print(app.config['SQLALCHEMY_DATABASE_URI'])
 from app import models, routes, events
 from app.models import Base 
 db.Model = Base
+
+db.create_all()

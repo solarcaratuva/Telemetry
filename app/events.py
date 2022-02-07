@@ -7,6 +7,7 @@ import msgpack
 @socketio.on('connect')
 def handle_connect():
     if(runTracker.isRecording()):
+        pass 
         data_json = db.session.query(BMS.json).filter_by(run_id=runTracker.getID()).all()
         socketio.emit('restoreData', data_json)
 
@@ -26,11 +27,16 @@ def create_run(run):
                driver=run['driver'], 
                location=run['location'], 
                description=run['description'])
+    
+    if run.title.strip() == '':
+        run.title = 'Unnamed Run {}'.format(run.run_id)
 
     db.session.add(run)
     db.session.commit()
+    print("COMMITED NEW RUN SESSION YEET:", run.run_id)
 
-    runID = runTracker.startRun(run.run_id)
+    runID = run.run_id
+    runTracker.startRun(runID)
     print("Starting run " + str(runID))
 
     socketio.emit('toggleRecording')
@@ -45,13 +51,15 @@ def stop_run():
 
 #Loop to emit data to client
 def emit_data():
-        while(runTracker.isRecording()):
-            print("Emit runID " + str(runTracker.getID()))
+    while runTracker.isRecording():
+        print("HELL YEAH YAM RECORDING")
+        print("Emit runID " + str(runTracker.getID()))
 
-            #info = data.Info().to_json()
-            info = randData.to_json()
-            data_json = msgpack.unpackb(info, raw=False)
-            storeData(data_json)
+        #info = data.Info().to_json()
+        randData.gen_random()
+        info = randData.to_json()
+        data_json = msgpack.unpackb(info, raw=False)
+        storeData(data_json)
 
-            socketio.emit('dataEvent', data_json)
-            socketio.sleep(1)
+        socketio.emit('dataEvent', data_json)
+        socketio.sleep(1)

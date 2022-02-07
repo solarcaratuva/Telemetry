@@ -1,5 +1,6 @@
-from flask import render_template 
-from app import app, db, runTracker, basic_auth 
+import msgpack
+from flask import render_template, request
+from app import app, db, runTracker, basic_auth, randData
 from .models import Base, BMS, KLS, Runs
 
 #Routes
@@ -39,7 +40,7 @@ def graph():
 
 @app.route('/load')
 def load_run():
-    runs_list = db.session.query(Runs).all()
+    runs_list = Runs.query.order_by(Runs.run_id).all()
     return render_template('load.html', runs_list = runs_list)
 
 @app.route('/test')
@@ -48,12 +49,23 @@ def submit():
     recording = runTracker.isRecording()
     return render_template('test.html', runs_list = runs_list, recording = recording)
 
-#API endpoint for getting random json data
+#API endpoint for getting json data
 @app.route('/data', methods = ['GET'])
 def getData():
-        info = data.Info().to_json()
-        data_json = msgpack.unpackb(info, raw=False)
-        return data_json
+    info = randData.to_json()
+    data_json = msgpack.unpackb(info, raw=False)
+    return data_json
+
+#API endpoint for updating the json data
+# TODO: Update this to take in actual data instead of just generating random data
+@app.route('/update', methods = ['POST'])
+def updateData():
+    if request.method == 'POST':
+        print("YEET")
+        randData.gen_random()
+        print("GENERATED")
+        return ('', 204)
+
 
 #endpoint for getting current run id
 @app.route('/id')

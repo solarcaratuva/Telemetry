@@ -16,6 +16,7 @@
   <!-- Custom fonts for this template-->
   <link href="/node_modules/startbootstrap-sb-admin-2/vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
     type="text/css">
+  <link href="{{ url_for('static', filename='css/sb-admin-2.css') }}" rel="stylesheet" type="text/css">
   <link
     href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
     rel="stylesheet">
@@ -33,8 +34,6 @@
   <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
     <img src="{{ url_for('static', filename='images/SolarCarTeamLogo.png') }}" height=80% />
-
-
 
   </nav>
   <!-- End of Topbar -->
@@ -56,161 +55,36 @@
         </div>
         <!-- Card Body -->
         <div class="card-body">
-          <table>
-            <tr>
-              <td id='module'> 0.00</td>
-              <td id='module' rowspan=1> 0.00</td>
-              <td id='module' background='/static/images/layout-module.png'>0.00</td>
-
-
-            </tr>
-            <tr>
-              <td id='module'> 0.00</td>
-              <td id='module'> 0.00</td>
-              <td id='module'> 0.00</td>
-
-            </tr>
-            <tr>
-              <td id='module'> 0.00</td>
-              <td id='module'> 0.00</td>
-              <td id='module'> 0.00</td>
-
-            </tr>
-            <tr>
-              <td id='module'> 0.00</td>
-              <td id='module'> 0.00</td>
-              <td id='module'> 0.00</td>
-
-            </tr>
-            <tr>
-              <td id='module'> 0.00</td>
-              <td id='module'> 0.00</td>
-            </tr>
-            <tr>
-              <td id='module'> 0.00</td>
-              <td id='module'> 0.00</td>
-            </tr>
-            <tr>
-              <td class="mrow"></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td id='module'> 0.00</td>
-              <td id='module'> 0.00</td>
-
-            </tr>
-            <tr>
-              <td id='module'> 0.00</td>
-              <td id='module'> 0.00</td>
-            </tr>
-            <tr>
-              <td id='module'> 0.00</td>
-              <td id='module'> 0.00</td>
-              <td id='module'> 0.00</td>
-
-            </tr>
-            <tr>
-              <td id='module'> 0.00</td>
-              <td id='module'> 0.00</td>
-              <td id='module'> 0.00</td>
-
-            </tr>
-            <tr>
-              <td id='module'> 0.00</td>
-              <td id='module'> 0.00</td>
-              <td id='module'> 0.00</td>
-
-            </tr>
-            <tr>
-              <td id='module'> 0.00</td>
-              <td id='module'> 0.00</td>
-              <td id='module'> 0.00</td>
-
-            </tr>
+          <table id="battery_module_table">
+            <script>
+              let table = document.getElementById("battery_module_table");
+              let arr = [3, 3, 3, 3, 2, 2, 0, 2, 2, 3, 3, 3, 3];
+              for(let i = 0; i < arr.length; i++){
+                let row_parent = document.createElement("tr");
+                table.appendChild(row_parent);
+                if(arr[i] == 0){
+                  let temp = document.createElement("td");
+                  temp.className = "mrow";
+                  row_parent.appendChild(temp);
+                  row_parent.appendChild(document.createElement("td"));
+                  row_parent.appendChild(document.createElement("td"));
+                }
+                for(let j = 0; j < arr[i]; j++){
+                  let node = document.createElement("td");
+                  node.id = "module" + i + "" + j;
+                  node.className += "tdModule";
+                  node.innerText = "0.00";
+                  row_parent.appendChild(node);
+                }
+                table.appendChild(document.createElement("tr"));
+              }
+            </script>
           </table>
         </div>
       </div>
     </div>
   </div>
-  <!--
-        <div class="container-fluid">
-          <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Live Cell Data</h1>
-          </div>
-          <table class="table table-bordered table-dark">
-            <thead>
-              <tr>
-                <th scope="col">Module #</th>
-                <th scope="col">Cell 1</th>
-                <th scope="col">Cell 2</th>
-                <th scope="col">Cell 3</th>
-                <th scope="col">Cell 4</th>
-                <th scope="col">Cell 5</th>
-                <th scope="col">Cell 6</th>
-                <th scope="col">Cell 7</th>
-                <th scope="col">Cell 8</th>
-                <th scope="col">Cell 9</th>
-                <th scope="col">Cell 10</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td id="c1-1">0.0</td>
-                <td id="c1-2">0.0</td>
-                <td id="c1-3">0.0</td>
-                <td id="c1-4">0.0</td>
-                <td id="c1-5">0.0</td>
-                <td id="c1-6">0.0</td>
-                <td id="c1-7">0.0</td>
-                <td id="c1-8">0.0</td>
-                <td id="c1-9">0.0</td>
-                <td id="c1-10">0.0</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td id="c2-1">0.0</td>
-                <td id="c2-2">0.0</td>
-                <td id="c2-3">0.0</td>
-                <td id="c2-4">0.0</td>
-                <td id="c2-5">0.0</td>
-                <td id="c2-6">0.0</td>
-                <td id="c2-7">0.0</td>
-                <td id="c2-8">0.0</td>
-                <td id="c2-9">0.0</td>
-                <td id="c2-10">0.0</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td id="c3-1">0.0</td>
-                <td id="c3-2">0.0</td>
-                <td id="c3-3">0.0</td>
-                <td id="c3-4">0.0</td>
-                <td id="c3-5">0.0</td>
-                <td id="c3-6">0.0</td>
-                <td id="c3-7">0.0</td>
-                <td id="c3-8">0.0</td>
-                <td id="c3-9">0.0</td>
-                <td id="c3-10">0.0</td>
-              </tr>
-              <tr>
-                <th scope="row">4</th>
-                <td id="c4-1">0.0</td>
-                <td id="c4-2">0.0</td>
-                <td id="c4-3">0.0</td>
-                <td id="c4-4">0.0</td>
-                <td id="c4-5">0.0</td>
-                <td id="c4-6">0.0</td>
-                <td id="c4-7">0.0</td>
-                <td id="c4-8">0.0</td>
-                <td id="c4-9">0.0</td>
-                <td id="c4-10">0.0</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      -->
+
   <!--Live Parameter Data-->
   <table class="table table-bordered table-dark">
     <thead>
@@ -220,73 +94,26 @@
         <th scope="col">Unit</th>
       </tr>
     </thead>
-    <tbody>
-      <tr>
-        <th scope="row">Average Battery Temperature</th>
-        <td id=bat_avg_temp>0.0</td>
-        <td>C</td>
-      </tr>
-      <tr>
-        <th scope="row">Pack state of charge</th>
-        <td id=soc>0.0</td>
-        <td>%</td>
-      </tr>
-      <tr>
-        <th scope="row">Pack discharge current limit</th>
-        <td id=discharge_limit>0.0</td>
-        <td>A</td>
-      </tr>
-      <tr>
-        <th scope="row">Pack charge current limit</th>
-        <td id=charge_limit>0.0</td>
-        <td>A</td>
-      </tr>
-      <tr>
-        <th scope="row">Lowest cell voltage</th>
-        <td id=cell_voltage_lowest>0.0</td>
-        <td>V</td>
-      </tr>
-      <tr>
-        <th scope="row">Highest cell voltage</th>
-        <td id=cell_voltage_highest>0.0</td>
-        <td>V</td>
-      </tr>
-      <tr>
-        <th scope="row">Highest battery temperature</th>
-        <td id=bat_high_temp>0.0</td>
-        <td>C</td>
-      </tr>
-      <tr>
-        <th scope="row">Lowest battery temperature</th>
-        <td id=bat_low_temp>0.0</td>
-        <td>C</td>
-      </tr>
-      <tr>
-        <th scope="row">Pack amperage (current)</th>
-        <td id=pack_amperage>0.0</td>
-        <td>A</td>
-      </tr>
-      <tr>
-        <th scope="row">Pack voltage</th>
-        <td id=pack_voltage>0.0</td>
-        <td>V</td>
-      </tr>
-      <tr>
-        <th scope="row">Pack amphours</th>
-        <td id=pack_amphours>0.0</td>
-        <td>Ahr</td>
-      </tr>
-      <tr>
-        <th scope="row">12v supply</th>
-        <td id=twelveV_supply>0.0</td>
-        <td>V</td>
-      </tr>
-      <tr>
-        <th scope="row">Run time</th>
-        <td id=runTime>0.0</td>
-        <td>Sec</td>
-      </tr>
-
+    <tbody id=battery_stats_table>
+      <script>
+        function htmlToElement(html) {
+            var template = document.createElement('template');
+            html = html.trim(); // Never return a text node of whitespace as the result
+            template.innerHTML = html;
+            return template.content.firstChild;
+        }
+        let namesArr = ["Average Battery Temperature", "Pack state of charge", "Pack discharge current limit", "Pack charge current limit", "Lowest cell voltage", "Highest cell voltage", "Highest battery temperature", "Lowest battery temperature", "Pack amperage (current)", "Pack voltage", "Pack amphours", "12v supply", "Run time"];
+        let idsArr =   ["avg_temp", "soc", "discharge_limit", "charge_limit", "cell_voltage_lowest", "cell_voltage_highest", "bat_high_temp", "bat_low_temp", "pack_amperage", "pack_voltage", "pack_amphours", "twelveV_supply", "runTime"];
+        let unitsArr = ["C", "%", "A", "A", "V", "V", "C", "C", "A", "V", "Ahr", "V", "Sec"];
+        let statsTable = document.getElementById("battery_stats_table");
+        for(let i = 0; i < namesArr.length; i++){          
+          let tr = document.createElement("tr");
+          tr.appendChild(htmlToElement('<th scope ="row">' + namesArr[i] + '</th>'));
+          tr.appendChild(htmlToElement("<td id=" + idsArr[i] + ">0.0</td>"));
+          tr.appendChild(htmlToElement("<td>" + unitsArr[i] + "</td>"));
+          statsTable.appendChild(tr);
+        }
+      </script>
     </tbody>
   </table>
   <!-- /.container-fluid -->

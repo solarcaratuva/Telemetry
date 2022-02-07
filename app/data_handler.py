@@ -66,3 +66,4 @@ def storeData(data):
     db.session.add(BMS_data)
     db.session.add(KLS_data)
     db.session.commit()
+    print("ADDED TO DB BABY")

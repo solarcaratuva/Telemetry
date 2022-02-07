@@ -1,14 +1,13 @@
 from datetime import datetime
 from app import db 
 
-from sqlalchemy import Boolean, Column 
-from sqlalchemy import DateTime, Integer, String, Text, Float
+from sqlalchemy import Boolean, Column, DateTime, Integer, String, Text, Float
 from sqlalchemy.ext.declarative import declarative_base 
 from sqlalchemy.dialects.mysql import INTEGER
 from sqlalchemy.types import JSON
 
 Base = declarative_base()
-
+Base.query = db.session.query_property()
 
 class BMS(Base):
     __tablename__ = 'BMS'
