@@ -41,20 +41,18 @@ def graph():
 @app.route('/load')
 def load_run():
     runs_list = Runs.query.order_by(Runs.run_id).all()
-    return render_template('load.html', runs_list = runs_list)
+    return render_template('load.html', runs_list=runs_list)
 
 @app.route('/test')
 def submit():
-    runs_list = db.session.query(Runs).all()
+    runs_list = Runs.query.order_by(Runs.run_id).all()
     recording = runTracker.isRecording()
-    return render_template('test.html', runs_list = runs_list, recording = recording)
+    return render_template('test.html', runs_list=runs_list, recording=recording)
 
 #API endpoint for getting json data
 @app.route('/data', methods = ['GET'])
 def getData():
-    info = randData.to_json()
-    data_json = msgpack.unpackb(info, raw=False)
-    return data_json
+    return randData.data_values
 
 #API endpoint for updating the json data
 # TODO: Update this to take in actual data instead of just generating random data

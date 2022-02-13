@@ -117,5 +117,11 @@ function update_api_data() {
         alert(errMsg);
     }
   });
+}
+
+function read_from_run(run_id){
+  socket.emit('connect_run', {
+    run_id: run_id,
+   });
 
 }
