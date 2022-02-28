@@ -5,9 +5,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO 
 from flask_basicauth import BasicAuth
 
-from app.runtracker import RunTracker
-from app.data import Info
-
 app = Flask(__name__)
 app.config.from_object(Config)
 app.static_folder = 'static'
@@ -15,8 +12,6 @@ db = SQLAlchemy(app)
 
 socketio = SocketIO(app)
 basic_auth = BasicAuth(app)
-runTracker = RunTracker()
-randData = Info()
 
 print(app.config['SQLALCHEMY_DATABASE_URI'])
 

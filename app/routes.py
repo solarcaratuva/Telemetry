@@ -1,13 +1,13 @@
-import msgpack
+from sqlalchemy import desc
 from flask import render_template, request
-from app import app, db, runTracker, basic_auth, randData
-from .models import Base, BMS, KLS, Runs
+from app import app, basic_auth
+from .models import Runs
+from .events import emit_data
 
 #Routes
 @app.route('/')
 def sessions():
-    recording = runTracker.isRecording()
-    return render_template('index.html', recording=recording)
+    return render_template('index.html')
 
 @app.route('/battery')
 def battery():
@@ -46,34 +46,28 @@ def load_run():
 @app.route('/test')
 def submit():
     runs_list = Runs.query.order_by(Runs.run_id).all()
-    recording = runTracker.isRecording()
-    return render_template('test.html', runs_list=runs_list, recording=recording)
+    return render_template('test.html', runs_list=runs_list)
 
 #API endpoint for getting json data
+# TODO: Implement this?
 @app.route('/data', methods = ['GET'])
 def getData():
-    return randData.data_values
+    return None
 
 #API endpoint for updating the json data
 # TODO: Update this to take in actual data instead of just generating random data
 @app.route('/update', methods = ['POST'])
 def updateData():
     if request.method == 'POST':
-        print("YEET")
-        randData.gen_random()
-        print("GENERATED")
+        print("Emitting data!")
+        emit_data()
         return ('', 204)
 
-
-#endpoint for getting current run id
+#endpoint for getting the latest run id
 @app.route('/id')
 def get_id():
-    id = runTracker.getID()
-    return str(id)
-
-#endpoint for stopping current run
-@app.route('/stop')
-def stop_recording():    
-    runTracker.stopRun()
-    return render_template('test.html', runs_list = db.session.query(Runs).all()
-)
+    latest_run = Runs.query.order_by(desc(Runs.timestamp)).first()
+    if latest_run is None:
+        return "No runs found"
+    else:
+        return str(latest_run.run_id)

@@ -1,7 +1,10 @@
+// Connecting to the socket
 var socket = io.connect('http://' + document.domain + ':' + location.port);
 socket.on('connect', function() {
   console.log('Connected');
 });
+
+// Backend sending new data to the frontend
 socket.on('dataEvent', function(data) {
   console.log(data);
   displayData(data);
@@ -112,12 +115,12 @@ function update_api_data() {
     data: JSON.stringify({}),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
-    success: function(data){alert(data);},
-    error: function(errMsg) {
-        alert(errMsg);
-    }
+    success: function(data){console.log(data);},
   });
 }
+
+// Set interval to update data every 1000 ms
+setInterval(update_api_data, 1000);
 
 function read_from_run(run_id){
   socket.emit('connect_run', {

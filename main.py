@@ -1,7 +1,4 @@
-from app import app, db, socketio 
-from app.models import BMS, KLS, Runs 
-import socket, serial
-import json
+from app import app, socketio
 
 # config_file = open("config.json")
 # config = json.load(config_file)
