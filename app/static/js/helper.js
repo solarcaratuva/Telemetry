@@ -1,3 +1,6 @@
+// Set containing IDs that have already been displayed
+const isAlreadyDisplayed = new Set();
+
 function displayData(data){
     //Main Dashboard
     // $('#current').text(data.b[0])
@@ -66,6 +69,12 @@ function displayData(data){
     // $('#module').text(data.k[5])
 
     //$('#').text(data.t)
+
+    // Don't re-display data that has already been displayed
+    if(isAlreadyDisplayed.has(data['id'])){
+      return;
+    }
+    isAlreadyDisplayed.add(data['id']);
 
     $("#mph").text(data['mph'])
     $("#rpm").text(data['rpm'])
