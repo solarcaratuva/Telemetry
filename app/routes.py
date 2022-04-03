@@ -1,7 +1,10 @@
 import msgpack
+from sqlalchemy import desc
 from flask import render_template, request
 from app import app, db, runTracker, basic_auth, randData
-from .models import Base, BMS, KLS, Runs
+from .models import Base, BMS, KLS, Runs, TestData
+import csv
+import json
 
 #Routes
 @app.route('/')
@@ -52,7 +55,12 @@ def submit():
 #API endpoint for getting json data
 @app.route('/data', methods = ['GET'])
 def getData():
-    return randData.data_values
+    # print(TestData.query.order_by(desc(TestData.timestamp)).all())
+    data = TestData.query.order_by(desc(TestData.timestamp)).first().__dict__
+    print(data)
+    data.pop("_sa_instance_state")
+    return json.dumps(data)
+    # return randData.data_values
 
 #API endpoint for updating the json data
 # TODO: Update this to take in actual data instead of just generating random data
@@ -77,3 +85,29 @@ def stop_recording():
     runTracker.stopRun()
     return render_template('test.html', runs_list = db.session.query(Runs).all()
 )
+
+@app.route("/download")
+def download():
+
+    data = db.session.query(BMS).filter_by(run_id=2)
+
+    result = ([([getattr(curr, column.name) for column in BMS.__mapper__.columns]) for curr in data])
+    
+    result = [x[0:-1] for x in result]
+    print(result)
+
+
+    with open('telemetry.csv', 'w', newline='') as file:
+        mywriter = csv.writer(file, delimiter=',')
+        mywriter.writerows(result)
+
+    # outfile = open('telemetry.csv', 'wb')
+    # outcsv = csv.writer(outfile)
+
+    # outfile.writerows(result)
+    
+    # [outcsv.writerow([getattr(curr, column.name) for column in BMS.__mapper__.columns]) for curr in data]
+    # outcsv.writerows([x for x in data])
+    # outfile.close()
+
+    return "done"

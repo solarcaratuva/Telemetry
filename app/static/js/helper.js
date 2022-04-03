@@ -81,6 +81,9 @@ function displayData(data){
   
     //state of charge chart
     // addData(chart, data.b[2]);
+    console.log("in display data")
+    console.log(data['soc'])
+    addData(chart, data['soc'])
   
   }
   

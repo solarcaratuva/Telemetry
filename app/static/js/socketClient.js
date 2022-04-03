@@ -119,6 +119,8 @@ function update_api_data() {
   });
 }
 
+setInterval(get_api_data, 100);
+
 function read_from_run(run_id){
   socket.emit('connect_run', {
     run_id: run_id,

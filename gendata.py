@@ -2,6 +2,7 @@ import json
 import time
 import random
 import psycopg2
+import sqlite3
 
 def get_random_val(typ):
     if typ == 'bool':
@@ -16,7 +17,9 @@ def get_random_val(typ):
     assert(False)
 
 
-conn = psycopg2.connect('dbname=telemetry user=postgres password=postgres')
+# conn = psycopg2.connect('dbname=telemetry user=postgres password=postgres')
+conn = sqlite3.connect('app.db')
+
 cur = conn.cursor()
 
 cur.execute('SELECT * FROM "TestData";')

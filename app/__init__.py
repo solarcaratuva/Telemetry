@@ -7,6 +7,7 @@ from flask_basicauth import BasicAuth
 
 from app.runtracker import RunTracker
 from app.data import Info
+# from app.xbeeReceiver import xbeeReceiver
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -17,6 +18,7 @@ socketio = SocketIO(app)
 basic_auth = BasicAuth(app)
 runTracker = RunTracker()
 randData = Info()
+# xbeeReceiver = xbeeReceiver()
 
 print(app.config['SQLALCHEMY_DATABASE_URI'])
 

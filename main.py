@@ -3,6 +3,9 @@ from app.models import BMS, KLS, Runs
 import socket, serial
 import json
 
+
+# from app.xbeeReceiver import xbeeReceiver
+
 # config_file = open("config.json")
 # config = json.load(config_file)
 
@@ -15,4 +18,4 @@ import json
 #     sock.bind((config["SOCKET_HOST"], config["SOCKET_PORT"]))
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+    socketio.run(app, host='0.0.0.0', port=5001, debug=True)

@@ -53,11 +53,25 @@ var chart = new Chart(ctx, {
 
 var n = 100;
 
-function addData(chart, data) {
-    chart.data.labels.push('');
-    chart.data.datasets[0].data.push(data);
+// function addData(chart, data) {
+//     chart.data.labels.push('');
+//     chart.data.datasets[0].data.push(data);
 
-    chart.update();
+//     chart.update();
+// }
+
+function addData(chart, data) {
+    chart.data.labels.push(""); //y axis
+    chart.data.datasets[0].data.push(data); //x axis
+    console.log("adding")
+    console.log(data)
+    console.log()
+    if(chart.data.datasets[0].data.length > 100) {
+        chart.data.datasets[0].data.shift();
+        chart.data.labels.shift();
+    }
+
+    chart.update()
 }
 
 function setData(chart,data){
