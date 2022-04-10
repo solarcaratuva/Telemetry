@@ -67,22 +67,24 @@ function displayData(data){
 
     //$('#').text(data.t)
 
+    // console.log("current: " + data['current'])
+
     $("#mph").text(data['mph'])
     $("#rpm").text(data['rpm'])
     $("#miles").text(data['miles'])
-    $("#packSOC").text(data['battery_pack_soc'])
-    $("#voltage").text(data['battery_pack_voltage'])
-    $("#minVoltage").text(data['battery_pack_voltage_min'])
-    $("#maxVoltage").text(data['battery_pack_voltage_max'])
-    $("#current").text(data['battery_pack_current'])
-    $("#maxCurrent").text(data['battery_pack_current_max'])
-    $("#temperature").text(data['battery_temperature'])
-    $("#maxTemperature").text(data['battery_temperature_max'])
+    $("#packSOC").text(data['soc'])
+    $("#voltage").text(data['voltage'])
+    $("#minVoltage").text(data['min_voltage'])
+    $("#maxVoltage").text(data['max_voltage'])
+    $("#current").text(data['current'])
+    $("#maxCurrent").text(data['max_current'])
+    $("#temperature").text(data['temperature'])
+    $("#maxTemperature").text(data['max_temperature'])
   
     //state of charge chart
     // addData(chart, data.b[2]);
-    console.log("in display data")
-    console.log(data['soc'])
+    // console.log("in display data")
+    // console.log(data['soc'])
     addData(chart, data['soc'])
   
   }

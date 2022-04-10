@@ -12,3 +12,4 @@ __pycache__/
 telemetry2.db
 venv/
 config.py
+*.db

@@ -22,7 +22,7 @@ conn = sqlite3.connect('app.db')
 
 cur = conn.cursor()
 
-cur.execute('SELECT * FROM "TestData";')
+# cur.execute('SELECT * FROM "TestData";')
 # for i in range(100):
 #     print(cur.fetchone())
 # print(1/0)
@@ -48,6 +48,7 @@ for i in range(100):
 
     arr_string = ','.join([str(i) for i in arr])
     sql = 'INSERT INTO "TestData"({}) VALUES({}) RETURNING id;'.format(column_string, arr_string)
+    print(sql)
     cur.execute(sql)
     row_id = cur.fetchone()
     print(row_id)

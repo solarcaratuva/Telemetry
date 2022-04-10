@@ -26,6 +26,17 @@ class xbeeReceiver(object):
     def __init__(self):
         self.xbee = XBeeDevice(PORT, BAUD_RATE)
         self.xbee.open()
+        # self.xbee = serial.Serial(PORT, BAUD_RATE)
+
+    def read_data(self):
+        return self.xbee.read_data()
+        # ret = ""
+        # while self.xbee.in_waiting:
+        #     byt = self.xbee.read(1).decode()
+        #     ret += byt
+        # return ret
+
+
     def receiveMessage(self):
         encoded_json = self.xbee.read_data()
 
@@ -103,6 +114,15 @@ conn = sqlite3.connect('../app.db')
 
 cur = conn.cursor()
 
+sql = 'SELECT MAX(ID) FROM "TestData"';
+
+
+try: 
+    cur.execute(sql)
+    start_id = cur.fetchone()[0] + 1
+except:
+    start_id = 0
+
 
 increment = 0
 while True:
@@ -115,8 +135,12 @@ while True:
 
         # print(temp)
 
+
+        
+        
+
         db_obj = {
-            'id': 600+increment,
+            'id': start_id + increment,
             'timestamp': time.time(),
             'run_id': 18,
             'mph': 18+2*increment,
