@@ -16,7 +16,7 @@ id_to_message = {
     '0b100101': 'Solar Voltage'
 }
 
-PORT = "COM6"
+PORT = "/dev/tty.usbserial-0001"
 BAUD_RATE = 9600
 class xbeeReceiver(object):
     def __init__(self):

@@ -13,3 +13,5 @@ telemetry2.db
 venv/
 config.py
 *.db
+app.db
+telemetry.csv

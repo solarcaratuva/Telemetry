@@ -86,12 +86,12 @@ def stop_recording():
     return render_template('test.html', runs_list = db.session.query(Runs).all()
 )
 
-@app.route("/download")
-def download():
+@app.route("/download/<int:input_run_id>")
+def download(input_run_id=None):
 
-    data = db.session.query(BMS).filter_by(run_id=2)
+    data = db.session.query(TestData).filter_by(run_id=input_run_id)
 
-    result = ([([getattr(curr, column.name) for column in BMS.__mapper__.columns]) for curr in data])
+    result = ([([getattr(curr, column.name) for column in TestData.__mapper__.columns]) for curr in data])
     
     result = [x[0:-1] for x in result]
     print(result)
