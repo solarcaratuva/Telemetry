@@ -4,10 +4,6 @@ import serial
 from digi.xbee.devices import XBeeDevice
 import json
 import CANmessages.can_bp as can_bp
-# import CANmessages.ecu_bp as ecu
-# import CANmessages.motor_controller_bp as mc
-# import CANmessages.power_aux_bp as pa
-# import CANmessages.solar_bp as s
 
 import sqlite3
 
@@ -20,7 +16,7 @@ id_to_message = {
     '0b100101': 'Solar Voltage'
 }
 
-PORT = "/dev/tty.usbserial-0001"
+PORT = "COM6"
 BAUD_RATE = 9600
 class xbeeReceiver(object):
     def __init__(self):
