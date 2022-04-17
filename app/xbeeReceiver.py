@@ -110,15 +110,26 @@ conn = sqlite3.connect('../app.db')
 
 cur = conn.cursor()
 
-sql = 'SELECT MAX(ID) FROM "TestData"';
 
+sql = 'SELECT MAX(ID) FROM "TestData"'
 
 try: 
     cur.execute(sql)
     start_id = cur.fetchone()[0] + 1
+    
 except:
     start_id = 0
 
+
+sql = 'SELECT MAX(RUN_ID) FROM "TestData"'
+try:
+    cur.execute(sql)
+    start_run_id = cur.fetchone()[0] + 1
+except:
+    start_run_id = 18
+
+
+print("Run ID:", start_run_id)
 
 increment = 0
 while True:
@@ -138,7 +149,8 @@ while True:
         db_obj = {
             'id': start_id + increment,
             'timestamp': time.time(),
-            'run_id': 18,
+            # 'run_id': 18,
+            'run_id': start_run_id,
             'mph': 18+2*increment,
             'rpm': 18-increment,
             'miles': 18+increment,

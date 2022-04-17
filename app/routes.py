@@ -86,8 +86,16 @@ def stop_recording():
     return render_template('test.html', runs_list = db.session.query(Runs).all()
 )
 
+
+@app.route("/download")
 @app.route("/download/<int:input_run_id>")
 def download(input_run_id=None):
+
+    if input_run_id is None:
+        run_id_data = db.session.query(TestData.run_id).order_by(TestData.run_id.desc()).all() # Sort Run ID data in descending order
+        if len(run_id_data) == 0:
+            return "table empty"
+        input_run_id = run_id_data[0][0] # Get the max run id in the table (corresponds to the latest data)
 
     data = db.session.query(TestData).filter_by(run_id=input_run_id)
 
@@ -97,7 +105,7 @@ def download(input_run_id=None):
     print(result)
 
 
-    with open('telemetry.csv', 'w', newline='') as file:
+    with open(f"telemetry_run_{input_run_id}.csv", 'w', newline='') as file:
         mywriter = csv.writer(file, delimiter=',')
         mywriter.writerows(result)
 
