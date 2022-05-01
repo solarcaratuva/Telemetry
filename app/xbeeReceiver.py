@@ -11,9 +11,23 @@ import random
 
 
 id_to_message = {
-    '0b10110': 'Cell Voltage',
-    '0b1110': 'PackInformation',
-    '0b100101': 'Solar Voltage'
+    # '0b10110': 'Cell Voltage',
+    # '0b1110': 'PackInformation',
+    # '0b100101': 'Solar Voltage'
+    '0x106': 'BPSError',
+    '0x115': 'MotorControllerError',
+    '0x123': 'PowerAuxError',
+    '0x201': 'ECUMotorCommands',
+    '0x301': 'ECUPowerAuxCommands',
+    '0x315': 'MotorControllerDriveStatus',
+    '0x325': 'MotorControllerPowerStatus',
+    '0x406': 'BPSPackInformation',
+    '0x416': 'BPSCellVoltage',
+    '0x426': 'BPSCellTemperature',
+    '0x434': 'SolarCurrent',
+    '0x444': 'SolarVoltage',
+    '0x454': 'SolarTemp',
+    '0x464': 'SolarPhoto'
 }
 
 PORT = "/dev/tty.usbserial-0001"

@@ -15,3 +15,4 @@ config.py
 *.db
 app.db
 telemetry.csv
+telemetry*.csv
