@@ -91,8 +91,9 @@ class xbeeReceiver(object):
         return None
 
     def formatMessage(self, one_message):
-        message_id = one_message['message_id']
-        message = one_message['message']
+        message_id = one_message['id']
+        message = one_message['data']
+        error = one_message['err']
         message_id_decoded = id_to_message[message_id]
 
         to_decode_bytes = bytes.fromhex(message[2:])
