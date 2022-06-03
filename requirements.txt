@@ -1,5 +1,6 @@
 bidict==0.21.2
 click==7.1.2
+digi-xbee==1.4.1
 et-xmlfile==1.0.1
 Flask==1.1.1
 Flask-BasicAuth==0.2.0
@@ -14,6 +15,7 @@ MarkupSafe==1.1.1
 msgpack==1.0.2
 openpyxl==3.0.5
 psycopg2-binary==2.8.6
+pyserial==3.5
 python-engineio==3.10.0
 python-socketio==4.3.1
 PyYAML==5.3.1
