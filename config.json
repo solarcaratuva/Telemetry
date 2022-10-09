@@ -1,7 +1,0 @@
-{
-    "USE_XBEE": false,
-    "XBEE_ADDR": "",
-    "XBEE_BAUD": 9600,
-    "SOCKET_HOST": "127.0.0.1",
-    "SOCKET_PORT": 5005
-}
