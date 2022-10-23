@@ -4,7 +4,7 @@ import { Box } from "@mui/material";
 import LineChart from "../components/LineChart";
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:5000");
+const socket = io("http://localhost:5050");
 
 const InteractivePage = () => {
   //This is just an example for how to use the websocket
