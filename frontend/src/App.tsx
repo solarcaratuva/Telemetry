@@ -1,6 +1,6 @@
 import "./App.css";
 
-import { Route, Routes } from "react-router";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import InteractivePage from "./pages/InteractivePage";
 import MonitorOnePage from "./pages/MonitorOnePage";
@@ -18,11 +18,13 @@ function App() {
           width: "100vw",
         }}
       >
-        <Routes>
-          <Route path="/" element={<InteractivePage />} />
-          <Route path="monitor_one" element={<MonitorOnePage />} />
-          <Route path="monitor_two" element={<MonitorTwoPage />} />
-        </Routes>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<InteractivePage />} />
+            <Route path="monitor_one" element={<MonitorOnePage />} />
+            <Route path="monitor_two" element={<MonitorTwoPage />} />
+          </Routes>
+        </BrowserRouter>
       </div>
     </div>
   );
