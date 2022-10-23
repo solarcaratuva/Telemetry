@@ -18,17 +18,9 @@ io.on("connection", (socket) => {
   });
 });
 
-let running = false;
-for (let i = 0; i < 10 && !running; i++) {
-  try {
-    server.listen(5000, () => {
-      running = true;
-      console.info(`WSS listening on http://localhost:${5000 + i}`);
-    });
-  } catch (e) {
-    console.info(`Port ${5000 + i} is already in use. Trying next port...`);
-  }
-}
+server.listen(5050, () => {
+  console.info("WSS listening on http://localhost:5050");
+});
 
 /**
  * This is an example of sending data over the websocket.
