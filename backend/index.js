@@ -22,17 +22,32 @@ server.listen(5050, () => {
   console.info("WSS listening on http://localhost:5050");
 });
 
-/**
- * This is an example of sending data over the websocket.
- * Feel free to add more intervals and labels other than "message" to use for different features
- */
+setInterval(() => {
+  //Random integer between 0 and 100
+  const number = Math.floor(Math.random() * 50 + 50);
+  const timestamp = new Date().toISOString();
+  io.to("connections").emit("speed", {
+    timestamp,
+    number,
+  });
+}, 2000);
 
 setInterval(() => {
   //Random integer between 0 and 100
   const number = Math.floor(Math.random() * 100);
   const timestamp = new Date().toISOString();
-  io.to("connections").emit("message", {
+  io.to("connections").emit("battery_temp", {
     timestamp,
     number,
   });
-}, 1000);
+}, 2000);
+
+setInterval(() => {
+  //Random integer between 0 and 100
+  const number = Math.floor(Math.random() * 100 + 50);
+  const timestamp = new Date().toISOString();
+  io.to("connections").emit("panel_temp", {
+    timestamp,
+    number,
+  });
+}, 2000);

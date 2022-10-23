@@ -11,11 +11,9 @@ function App() {
     <div className="App">
       <div
         style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
           height: "100vh",
           width: "100vw",
+          overflow: "hidden",
         }}
       >
         <BrowserRouter>
