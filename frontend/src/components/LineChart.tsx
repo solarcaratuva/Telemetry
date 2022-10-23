@@ -1,6 +1,6 @@
 import { AxisOptions, Chart, ChartOptions } from "react-charts";
+import { Box, Typography } from "@mui/material";
 
-import { Box } from "@mui/material";
 import React from "react";
 
 interface DataPoint {
@@ -15,7 +15,7 @@ interface Props {
 const LineChart: React.FC<Props> = ({ data }) => {
   const primaryAxis = React.useMemo(
     (): AxisOptions<DataPoint> => ({
-      getValue: (datum) => datum.timestamp,
+      getValue: (datum) => datum.timestamp.getTime(),
     }),
     []
   );
@@ -40,8 +40,11 @@ const LineChart: React.FC<Props> = ({ data }) => {
     secondaryAxes,
   };
 
+  console.log(options);
+
   return (
     <Box>
+      <Typography>Line chart</Typography>
       <Chart options={options} />
     </Box>
   );
