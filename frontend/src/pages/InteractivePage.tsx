@@ -1,6 +1,6 @@
+import { Box, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
-import { Box } from "@mui/material";
 import LineChart from "../components/LineChart";
 import { io } from "socket.io-client";
 
@@ -49,26 +49,175 @@ const InteractivePage = () => {
   }, []);
 
   return (
-    <Box>
-      <h1>Interactive Page</h1>
+    <Box p="16px" height="100vh" boxSizing="border-box">
+      {/* Page is vertically centered and will adapt based on actual component sizes */}
       <Box
+        height="100%"
         display="flex"
-        gap="64px"
-        width="100%"
-        p="64px"
-        boxSizing="border-box"
+        flexDirection="column"
+        gap="16px"
+        justifyContent="center"
       >
-        <Box flex="1 0 0">
-          <LineChart data={{ Speed: data.speed }} title="Speed vs Time" />
-        </Box>
-        <Box flex="1 0 0">
-          <LineChart
-            data={{
-              "Battery Temp": data.battery_temp,
-              "Solar Panel Temp": data.panel_temp,
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-around",
+            gap: "16px",
+            height: "33vh",
+          }}
+        >
+          {/* Replace this paper component with motor temp */}
+          <Paper
+            sx={{
+              flex: "1 0 0",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
-            title="Temperatures vs Time"
-          />
+          >
+            <Typography>Motor Temp</Typography>
+          </Paper>
+          {/* Replace this paper component with RPM */}
+          <Paper
+            sx={{
+              flex: "1 0 0",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Typography>RPM</Typography>
+          </Paper>
+          {/* Replace this paper component with battery pack temp */}
+          <Paper
+            sx={{
+              flex: "1 0 0",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Typography>Battery Pack Temp</Typography>
+          </Paper>
+          {/* Replace this paper component with discharge */}
+          <Paper
+            sx={{
+              flex: "1 0 0",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Typography>Discharge</Typography>
+          </Paper>
+        </Box>
+        <Box sx={{ display: "flex", gap: "16px", width: "100%" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-around",
+              gap: "16px",
+              width: "100%",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-around",
+                gap: "16px",
+                height: "40vh",
+                flex: "1 0 0",
+              }}
+            >
+              {/* Replace this paper component with gear state */}
+              <Paper
+                sx={{
+                  flex: "1 0 0",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Typography>Gear State</Typography>
+              </Paper>
+              {/* Replace this paper component with hazard state */}
+              <Paper
+                sx={{
+                  flex: "1 0 0",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Typography>Hazard State</Typography>
+              </Paper>
+              {/* Replace this paper component with blinker state */}
+              <Paper
+                sx={{
+                  flex: "1 0 0",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Typography>Blinker State</Typography>
+              </Paper>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-around",
+                gap: "16px",
+                flex: "3 0 0",
+              }}
+            >
+              {/* Replace this paper component with one pedal drive */}
+              <Paper
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: "calc(15vh - 8px)",
+                }}
+              >
+                <Typography>One Pedal Drive</Typography>
+              </Paper>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-around",
+                  gap: "16px",
+                }}
+              >
+                {/* Replace this paper component with motor faults */}
+                <Paper
+                  sx={{
+                    flex: "1 0 0",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "calc(25vh - 8px)",
+                  }}
+                >
+                  <Typography>Motor Faults</Typography>
+                </Paper>
+                {/* Replace this paper component with fifa chart */}
+                <Paper
+                  sx={{
+                    flex: "1 0 0",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "calc(25vh - 8px)",
+                  }}
+                >
+                  <Typography>Fifa Chart</Typography>
+                </Paper>
+              </Box>
+            </Box>
+          </Box>
         </Box>
       </Box>
     </Box>
