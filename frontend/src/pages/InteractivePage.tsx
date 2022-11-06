@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import LineChart from "../components/LineChart";
 import { io } from "socket.io-client";
+import ToggleButtons from "../components/ToggleButtons";
 
 const socket = io("http://localhost:5050");
 
@@ -130,39 +131,24 @@ const InteractivePage = () => {
                 flex: "1 0 0",
               }}
             >
-              {/* Replace this paper component with gear state */}
-              <Paper
-                sx={{
-                  flex: "1 0 0",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Typography>Gear State</Typography>
-              </Paper>
-              {/* Replace this paper component with hazard state */}
-              <Paper
-                sx={{
-                  flex: "1 0 0",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Typography>Hazard State</Typography>
-              </Paper>
-              {/* Replace this paper component with blinker state */}
-              <Paper
-                sx={{
-                  flex: "1 0 0",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Typography>Blinker State</Typography>
-              </Paper>
+              <ToggleButtons
+                state={"true"}
+                left={"Low"}
+                right={"High"}
+                label={"Gear:"}
+              />
+              <ToggleButtons
+                state={"true"}
+                left={"Off"}
+                right={"On"}
+                label={"Hazard State:"}
+              />
+              <ToggleButtons
+                state={"true"}
+                left={"Left"}
+                right={"Right"}
+                label={"Turn Signal:"}
+              />
             </Box>
             <Box
               sx={{
