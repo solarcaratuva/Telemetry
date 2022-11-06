@@ -1,7 +1,7 @@
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Button, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
-import LineChart from "../components/LineChart";
+import OnePedalDrive from "../components/OnePedalDrive";
 import { io } from "socket.io-client";
 
 const socket = io("http://localhost:5050");
@@ -173,17 +173,7 @@ const InteractivePage = () => {
                 flex: "3 0 0",
               }}
             >
-              {/* Replace this paper component with one pedal drive */}
-              <Paper
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  height: "calc(15vh - 8px)",
-                }}
-              >
-                <Typography>One Pedal Drive</Typography>
-              </Paper>
+              <OnePedalDrive value={20} />
               <Box
                 sx={{
                   display: "flex",

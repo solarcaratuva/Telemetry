@@ -5,6 +5,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import InteractivePage from "./pages/InteractivePage";
 import MonitorOnePage from "./pages/MonitorOnePage";
 import MonitorTwoPage from "./pages/MonitorTwoPage";
+import { ThemeProvider } from "@emotion/react";
+import { theme } from "./theme";
 
 function App() {
   return (
@@ -16,13 +18,15 @@ function App() {
           overflow: "hidden",
         }}
       >
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<InteractivePage />} />
-            <Route path="monitor_one" element={<MonitorOnePage />} />
-            <Route path="monitor_two" element={<MonitorTwoPage />} />
-          </Routes>
-        </BrowserRouter>
+        <ThemeProvider theme={theme}>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<InteractivePage />} />
+              <Route path="monitor_one" element={<MonitorOnePage />} />
+              <Route path="monitor_two" element={<MonitorTwoPage />} />
+            </Routes>
+          </BrowserRouter>
+        </ThemeProvider>
       </div>
     </div>
   );
