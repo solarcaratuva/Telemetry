@@ -34,13 +34,7 @@ const Progress_bar: React.FC<Props> = ({ value, max}) => {
         fontWeight: 'bold'
       }
 
-   /*   const deadStyles = {
-        height: '100%',
-        width: '25%',
-        paddingLeft: '25%',
-        backgroundColor: 'black',
-        borderRadius: 'inherit',
-      }*/
+   
         
     return (
         <div style = {containerStyles}>
