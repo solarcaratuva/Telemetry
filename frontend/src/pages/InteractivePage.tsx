@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import HoriBar from "../components/HoriBar";
-
 import { Box, SpeedDial } from "@mui/material";
 import LineChart from "../components/LineChart";
 import { io } from "socket.io-client";
@@ -52,8 +51,10 @@ const InteractivePage = () => {
 
   return (
     <Box>
+
       <h1>Interactive Page</h1>
-      <HoriBar value = {data.speed[data.speed.length-1].value} max = {100}/>
+      <HoriBar value = {data.speed[data.speed.length-1].value} max = {125}/>
+
       <Box
         display="flex"
         gap="64px"
