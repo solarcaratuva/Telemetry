@@ -1,16 +1,18 @@
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Button, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
-import LineChart from "../components/LineChart";
+import OnePedalDrive from "../components/OnePedalDrive";
 import { io } from "socket.io-client";
 
 const socket = io("http://localhost:5050");
+const MAX_LENGTH = 50;
 
 type DataSet = { value: number; timestamp: Date }[];
 interface Data {
-  speed: DataSet;
+  car_speed: DataSet;
   battery_temp: DataSet;
   panel_temp: DataSet;
+  pedal_value: DataSet;
 }
 
 interface Update {
@@ -20,22 +22,29 @@ interface Update {
 
 const InteractivePage = () => {
   const [data, setData] = useState<Data>({
-    speed: [],
+    car_speed: [],
     battery_temp: [],
     panel_temp: [],
+    pedal_value: [],
   });
 
   useEffect(() => {
     //Attaches socket listeners for each value of the data object on mount
     Object.keys(data).forEach((name) => {
       socket.on(name, (update: Update) => {
-        setData((oldData) => ({
-          ...oldData,
-          [name]: [
-            ...oldData[name as keyof Data],
-            { value: update.number, timestamp: new Date(update.timestamp) },
-          ],
-        }));
+        setData((oldData) => {
+          const updatedData = {
+            ...oldData,
+            [name]: [
+              ...oldData[name as keyof Data],
+              { value: update.number, timestamp: new Date(update.timestamp) },
+            ],
+          };
+          if (updatedData[name as keyof Data].length > MAX_LENGTH) {
+            updatedData[name as keyof Data] = updatedData[name as keyof Data].slice(-MAX_LENGTH);
+          }
+          return updatedData;
+        });
       });
     });
 
@@ -173,17 +182,7 @@ const InteractivePage = () => {
                 flex: "3 0 0",
               }}
             >
-              {/* Replace this paper component with one pedal drive */}
-              <Paper
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  height: "calc(15vh - 8px)",
-                }}
-              >
-                <Typography>One Pedal Drive</Typography>
-              </Paper>
+              <OnePedalDrive value={ data.pedal_value.length != 0 ? data.pedal_value[data.pedal_value.length - 1].value : 50 } />
               <Box
                 sx={{
                   display: "flex",
