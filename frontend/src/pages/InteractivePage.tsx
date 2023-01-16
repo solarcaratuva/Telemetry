@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import OnePedalDrive from "../components/OnePedalDrive";
 import { io } from "socket.io-client";
+import ToggleButtons from "../components/ToggleButtons";
 
 const socket = io("http://localhost:5050");
 const MAX_LENGTH = 50;
@@ -20,12 +21,29 @@ interface Update {
   timestamp: string;
 }
 
+type StringDataSet = { value: string; timestamp: Date }[];
+interface StringData {
+  gear_state: StringDataSet;
+  hazard_state: StringDataSet;
+  turn_state: StringDataSet;
+}
+interface StringUpdate {
+  string: string;
+  timestamp: string;
+}
+
 const InteractivePage = () => {
   const [data, setData] = useState<Data>({
     car_speed: [],
     battery_temp: [],
     panel_temp: [],
     pedal_value: [],
+  });
+
+  const [stringData, setStringData] = useState<StringData>({
+    gear_state: [],
+    hazard_state: [],
+    turn_state: [],
   });
 
   useEffect(() => {
@@ -42,6 +60,24 @@ const InteractivePage = () => {
           };
           if (updatedData[name as keyof Data].length > MAX_LENGTH) {
             updatedData[name as keyof Data] = updatedData[name as keyof Data].slice(-MAX_LENGTH);
+          }
+          return updatedData;
+        });
+      });
+    });
+
+    Object.keys(stringData).forEach((name) => {
+      socket.on(name, (update: StringUpdate) => {
+        setStringData((oldData) => {
+          const updatedData = {
+            ...oldData,
+            [name]: [
+              ...oldData[name as keyof StringData],
+              { value: update.string, timestamp: new Date(update.timestamp) },
+            ],
+          };
+          if (updatedData[name as keyof StringData].length > MAX_LENGTH) {
+            updatedData[name as keyof StringData] = updatedData[name as keyof StringData].slice(-MAX_LENGTH);
           }
           return updatedData;
         });
@@ -139,39 +175,24 @@ const InteractivePage = () => {
                 flex: "1 0 0",
               }}
             >
-              {/* Replace this paper component with gear state */}
-              <Paper
-                sx={{
-                  flex: "1 0 0",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Typography>Gear State</Typography>
-              </Paper>
-              {/* Replace this paper component with hazard state */}
-              <Paper
-                sx={{
-                  flex: "1 0 0",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Typography>Hazard State</Typography>
-              </Paper>
-              {/* Replace this paper component with blinker state */}
-              <Paper
-                sx={{
-                  flex: "1 0 0",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Typography>Blinker State</Typography>
-              </Paper>
+              <ToggleButtons
+                state={ stringData.gear_state.length != 0 ? stringData.gear_state[stringData.gear_state.length - 1].value : "false" }
+                left={"Low"}
+                right={"High"}
+                label={"Gear:"}
+              />
+              <ToggleButtons
+                state={ stringData.hazard_state.length != 0 ? stringData.hazard_state[stringData.hazard_state.length - 1].value : "false" }
+                left={"Off"}
+                right={"On"}
+                label={"Hazard State:"}
+              />
+              <ToggleButtons
+                state={ stringData.turn_state.length != 0 ? stringData.turn_state[stringData.turn_state.length - 1].value : "false" }
+                left={"Left"}
+                right={"Right"}
+                label={"Turn Signal:"}
+              />
             </Box>
             <Box
               sx={{
