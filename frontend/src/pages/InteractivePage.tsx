@@ -5,6 +5,7 @@ import OnePedalDrive from "../components/OnePedalDrive";
 import { io } from "socket.io-client";
 
 const socket = io("http://localhost:5050");
+const MAX_LENGTH = 50;
 
 type DataSet = { value: number; timestamp: Date }[];
 interface Data {
@@ -31,13 +32,19 @@ const InteractivePage = () => {
     //Attaches socket listeners for each value of the data object on mount
     Object.keys(data).forEach((name) => {
       socket.on(name, (update: Update) => {
-        setData((oldData) => ({
-          ...oldData,
-          [name]: [
-            ...oldData[name as keyof Data],
-            { value: update.number, timestamp: new Date(update.timestamp) },
-          ],
-        }));
+        setData((oldData) => {
+          const updatedData = {
+            ...oldData,
+            [name]: [
+              ...oldData[name as keyof Data],
+              { value: update.number, timestamp: new Date(update.timestamp) },
+            ],
+          };
+          if (updatedData[name as keyof Data].length > MAX_LENGTH) {
+            updatedData[name as keyof Data] = updatedData[name as keyof Data].slice(-MAX_LENGTH);
+          }
+          return updatedData;
+        });
       });
     });
 
