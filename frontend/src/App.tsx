@@ -6,6 +6,7 @@ import InteractivePage from "./pages/InteractivePage";
 import MonitorOnePage from "./pages/MonitorOnePage";
 import MonitorTwoPage from "./pages/MonitorTwoPage";
 import { ThemeProvider } from "@emotion/react";
+import { theme } from "./theme";
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
           overflow: "hidden",
         }}
       >
-        <ThemeProvider theme={{}}>
+        <ThemeProvider theme={theme}>
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<InteractivePage />} />
