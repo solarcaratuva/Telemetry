@@ -62,3 +62,38 @@ setInterval(() => {
   });
 }, 2000);
 
+setInterval(() => {
+  //Random integer between 0 and 100
+  const string = Math.random() > 0.5 ? "true" : "false";
+  const timestamp = new Date().toISOString();
+  io.to("connections").emit("gear_state", {
+    timestamp,
+    string,
+  });
+}, 2000);
+
+setInterval(() => {
+  //Random integer between 0 and 100
+  const string = Math.random() > 0.5 ? "true" : "false";
+  const timestamp = new Date().toISOString();
+  io.to("connections").emit("hazard_state", {
+    timestamp,
+    string,
+  });
+}, 2000);
+
+setInterval(() => {
+  //Random integer between 0 and 100
+  const string = Math.random() > 0.5 ? "true" : "false";
+  const timestamp = new Date().toISOString();
+  io.to("connections").emit("turn_state", {
+    timestamp,
+    string,
+  });
+}, 2000);
+
+
+
+
+
+

@@ -21,12 +21,29 @@ interface Update {
   timestamp: string;
 }
 
+type StringDataSet = { value: string; timestamp: Date }[];
+interface StringData {
+  gear_state: StringDataSet;
+  hazard_state: StringDataSet;
+  turn_state: StringDataSet;
+}
+interface StringUpdate {
+  string: string;
+  timestamp: string;
+}
+
 const InteractivePage = () => {
   const [data, setData] = useState<Data>({
     car_speed: [],
     battery_temp: [],
     panel_temp: [],
     pedal_value: [],
+  });
+
+  const [stringData, setStringData] = useState<StringData>({
+    gear_state: [],
+    hazard_state: [],
+    turn_state: [],
   });
 
   useEffect(() => {
@@ -43,6 +60,24 @@ const InteractivePage = () => {
           };
           if (updatedData[name as keyof Data].length > MAX_LENGTH) {
             updatedData[name as keyof Data] = updatedData[name as keyof Data].slice(-MAX_LENGTH);
+          }
+          return updatedData;
+        });
+      });
+    });
+
+    Object.keys(stringData).forEach((name) => {
+      socket.on(name, (update: StringUpdate) => {
+        setStringData((oldData) => {
+          const updatedData = {
+            ...oldData,
+            [name]: [
+              ...oldData[name as keyof StringData],
+              { value: update.string, timestamp: new Date(update.timestamp) },
+            ],
+          };
+          if (updatedData[name as keyof StringData].length > MAX_LENGTH) {
+            updatedData[name as keyof StringData] = updatedData[name as keyof StringData].slice(-MAX_LENGTH);
           }
           return updatedData;
         });
@@ -141,19 +176,19 @@ const InteractivePage = () => {
               }}
             >
               <ToggleButtons
-                state={"true"}
+                state={ stringData.gear_state.length != 0 ? stringData.gear_state[stringData.gear_state.length - 1].value : "false" }
                 left={"Low"}
                 right={"High"}
                 label={"Gear:"}
               />
               <ToggleButtons
-                state={"true"}
+                state={ stringData.hazard_state.length != 0 ? stringData.hazard_state[stringData.hazard_state.length - 1].value : "false" }
                 left={"Off"}
                 right={"On"}
                 label={"Hazard State:"}
               />
               <ToggleButtons
-                state={"true"}
+                state={ stringData.turn_state.length != 0 ? stringData.turn_state[stringData.turn_state.length - 1].value : "false" }
                 left={"Left"}
                 right={"Right"}
                 label={"Turn Signal:"}
