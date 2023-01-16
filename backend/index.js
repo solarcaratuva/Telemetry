@@ -26,7 +26,7 @@ setInterval(() => {
   //Random integer between 0 and 100
   const number = Math.floor(Math.random() * 50 + 50);
   const timestamp = new Date().toISOString();
-  io.to("connections").emit("speed", {
+  io.to("connections").emit("car_speed", {
     timestamp,
     number,
   });
@@ -51,3 +51,14 @@ setInterval(() => {
     number,
   });
 }, 2000);
+
+setInterval(() => {
+  //Random integer between 0 and 100
+  const number = Math.floor(Math.random() * 256);
+  const timestamp = new Date().toISOString();
+  io.to("connections").emit("pedal_value", {
+    timestamp,
+    number,
+  });
+}, 2000);
+

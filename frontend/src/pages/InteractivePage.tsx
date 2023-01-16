@@ -8,9 +8,10 @@ const socket = io("http://localhost:5050");
 
 type DataSet = { value: number; timestamp: Date }[];
 interface Data {
-  speed: DataSet;
+  car_speed: DataSet;
   battery_temp: DataSet;
   panel_temp: DataSet;
+  pedal_value: DataSet;
 }
 
 interface Update {
@@ -20,9 +21,10 @@ interface Update {
 
 const InteractivePage = () => {
   const [data, setData] = useState<Data>({
-    speed: [],
+    car_speed: [],
     battery_temp: [],
     panel_temp: [],
+    pedal_value: [],
   });
 
   useEffect(() => {
@@ -173,7 +175,7 @@ const InteractivePage = () => {
                 flex: "3 0 0",
               }}
             >
-              <OnePedalDrive value={20} />
+              <OnePedalDrive value={ data.pedal_value.length != 0 ? data.pedal_value[data.pedal_value.length - 1].value : 50 } />
               <Box
                 sx={{
                   display: "flex",
