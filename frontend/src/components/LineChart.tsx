@@ -22,7 +22,7 @@ interface Props {
 const LineChart: React.FC<Props> = ({ data, title }) => {
   const primaryAxis = React.useMemo(
     (): AxisOptions<DataPoint> => ({
-      getValue: (datum) => datum.timestamp,
+      getValue: (datum: { timestamp: any; }) => datum.timestamp,
     }),
     []
   );
@@ -30,7 +30,7 @@ const LineChart: React.FC<Props> = ({ data, title }) => {
   const secondaryAxes = React.useMemo(
     (): AxisOptions<DataPoint>[] => [
       {
-        getValue: (datum) => datum.value,
+        getValue: (datum: { value: any; }) => datum.value,
         min: 0,
       },
     ],
