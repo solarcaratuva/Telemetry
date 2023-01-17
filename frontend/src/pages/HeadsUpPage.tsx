@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import {Box, Paper, Typography} from "@mui/material";
 import React, {useEffect, useState} from "react";
 import VideoFeed from "../components/VideoFeed";
 import OnePedalDrive from "../components/OnePedalDrive";
@@ -93,9 +93,32 @@ const HeadsUpPage = () => {
   }, []);
 
   return (
-    <Box>
+    <Box p="16px" height="100vh" boxSizing="border-box">
       <h1>Heads up</h1>
-      <VideoFeed />
+      <Box
+        height="75%"
+        display="flex"
+        flexDirection="row"
+        gap="16px"
+        justifyContent="center"
+      >
+        <Box>
+          {/* Replace this paper component with mph */}
+          <Paper
+            sx={{
+              flex: "1 0 0",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Typography>MPH</Typography>
+          </Paper>
+        </Box>
+        <Box>
+          <VideoFeed />
+        </Box>
+      </Box>
       <OnePedalDrive value={ data.pedal_value.length != 0 ? data.pedal_value[data.pedal_value.length - 1].value : 50 } />
     </Box>
   );
