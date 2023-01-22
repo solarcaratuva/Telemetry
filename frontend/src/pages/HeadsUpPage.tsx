@@ -48,7 +48,9 @@ const HeadsUpPage = () => {
   useEffect(() => {
     //Attaches socket listeners for each value of the data object on mount
     Object.keys(data).forEach((name) => {
+      console.log("update name: " + name);
       socket.on(name, (update: Update) => {
+        console.log("update name 2: " + name + update);
         setData((oldData) => {
           const updatedData = {
             ...oldData,

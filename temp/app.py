@@ -3,6 +3,7 @@ from flask_socketio import SocketIO
 from random import randint
 import time
 from datetime import datetime
+import json
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "b"
@@ -20,7 +21,8 @@ def connectHandle():
     print("connected")
     time.sleep(10)
     current_date = datetime.now()
-    socket.send("pedal_value", {timestamp: current_date.isoformat(), number: 50})
+    data = json.dumps({"value": 100, "timestamp": str(current_date)})
+    socket.send("pedal_value", data)
     print("send date")
 
 # Running app
