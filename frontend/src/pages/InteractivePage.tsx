@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import LineChart from "../components/LineChart";
 import { io } from "socket.io-client";
+import FifaChart from "../components/FifaChart";
 
 const socket = io("http://localhost:5050");
 
@@ -204,17 +205,7 @@ const InteractivePage = () => {
                   <Typography>Motor Faults</Typography>
                 </Paper>
                 {/* Replace this paper component with fifa chart */}
-                <Paper
-                  sx={{
-                    flex: "1 0 0",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "calc(25vh - 8px)",
-                  }}
-                >
-                  <Typography>Fifa Chart</Typography>
-                </Paper>
+                <FifaChart />
               </Box>
             </Box>
           </Box>
