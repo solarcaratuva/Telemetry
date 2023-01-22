@@ -1,0 +1,91 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: BPS
+
+
+BO_ 1030 BPSPackInformation: 6 BPS
+ SG_ pack_voltage : 0|16@1+ (0.01,0) [0|0] "V" Vector__XXX
+ SG_ pack_current : 16|16@1- (0.1,0) [0|0] "A" Vector__XXX
+ SG_ pack_soc : 32|8@1+ (0.5,0) [0|0] "%" Vector__XXX
+ SG_ discharge_relay_status : 40|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ charge_relay_status : 41|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ charger_safety_status : 42|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ dtc_status : 43|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ multipurpose_input_signal_status : 44|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ always_on_signal_status : 45|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ is_ready_signal_status : 46|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ is_charging_signal_status : 47|1@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 1046 BPSCellVoltage: 6 BPS
+ SG_ low_cell_voltage : 0|16@1+ (0.0001,0) [0|0] "V" Vector__XXX
+ SG_ low_cell_voltage_id : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ high_cell_voltage : 24|16@1+ (0.0001,0) [0|0] "V" Vector__XXX
+ SG_ high_cell_voltage_id : 40|8@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 1062 BPSCellTemperature: 4 BPS
+ SG_ low_temperature : 0|8@1+ (1,0) [0|0] "°C" Vector__XXX
+ SG_ low_thermistor_id : 8|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ high_temperature : 16|8@1+ (1,0) [0|0] "°C" Vector__XXX
+ SG_ high_thermistor_id : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 262 BPSError: 3 BPS
+ SG_ internal_communications_fault : 0|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ internal_conversion_fault : 1|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ weak_cell_fault : 2|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ low_cell_voltage_fault : 3|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ open_wiring_fault : 4|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ current_sensor_fault : 5|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ pack_voltage_sensor_fault : 6|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ weak_pack_fault : 7|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ voltage_redundancy_fault : 8|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ fan_monitor_fault : 9|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ thermistor_fault : 10|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ CANBUS_communications_fault : 11|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ always_on_supply_fault : 12|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ high_voltage_isolation_fault : 13|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ power_supply_12v_fault : 14|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ charge_limit_enforcement_fault : 15|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ discharge_limit_enforcement_fault : 16|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ charger_safety_relay_fault : 17|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ internal_memory_fault : 18|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ internal_thermistor_fault : 19|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ internal_logic_fault : 20|1@1+ (1,0) [0|0] "" Vector__XXX
+
+
+
+CM_ SG_ 1030 pack_voltage "Pack Summed Voltage";
+BA_DEF_  "BusType" STRING ;
+BA_DEF_DEF_  "BusType" "CAN";
