@@ -1,0 +1,3 @@
+[submodule "backend/CAN-messages"]
+	path = backend/CAN-messages
+	url = https://github.com/solarcaratuva/CAN-messages.git
