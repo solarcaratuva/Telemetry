@@ -1,24 +1,26 @@
-from flask import Flask, render_template
-from flask_socketio import SocketIO
-from random import randint
-import time
+import random
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = "b"
-socket = SocketIO(app)
+import eventlet
+import socketio
+from datetime import datetime
 
-# Route for seeing a data
-@app.route("/")
-def main():
-    return render_template("index.html")
+sio = socketio.Server(cors_allowed_origins=["http://localhost:3000"])
+app = socketio.WSGIApp(sio)
 
-@socket.on('message')
-def handle(msg):
-    time.sleep(5)
-    mph = randint(1,100)
-    socket.send(mph)
-    print("IWRHFHWGOWIHRHOHGW")
+@sio.event
+def connect(sid, environ):
+    print('connect ', sid)
+    current_date = datetime.now()
+    timestamp = current_date.isoformat()
+    sio.emit("pedal_value", {"timestamp": timestamp, "number": random.randint(1, 100)})
 
-# Running app
+@sio.event
+def my_message(sid, data):
+    print('message ', data)
+
+@sio.event
+def disconnect(sid):
+    print('disconnect ', sid)
+
 if __name__ == '__main__':
-    socket.run(app)
+    eventlet.wsgi.server(eventlet.listen(('', 5050)), app)
