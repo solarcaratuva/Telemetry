@@ -1,9 +1,11 @@
-import { Box, Button, Paper, Typography } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 import OnePedalDrive from "../components/OnePedalDrive";
 import { io } from "socket.io-client";
 import ToggleButtons from "../components/ToggleButtons";
+import AlertBox from "../components/AlertBox";
+import RPM from "../components/RPM";
 
 const socket = io("http://localhost:5050");
 const MAX_LENGTH = 50;
@@ -131,7 +133,7 @@ const InteractivePage = () => {
               justifyContent: "center",
             }}
           >
-            <Typography>RPM</Typography>
+              <RPM  rpm={50}/>
           </Paper>
           {/* Replace this paper component with battery pack temp */}
           <Paper
@@ -221,7 +223,7 @@ const InteractivePage = () => {
                     height: "calc(25vh - 8px)",
                   }}
                 >
-                  <Typography>Motor Faults</Typography>
+                    <AlertBox data={["Alert 1", "Alert2"]}/>
                 </Paper>
                 {/* Replace this paper component with fifa chart */}
                 <Paper

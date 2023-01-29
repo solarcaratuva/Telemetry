@@ -3,6 +3,8 @@ import React, {useEffect, useState} from "react";
 import VideoFeed from "../components/VideoFeed";
 import OnePedalDrive from "../components/OnePedalDrive";
 import {io} from "socket.io-client";
+import ReactSpeedometer from "react-d3-speedometer";
+import AlertBox from "../components/AlertBox";
 
 const socket = io("http://localhost:5050");
 const MAX_LENGTH = 50;
@@ -118,10 +120,24 @@ const HeadsUpPage = () => {
           </Paper>
         </Box>
         <Box>
+          <ReactSpeedometer />
+          <Box>
+          {/* Replace this paper component with mph */}
+          <Paper
+            sx={{
+              flex: "1 0 0",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <AlertBox data={["low bat", "sldkfj"]}/>
+          </Paper>
+        </Box>
           <VideoFeed />
         </Box>
       </Box>
-      <OnePedalDrive value={ data.pedal_value.length != 0 ? data.pedal_value[data.pedal_value.length - 1].value : 50 } />
+      <OnePedalDrive value={ data.pedal_value.length !== 0 ? data.pedal_value[data.pedal_value.length - 1].value : 50 } />
     </Box>
   );
 };
