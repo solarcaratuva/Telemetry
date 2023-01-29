@@ -1,4 +1,4 @@
-import {Alert, Box, Paper, Typography} from "@mui/material";
+import {Box, Paper, Typography} from "@mui/material";
 import React, {useEffect, useState} from "react";
 import VideoFeed from "../components/VideoFeed";
 import OnePedalDrive from "../components/OnePedalDrive";
@@ -120,7 +120,7 @@ const HeadsUpPage = () => {
           </Paper>
         </Box>
         <Box>
-          {/*<ReactSpeedometer />*/}
+          <ReactSpeedometer />
           <Box>
           {/* Replace this paper component with mph */}
           <Paper

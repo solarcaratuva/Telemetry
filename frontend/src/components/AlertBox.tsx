@@ -1,4 +1,3 @@
-import { AxisOptions, Chart, ChartOptions } from "react-charts";
 import {Alert, Box, Paper, Typography } from "@mui/material";
 
 import React from "react";
@@ -7,12 +6,6 @@ interface Props {
   data: string[];
 }
 
-/*
- * TODO:
- * Add a legend
- * Add a focus event to emphasise one line
- * Fix the tooltip location somehow
- */
 const AlertBox: React.FC<Props> = ({ data}) => {
 
 
