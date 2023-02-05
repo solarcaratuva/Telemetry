@@ -70,6 +70,7 @@ const InteractivePage = () => {
 
     Object.keys(stringData).forEach((name) => {
       socket.on(name, (update: StringUpdate) => {
+        console.log(update)
         setStringData((oldData) => {
           const updatedData = {
             ...oldData,
