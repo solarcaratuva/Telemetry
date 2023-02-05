@@ -50,9 +50,7 @@ const HeadsUpPage = () => {
   useEffect(() => {
     //Attaches socket listeners for each value of the data object on mount
     Object.keys(data).forEach((name) => {
-      console.log("update name: " + name);
       socket.on(name, (update: Update) => {
-        console.log("update name 2: " + name + update);
         setData((oldData) => {
           const updatedData = {
             ...oldData,
@@ -131,7 +129,7 @@ const HeadsUpPage = () => {
               justifyContent: "center",
             }}
           >
-            <AlertBox data={["low bat", "sldkfj"]}/>
+            <AlertBox data={ data.battery_temp.length !== 0 && data.battery_temp[0].value>50 ? ["high bat tmp"] : [] }/>
           </Paper>
         </Box>
           <VideoFeed />
