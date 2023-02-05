@@ -1,6 +1,6 @@
 import React from "react";
 
-import Alert from "@mui/material/Alert";
+import Alert, {AlertColor} from "@mui/material/Alert";
 
 import {
   Radar,
@@ -72,7 +72,7 @@ const FifaChart = () => {
   var max_green = 6;
 
   //MotorPack
-  var MotorPackSeverity = "";
+  var MotorPackSeverity: AlertColor;
   var MotorPackErrorMessage = "";
   if (Apoke > max_green && Apoke < danger_threshold) {
     MotorPackSeverity = "warning";
@@ -86,7 +86,7 @@ const FifaChart = () => {
   }
 
   //RPM
-  var RPMSeverity = "";
+  var RPMSeverity: AlertColor;
   var RPMErrorMessage = "";
   if (Bpoke > max_green && Bpoke < danger_threshold) {
     RPMSeverity = "warning";
@@ -100,7 +100,7 @@ const FifaChart = () => {
   }
 
   //Battery Pack
-  var BatteryPackTempSeverity = "";
+  var BatteryPackTempSeverity: AlertColor;
   var BatteryPackTempErrorMessage = "";
   if (Cpoke > max_green && Cpoke < danger_threshold) {
     BatteryPackTempSeverity = "warning";
@@ -114,7 +114,7 @@ const FifaChart = () => {
   }
 
   //Discharge
-  var DischargeSeverity = "";
+  var DischargeSeverity: AlertColor;
   var DischargeErrorMessage = "";
   if (Dpoke > max_green && Dpoke < danger_threshold) {
     DischargeSeverity = "warning";
@@ -127,7 +127,7 @@ const FifaChart = () => {
     DischargeErrorMessage = "Discharge Functional";
   }
 
-  var BatteryVoltageSeverity = "";
+  var BatteryVoltageSeverity: AlertColor;
   var BatteryVoltageErrorMessage = "";
   if (Epoke > max_green && Epoke < danger_threshold) {
     BatteryVoltageSeverity = "warning";
