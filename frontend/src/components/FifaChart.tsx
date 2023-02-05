@@ -8,7 +8,7 @@ import {
   PolarGrid,
   PolarAngleAxis,
   PolarRadiusAxis,
-} from "C:/Users/marcu/AppData/Local/Microsoft/TypeScript/4.9/node_modules/@types/recharts/index";
+} from "recharts";
 
 //Generate Fake Data (data is scaled from 0-10)
 var Apoke = Math.floor(Math.random() * 10);
