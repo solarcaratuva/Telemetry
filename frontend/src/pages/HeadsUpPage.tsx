@@ -33,6 +33,7 @@ interface StringUpdate {
   timestamp: string;
 }
 
+
 const HeadsUpPage = () => {
   const [data, setData] = useState<Data>({
     car_speed: [],
@@ -46,6 +47,15 @@ const HeadsUpPage = () => {
     hazard_state: [],
     turn_state: [],
   });
+
+  const [time, setTime] = useState(new Date().toLocaleTimeString());
+
+  useEffect(()=>{
+    const intervalId = setInterval(()=>{
+      setTime(new Date().toLocaleTimeString());
+    }, 1000);
+    return ()=>{clearInterval(intervalId)};
+  }, []);
 
   useEffect(() => {
     //Attaches socket listeners for each value of the data object on mount
@@ -95,47 +105,54 @@ const HeadsUpPage = () => {
   }, []);
 
   return (
-    <Box p="16px" height="100vh" boxSizing="border-box">
-      <h1>Heads up</h1>
+    <Box p="16px" height="100vh" boxSizing="border-box" className="container">
       <Box
-        height="75%"
+        height="100%"
         display="flex"
         flexDirection="row"
         gap="16px"
         justifyContent="center"
       >
-        <Box>
-          {/* Replace this paper component with mph */}
-          <Paper
-            sx={{
-              flex: "1 0 0",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Typography>MPH</Typography>
-          </Paper>
+        <Box
+          height="100%"
+          display="flex"
+          flexDirection="column"
+          gap="16px"
+          justifyContent="center"
+        >
+          <h3>{time}</h3>
+          <Box sx={{
+            display: "flex",
+            justifyContent: "space-around",
+            gap: "16px",
+            height: "33vh",
+          }}>
+            {/* Replace this paper component with mph */}
+            <Paper
+              sx={{
+                flex: "1 0 0",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Typography>MPH</Typography>
+            </Paper>
+          </Box>
+          <OnePedalDrive value={ data.pedal_value.length !== 0 ? data.pedal_value[data.pedal_value.length - 1].value : 50 } />
+          <AlertBox data={ data.battery_temp.length !== 0 && data.battery_temp[0].value>50 ? ["high bat tmp"] : [] }/>
         </Box>
-        <Box>
-          <ReactSpeedometer />
-          <Box>
-          {/* Replace this paper component with mph */}
-          <Paper
-            sx={{
-              flex: "1 0 0",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <AlertBox data={ data.battery_temp.length !== 0 && data.battery_temp[0].value>50 ? ["high bat tmp"] : [] }/>
-          </Paper>
-        </Box>
+        <Box
+          height="100%"
+          display="flex"
+          flexDirection="column"
+          gap="16px"
+          justifyContent="center"
+        >
           <VideoFeed />
+          <ReactSpeedometer />
         </Box>
       </Box>
-      <OnePedalDrive value={ data.pedal_value.length !== 0 ? data.pedal_value[data.pedal_value.length - 1].value : 50 } />
     </Box>
   );
 };
