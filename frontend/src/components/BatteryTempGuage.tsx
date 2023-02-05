@@ -4,26 +4,26 @@ import React from "react";
 import ReactSpeedometer from "react-d3-speedometer";
 
 interface Props {
-  rpm: number;
+  temp: number;
 }
 
-const RPM: React.FC<Props> = ({ rpm}) => {
+const BatteryTempGuage: React.FC<Props> = ({ temp}) => {
 
 
   return (
     <Box flex="1 0 0">
       <Paper sx={{ p: 2 }} elevation={2}>
         <Typography variant="h5" pb={1}>
-          RPM
+          Battery Temp
         </Typography>
         <Box>
-            {
-                <ReactSpeedometer value={rpm} />
-            }
+          {
+            <ReactSpeedometer value={temp} />
+          }
         </Box>
       </Paper>
     </Box>
   );
 };
 
-export default RPM;
+export default BatteryTempGuage;
