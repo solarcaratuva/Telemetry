@@ -1,18 +1,27 @@
 import random
-
+import serial
 import eventlet
 import socketio
 from datetime import datetime
+import time
 
 sio = socketio.Server(cors_allowed_origins=["http://localhost:3000"])
 app = socketio.WSGIApp(sio)
+ser = serial.Serial(port="/dev/serial0")
+print("Listening on: "+ser.name)
+
+#val = ser.read(100).decode('utf-8')
+#val = random.randint(1, 100)
 
 @sio.event
 def connect(sid, environ):
     print('connect ', sid)
+    val = ser.read(100).decode('utf-8')
     current_date = datetime.now()
     timestamp = current_date.isoformat()
-    sio.emit("pedal_value", {"timestamp": timestamp, "number": random.randint(1, 100)})
+    sio.emit("pedal_value", {"timestamp": timestamp, "number": val})
+    print("MESSAGE ID "+str(random.randint(1,20))+ " RECIEVED! VALUE IS: "+str(val))
+
 
 @sio.event
 def my_message(sid, data):
