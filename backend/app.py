@@ -1,24 +1,21 @@
-from flask import Flask, render_template
-from flask_socketio import SocketIO
-from random import randint
-import time
+import serial, socketio, json, time
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = "b"
-socket = SocketIO(app)
+ser = serial.Serial(port="/dev/serial0")
+sio = socketio.Server()
 
-# Route for seeing a data
-@app.route("/")
-def main():
-    return render_template("index.html")
+# PySerial testing
+print("Listening on: "+ser.name)
+while True:
+    message = ser.read(100).decode('utf-8')
+    print(message)
+    print("MESSAGE RECIEVED")
 
-@socket.on('message')
-def handle(msg):
-    time.sleep(5)
-    mph = randint(1,100)
-    socket.send(mph)
-    print("IWRHFHWGOWIHRHOHGW")
-
-# Running app
-if __name__ == '__main__':
-    socket.run(app)
+"""
+while True:
+    data = serial.read(1000).decode('utf-8')
+    message = decode_can_dbc(0, data)
+    json = json.dumps(message)
+    sio.emit("event", json)
+   
+    time.sleep(0.01)
+"""
