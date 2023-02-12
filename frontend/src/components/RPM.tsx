@@ -12,7 +12,6 @@ const RPM: React.FC<Props> = ({ rpm}) => {
 
   return (
     <Box flex="1 0 0">
-      <Paper sx={{ p: 2 }} elevation={2}>
         <Typography variant="h5" pb={1}>
           RPM
         </Typography>
@@ -21,7 +20,6 @@ const RPM: React.FC<Props> = ({ rpm}) => {
                 <ReactSpeedometer value={rpm} />
             }
         </Box>
-      </Paper>
     </Box>
   );
 };

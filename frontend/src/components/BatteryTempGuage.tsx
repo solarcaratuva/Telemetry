@@ -12,7 +12,6 @@ const BatteryTempGuage: React.FC<Props> = ({ temp}) => {
 
   return (
     <Box flex="1 0 0">
-      <Paper sx={{ p: 2 }} elevation={2}>
         <Typography variant="h5" pb={1}>
           Battery Temp
         </Typography>
@@ -21,7 +20,6 @@ const BatteryTempGuage: React.FC<Props> = ({ temp}) => {
             <ReactSpeedometer value={temp} />
           }
         </Box>
-      </Paper>
     </Box>
   );
 };
