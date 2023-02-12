@@ -12,12 +12,12 @@ const RPM: React.FC<Props> = ({ rpm}) => {
 
   return (
     <Box flex="1 0 0">
-        <Typography variant="h5" pb={1}>
+        <Typography variant="h5" color = "white" pb={1}>
           RPM
         </Typography>
         <Box>
             {
-                <ReactSpeedometer value={rpm} />
+                <ReactSpeedometer textColor = "white" value={rpm} />
             }
         </Box>
     </Box>
