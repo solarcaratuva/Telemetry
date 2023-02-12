@@ -28,31 +28,15 @@ def my_message(sid, data):
 def disconnect(sid):
     print('disconnect ', sid)
 
-def action() :
-    val = ser.read(100).decode('utf-8')
-    current_date = datetime.now()
-    timestamp = current_date.isoformat()
-    sio.emit("pedal_value", {"timestamp": timestamp, "number": val})
-    print("MESSAGE ID "+str(random.randint(1,20))+ " RECIEVED! VALUE IS: "+str(val))
+def main():
+    while True:
+        message = ser.read(100).decode('utf-8')
+        sio.emit(message)
+        print("MESSAGE SENT: "+message)
 
-
-class setInterval :
-    def __init__(self,interval,action) :
-        self.interval=interval
-        self.action=action
-        self.stopEvent=threading.Event()
-        thread=threading.Thread(target=self.__setInterval)
-        thread.start()
-
-    def __setInterval(self) :
-        nextTime=time.time()+self.interval
-        while not self.stopEvent.wait(nextTime-time.time()) :
-            nextTime+=self.interval
-            self.action()
-    
-inter=setInterval(1,action)
-
-sio.start_background_task(action())
+t1 = threading.Thread(target=main, name='t1')
+t1.start()
+print("THREAD STARTED")
 
 if __name__ == '__main__':
     eventlet.wsgi.server(eventlet.listen(('', 5050)), app)
