@@ -7,6 +7,7 @@ import AlertBox from "../components/AlertBox";
 import RPM from "../components/RPM";
 import BatteryTempGuage from "../components/BatteryTempGuage";
 import MPHandTurnSignal from "../components/MPHandTurnSignal";
+import GearState from "../components/GearState";
 
 const socket = io("http://localhost:5050");
 const MAX_LENGTH = 50;
@@ -131,6 +132,7 @@ const HeadsUpPage = () => {
           }}>
             <MPHandTurnSignal />
           </Box>
+          <GearState />
           <OnePedalDrive value={ data.pedal_value.length !== 0 ? data.pedal_value[data.pedal_value.length - 1].value : 50 } />
           <AlertBox data={ data.battery_temp.length !== 0 && data.battery_temp[0].value>50 ? ["high bat tmp"] : ["test alert"] }/>
         </Box>
