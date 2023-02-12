@@ -1,4 +1,4 @@
-import {Box, Paper, Typography} from "@mui/material";
+import {Box} from "@mui/material";
 import React, {useEffect, useState} from "react";
 import VideoFeed from "../components/VideoFeed";
 import OnePedalDrive from "../components/OnePedalDrive";
