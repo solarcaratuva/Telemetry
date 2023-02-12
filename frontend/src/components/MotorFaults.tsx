@@ -87,15 +87,6 @@ function controlleroverheat(controller_overheat: number) {
     );
   }
 }
-/*
-const over_current = 1;
-const hall_sensor = 1;
-const motor_locked = 1;
-const sensor_fault1 = 1;
-const sensor_fault2 = 1;
-const high_voltage = 1;
-const controller_overheat = 1;
-*/
 
 interface Props {
   Over_current: number;
@@ -130,33 +121,3 @@ const MotorFaults: React.FC<Props> = ({
 };
 
 export default MotorFaults;
-
-/*
-export default render();
-{
-  // Calling functions and assigning them to variables
-  const Over_current = this.overcurrent();
-  const Hall_sensor = this.hallsensor();
-  const Motor_locked = this.motorlocked();
-  const Sensor_fault1 = this.sensorfault1();
-  const Sensor_fault2 = this.sensorfault2();
-  const High_voltage = this.highvoltage();
-  const Controller_overheat = this.controlleroverheat();
-  return (
-    <>
-      { rendered the JSX }
-      <div>
-        {
-          (Over_current,
-          Hall_sensor,
-          Motor_locked,
-          Sensor_fault1,
-          Sensor_fault2,
-          High_voltage,
-          Controller_overheat)
-        }
-      </div>
-    </>
-  );
-}
-*/

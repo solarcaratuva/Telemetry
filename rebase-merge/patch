@@ -1,0 +1,61 @@
+diff --git a/main.py b/main.py
+index 6076916..3916e50 100644
+--- a/main.py
++++ b/main.py
+@@ -21,12 +21,11 @@ Payload.max_decode_packets = 500
+ app = Flask(__name__)
+ 
+ app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
+-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///telemetry.db'
++app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///telemetry2.db'
+ 
+ db = SQLAlchemy(app)
+ socketio = SocketIO(app)
+ 
+-db.create_all()
+ 
+ class BMS(db.Model):
+     current = db.Column(db.Float, primary_key=True)
+@@ -68,7 +67,7 @@ class BMS(db.Model):
+     P0A0B = db.Column(db.Boolean, default = False)
+ 
+ class KLS(db.Model):
+-    command_status = db.Column(db.Boolean, default = False)
++    command_status = db.Column(db.Boolean, default = False, primary_key=True)
+     feedback_status = db.Column(db.Integer)
+     hall_a = db.Column(db.Boolean, default = False)
+     hall_b = db.Column(db.Boolean, default = False)
+@@ -92,6 +91,9 @@ class KLS(db.Model):
+ 
+ 
+ 
++db.create_all()
++
++
+ @app.route('/')
+ def sessions():
+     return render_template('index.html')
+@@ -119,9 +121,16 @@ def graph():
+ @socketio.on('dataEvent')
+ def handle_data(msg):
+     data_json = data.Info().to_json()
++    storeData(data_json)
+     socketio.emit('dataEvent', data_json)
+     socketio.sleep(2)
+ 
++
++def storeData(data):
++    d = KLS(rpm=data['rpm'])   
++    db.session.add(d)
++    db.session.commit()
++
+     
+ """     device = XBeeDevice(PORT, BAUD_RATE)
+     print("Waiting for data... \n")
+diff --git a/telemetry.db b/telemetry.db
+index a79fcbd..855e571 100644
+Binary files a/telemetry.db and b/telemetry.db differ
+diff --git a/telemetry2.db b/telemetry2.db
+new file mode 100644
+index 0000000..079e823
+Binary files /dev/null and b/telemetry2.db differ

@@ -1,0 +1,59 @@
+pick b41801b0e4d03068c770c3462f1ad6755a83b4d7 packing unpacking
+pick 9e8bdef64256716a2fc7736a0d9176bf06e3ad2c models.py and client.js
+pick e97f1e25ea7ccc8b838c8d9ec410fa81a92c55a0 testing fake serial port
+pick 9a8d2b6ae498b294213216db35d8782fd66b52cf changes to gitignore
+pick 8388df8d892c438e6493ed0705657440ad9d9dae Fixed data_read.py
+pick 05b98f189070048b6eb462c1e6b99c92fc09a4a0 Updated main.py to read from serial
+pick f3c0d84003c40894c022b8c04e5619a9e50b875a Updated random serial data
+pick a49e69f3cf680cb6e0e960e83846df3d41c0c498 fake serial
+pick dd568ab18782026cba50341826475f57d1afcfbf Fixed errors
+pick 3ed93f461613233919841dd775664ee5d5589c2f Updated client.js
+pick 3e59eb3217bc8b29a75f106907ec22b76ab4f5d5 Storing data in db
+pick d2d860c76ee2044995f28a6f077de71ef0a6639f Fixed bug preventing loop
+pick 09369e9a1945dda7276cda8a56bd069a679994ed Add database file to gitignore
+pick 75890ed2b5252a14384db98daa7035479d5df252 Added option to bypass serial
+pick 2299e26373b47f116e2c15e9e402994d22d008bc PostgreSQL
+pick 03243055154ddaefb16d712fcab1cfb2e9d188d8 Sidebar and Password
+pick 9b319728fab26159325f3a2714ab78d6e7cf8da0 Warning System
+pick 42363c5ae138a3d9178d68c30ab5edb1f79bb9ab Updated SOC chart
+pick 50322d8317362414268e8d4a8d577515d720dfbb Update jQuery version
+pick 3dbbcbbd7e8b15fad57332eed74992589b17cf9f Created Layout.html
+pick 56bb0fb961bb40b2d3f03c32bbb71cb11243d80a Update main.py
+pick 5279658ed31dde3747a8b9748f2b6497248a7db7 Update sidebar.html
+pick f16a8103033c5e6853f18d82bbde677c9b2254ba Update layout.html
+pick 8e484df76062b5f8b045992e77d4f03c2151c822 Bug fixes
+pick 5d83b9e469b77a764df5052de7b598464d853f4d Scrollbar
+pick bf69142c39dd77d4825072eacd537f989c98862b Updated UI
+pick f719869106ea3000818781f1c28909d1cf171bca Warning System, Battery and Solar chart functionality
+pick 21cb1a19c008880553f161ba3599ebf48c5061b7 small battery chart update
+pick 219d4486cff70b493234c048a27399f7ae2113e6 admin page setup
+pick b458e725e98b22a3b1919fe7328a0bf590add906 useSerial bug
+pick 70c19d4d2d0305ba85e06e5651d0879a0544f4bf Storing and loading runs from db
+pick 1e12aea63661c91847d7e901694dcc0a4e6a466c Created global runTracker object
+pick 507de6c39590fd415582161821d838d7d45acb7c Replace dataEvent with emit_data loop
+pick d8b7612b2ea13ed15c8fb093eed74db5fadb0a2b Add bootstrap
+pick fb54807aa8dc8f7b061b5419ba83302612a115c7 Reorganize files
+pick 8872f410e7bbe130b582c43f4b5a963019304ee3 Update imports
+pick d72a37f83a281d63c8bebd1100963fb99661beec Split models, events, routes from main.py
+pick b3cfbb93da35835fb79078905139860acfbc2343 Emit and store random data
+pick 51564e5cf4db26f35af291b0d4ebc94af741567e Rename runs.py to runtracker.py
+pick 195af6306995710563afe77d36f4c609ecc3474a Replace main.py with telemetry.py
+pick 48fb0c146bbffcee3851359766217bd7304f5dd3 Remove test.py, serial ports
+pick 8e5165cacd1483b0be977062fbf9d1858c8769c8 Add venv/
+pick 78fa0098ae1f57a92f9c7e4618ada62d6015bb8c Update requirements.txt
+pick ee925c323ac550a2602547c203f701afabc081e6 Create websocketClient.py
+pick 66a7121121f447d1d868f725df41e9361c1d9a9f Use for loops for battery.html, update socketClient.js, and add postgres db changes
+pick c7bedf8abf68b1b8433676c37424f9278b7d1c77 11/7 changes
+pick 1208a9fd4414032586c4599a49daad8189f592f6 Generating test data works
+pick 75d0b1de7918e4977fd339aa474f7bff472a28fd General cleanup and gendata adds to the latest run
+pick e9b6a6df49dfbd0aa8582659a3fbbc486f0539e0 Initial commit
+pick 98ca08eba4c6db5cbd0f30c511722e1bd945a6b2 Track backend
+pick 6501ecceb45fd33925471b8820e4f1b58c1ee68d Add import line that was previously untracked
+pick d14239f57a5dd9ab962961fe58ed6099fdb428c1 Fix routing
+pick 479f31f81fd6b42554d38684550dd3240578d390 Add BrowserRouter component
+pick 457f654847b7f1fd4ad5a74d49b79610fe9596c7 Add unfinished LineChart to prevent error
+pick d5223f6f9ef79952162f4b2b017dccc208251d17 Add the ability to use next ports if 5000 is busy
+pick f9b6c7a8a09091671243d51bb49deb8676a65d37 Switch to port 5050 for server
+pick 246c20cda9e8b8573355add555757f50adec964a Switch to port 5050 for server
+pick b6f7c7373f7f233611390ae99eb2057785233b63 merge branch dev
+pick aed5bcb9dfa6022c0147ec719a453d065062ca0a Add unfinished LineChart to prevent error

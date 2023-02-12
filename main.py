@@ -21,12 +21,11 @@ Payload.max_decode_packets = 500
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///telemetry.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///telemetry2.db'
 
 db = SQLAlchemy(app)
 socketio = SocketIO(app)
 
-db.create_all()
 
 class BMS(db.Model):
     current = db.Column(db.Float, primary_key=True)
@@ -68,7 +67,11 @@ class BMS(db.Model):
     P0A0B = db.Column(db.Boolean, default = False)
 
 class KLS(db.Model):
+<<<<<<< HEAD
     command_status = db.Column(db.Boolean, default = False, primary_key = True)
+=======
+    command_status = db.Column(db.Boolean, default = False, primary_key=True)
+>>>>>>> e6399f6 (Updated db storage)
     feedback_status = db.Column(db.Integer)
     hall_a = db.Column(db.Boolean, default = False)
     hall_b = db.Column(db.Boolean, default = False)
@@ -90,6 +93,9 @@ class KLS(db.Model):
     def __repr__(self):
         return f"Data:('{self.miles}', '{self.rpm}', '{self.mph}')"
 
+
+
+db.create_all()
 
 
 @app.route('/')
@@ -119,8 +125,15 @@ def graph():
 @socketio.on('dataEvent')
 def handle_data(msg):
     data_json = data.Info().to_json()
+    storeData(data_json)
     socketio.emit('dataEvent', data_json)
     socketio.sleep(2)
+
+
+def storeData(data):
+    d = KLS(rpm=data['rpm'])   
+    db.session.add(d)
+    db.session.commit()
 
     
 """     device = XBeeDevice(PORT, BAUD_RATE)
