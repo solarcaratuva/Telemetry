@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Solar Car Telemetry</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="/node_modules/startbootstrap-sb-admin-2/vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
+    type="text/css">
+  <link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="{{ url_for('static', filename='css/sb-admin-2.css') }}" rel="stylesheet">
+  <script type="text/javascript" src="../dist/dygraph.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.js"></script>
+ <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.css" />
+
+
+</head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+      <!-- Sidebar - Brand -->
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+        <img src="{{ url_for('static', filename='images/RotundaLogo.png') }}" width=50px height=50px />
+      </a>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0">
+
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item active">
+        <a class="nav-link" href="/">
+          <i class="fas fa-space-shuttle"></i>
+          <span>TELEMETRY DASHBOARD</span></a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Sub-Systems
+
+        <li class="nav-item active">
+          <a class="nav-link" href="battery">
+            <i class="fas fa-car-battery"></i>
+            <span>Battery</span></a>
+        </li>
+
+        <li class="nav-item active">
+          <a class="nav-link" href="solar">
+            <i class="fas fa-solar-panel"></i>
+            <span>Solar</span></a>
+        </li>
+
+        <li class="nav-item active">
+          <a class="nav-link" href="motor">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Motor</span></a>
+        </li>
+
+        <li class="nav-item active">
+          <a class="nav-link" href="faults">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Faults</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="graph">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>test</span></a>
+        </li>
+      </div>
+
+
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+          <img src="{{ url_for('static', filename='images/SolarCarTeamLogo.png') }}" height=80% />
+
+
+
+        </nav>
+        <!-- End of Topbar -->
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Telemetry Dashboard</h1>
+          </div>
+
+          <!-- Content Row -->
+          <div class="row">
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Status
+                        <span class="badge badge-pill badge-danger">!</span>
+                      </div>
+                      <div class="text-xs text-gray-600 text-uppercase mb-1">BMS
+                        <span class="badge badge-pill badge-success">!</span>
+                      </div>
+
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- MPH Card -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-secondary shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">MPH</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800" id='mph'>0.00</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- RPM Card -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-secondary shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">RPM</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800" id='rpm'>0.00</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Miles Card -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-secondary shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Miles</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800" id='miles'>0.00</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+          <!-- Content Row -->
+
+          
+            <!-- Area Chart -->
+            <div class="col-xl-8 col-lg-6 ml-2 mb-2">
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">State of Charge</h6>
+                  <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                      aria-labelledby="dropdownMenuLink">
+                      <div class="dropdown-header">Dropdown Header:</div>
+                      <a class="dropdown-item" href="#">Action</a>
+                      <a class="dropdown-item" href="#">Another action</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                  </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                  <div id="div_g" style="width:700px; height:200px;">
+                  <script type="text/javascript">
+                    var data = [];
+                    var t = new Date();
+                    for (var i = 10; i >= 0; i--) {
+                      var x = new Date(t.getTime() - i * 1000);
+                      data.push([x, Math.random()]);
+                    }
+
+                    var g = new Dygraph(document.getElementById("div_g"), data,
+                      {
+                        drawPoints: true,
+                        showRoller: true,
+                        valueRange: [0.0, 1.2],
+                        labels: ['Time', 'Random']
+                      });
+                    setInterval(function () {
+                      var x = new Date();  // current time
+                      var y = Math.random();
+                      data.push([x, y]);
+                      g.updateOptions({ 'file': data });
+                    }, 1000);
+
+                  </script>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- Approach -->
+            <div class="col-xl-4 col-lg-4">
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Battery</h6>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class='col'>
+                      <div class="h8 mb-2 font-weight-bold text-primary">Pack SOC: </div>
+
+                    </div>
+                    <div class='col'>
+                      <div class='ml-2 mb-2 font-weight-bold text-gray-600' id='packSOC'>79.5%</div>
+                    </div>
+                  </div>
+
+                  <hr class="sidebar-divider">
+                  <div class="row">
+                    <div class='col'>
+                      <div class="h8 mb-2 font-weight-bold text-primary">Pack Voltage: </div>
+                      <div class="h8 mb-2 font-weight-bold text-gray-800">Min: </div>
+                      <div class="h8 mb-2 font-weight-bold text-gray-800">Max: </div>
+
+                    </div>
+                    <div class='col'>
+                      <div class='ml-2 mb-2 font-weight-bold text-gray-600' id='voltage'>130.8V</div>
+                      <div class='ml-2 mb-2 text-gray-600' id='minVoltage'>0V</div>
+                      <div class='ml-2 mb-2 text-gray-600' id='maxVoltage'> 130.8V</div>
+                    </div>
+                  </div>
+
+                  <hr class="sidebar-divider">
+
+                  <div class="row">
+                    <div class='col'>
+                      <div class="h8 mb-2 font-weight-bold text-primary">Pack Current: </div>
+                      <div class="h8 mb-2 font-weight-bold text-gray-800">Max: </div>
+
+                    </div>
+                    <div class='col'>
+                      <div class='ml-2 mb-2 font-weight-bold text-gray-600' id='current'>0A</div>
+                      <div class='ml-2 mb-2 text-gray-600' id='maxCurrent'> 0A </div>
+                    </div>
+                  </div>
+
+                  <hr class="sidebar-divider">
+
+                  <div class="row">
+                    <div class='col'>
+                      <div class="h8 mb-2 font-weight-bold text-primary">Temperature: </div>
+                      <div class="h8 mb-0 font-weight-bold text-gray-800">Max: </div>
+
+                    </div>
+                    <div class='col'>
+                      <div class='ml-2 mb-2 font-weight-bold text-gray-600' id='temperature'>27 &degC</div>
+                      <div class='ml-2 mb-0 text-gray-600' id='maxTemperature'> 33 &degC</div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <!-- Content Row -->
+        <div class="row"></div>
+
+
+      </div>
+      <!-- /.container-fluid -->
+
+    </div>
+    <!-- End of Main Content -->
+
+    <!-- Footer -->
+    <footer class="sticky-footer bg-white">
+      <div class="container my-auto">
+        <div class="copyright text-center my-auto">
+          <span>Copyright &copy; UVA Solar Car 2019</span>
+        </div>
+      </div>
+    </footer>
+    <!-- End of Footer -->
+
+  </div>
+  <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+
+  <!-- Page level plugins -->
+
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+  <script src="{{ url_for('static', filename='js/client.js') }}"></script>
+
+</body>
+
+</html>
