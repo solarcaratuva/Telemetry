@@ -29,10 +29,18 @@ def disconnect(sid):
     print('disconnect ', sid)
 
 def main():
-    while True:
-        message = ser.read(100).decode('utf-8')
-        sio.emit(message)
-        print("MESSAGE SENT: "+message)
+    message = random.randint(1,100)
+    sio.emit(message)
+    print("MESSAGE SENT: "+str(message))
+    sio.sleep(8)
+    message = random.randint(1,100)
+    sio.emit(message)
+    print("MESSAGE SENT: "+str(message))
+    sio.sleep(8)
+    message = random.randint(1,100)
+    sio.emit(message)
+    print("MESSAGE SENT: "+str(message))
+    sio.sleep(8)
 
 t1 = threading.Thread(target=main, name='t1')
 t1.start()
