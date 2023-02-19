@@ -112,7 +112,7 @@ const HeadsUpPage = () => {
       <Box
         height="100%"
         display="flex"
-        flexDirection="row"
+        flexDirection="column"
         gap="16px"
         bgcolor="black"
         justifyContent="center"
@@ -120,42 +120,55 @@ const HeadsUpPage = () => {
         <Box
           height="100%"
           display="flex"
-          flexDirection="column"
+          flexDirection="row"
           gap="16px"
-          bgcolor="black"
           justifyContent="center"
         >
-          <h3 style={{color: 'white', backgroundColor: 'black'}} >{time}</h3>
-          <Box sx={{
-            display: "flex",
-            justifyContent: "space-around",
-            gap: "16px",
-            height: "33vh",
-          }}>
-            <MPHandTurnSignal mph={54} leftTurn={true} rightTurn={true}/>
+          <Box
+            height="100%"
+            display="flex"
+            flexDirection="column"
+            gap="10px"
+            bgcolor="black"
+            justifyContent="center"
+          >
+            <h3 style={{color: 'black', backgroundColor: 'black'}} >sdf</h3>
+            <h3 style={{color: 'white', backgroundColor: 'black'}} >{time}</h3>
+            <Box sx={{
+              display: "flex",
+              justifyContent: "space-around",
+              gap: "8px",
+              height: "7vh",
+            }}>
+              <MPHandTurnSignal mph={54} leftTurn={true} rightTurn={true}/>
+            </Box>
+            <GearState state={"Reverse"}/>
+            <OnePedalDrive value={ data.pedal_value.length !== 0 ? data.pedal_value[data.pedal_value.length - 1].value : 50 } />
+            <AlertBox data={ data.battery_temp.length !== 0 && data.battery_temp[0].value>50 ? ["high bat tmp"] : ["test alert"] }/>
           </Box>
-          <GearState state={"Reverse"}/>
-          <OnePedalDrive value={ data.pedal_value.length !== 0 ? data.pedal_value[data.pedal_value.length - 1].value : 50 } />
-          <AlertBox data={ data.battery_temp.length !== 0 && data.battery_temp[0].value>50 ? ["high bat tmp"] : ["test alert"] }/>
+          <Box
+            height="100%"
+            display="flex"
+            flexDirection="column"
+            gap="16px"
+            justifyContent="center"
+          >
+            <VideoFeed />
+
+          </Box>
         </Box>
         <Box
           height="100%"
           display="flex"
-          flexDirection="column"
-          gap="16px"
+          flexDirection="row"
+          gap="10px"
           justifyContent="center"
+          width = "60%"
+          marginLeft="19%"
         >
-          <VideoFeed />
-          <Box
-            height="100%"
-            display="flex"
-            flexDirection="row"
-            gap="16px"
-            justifyContent="center"
-          >
-            <RPM rpm={500} darkMode={true}/>
-            <BatteryTempGuage temp={300} darkMode={true}/>
-          </Box>
+          <RPM rpm={500} darkMode={true}/>
+          <RPM rpm={500} darkMode={true}/>
+          <BatteryTempGuage temp={300} darkMode={true}/>
         </Box>
       </Box>
     </Box>
