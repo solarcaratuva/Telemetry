@@ -7,6 +7,7 @@ import ToggleButtons from "../components/ToggleButtons";
 import AlertBox from "../components/AlertBox";
 import RPM from "../components/RPM";
 import BatteryTempGuage from "../components/BatteryTempGuage";
+import BatteryDischarge from "../components/BatteryDischargeGuage";
 
 const socket = io("http://localhost:5050");
 const MAX_LENGTH = 50;
@@ -129,17 +130,7 @@ const InteractivePage = () => {
           {/* Replace this paper component with battery pack temp */}
 
           <BatteryTempGuage temp={40} darkMode={false}/>
-          {/* Replace this paper component with discharge */}
-          <Paper
-            sx={{
-              flex: "1 0 0",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Typography>Discharge</Typography>
-          </Paper>
+          <BatteryDischarge bat_discharge={46} darkMode={false} />
         </Box>
         <Box sx={{ display: "flex", gap: "16px", width: "100%" }}>
           <Box

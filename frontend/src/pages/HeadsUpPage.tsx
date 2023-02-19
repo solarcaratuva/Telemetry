@@ -8,6 +8,7 @@ import RPM from "../components/RPM";
 import BatteryTempGuage from "../components/BatteryTempGuage";
 import MPHandTurnSignal from "../components/MPHandTurnSignal";
 import GearState from "../components/GearState";
+import BatteryDischarge from "../components/BatteryDischargeGuage";
 
 const socket = io("http://localhost:5050");
 const MAX_LENGTH = 50;
@@ -166,7 +167,7 @@ const HeadsUpPage = () => {
           width = "60%"
           marginLeft="19%"
         >
-          <RPM rpm={500} darkMode={true}/>
+          <BatteryDischarge bat_discharge={67} darkMode={true} />
           <RPM rpm={500} darkMode={true}/>
           <BatteryTempGuage temp={300} darkMode={true}/>
         </Box>
