@@ -6,6 +6,7 @@ import { io } from "socket.io-client";
 import ToggleButtons from "../components/ToggleButtons";
 import AlertBox from "../components/AlertBox";
 import RPM from "../components/RPM";
+import BatteryTempGuage from "../components/BatteryTempGuage";
 
 const socket = io("http://localhost:5050");
 const MAX_LENGTH = 50;
@@ -124,28 +125,10 @@ const InteractivePage = () => {
           >
             <Typography>Motor Temp</Typography>
           </Paper>
-          {/* Replace this paper component with RPM */}
-          <Paper
-            sx={{
-              flex: "1 0 0",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-              <RPM  rpm={50}/>
-          </Paper>
+          <RPM  rpm={50} darkMode={false}/>
           {/* Replace this paper component with battery pack temp */}
-          <Paper
-            sx={{
-              flex: "1 0 0",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Typography>Battery Pack Temp</Typography>
-          </Paper>
+
+          <BatteryTempGuage temp={40} darkMode={false}/>
           {/* Replace this paper component with discharge */}
           <Paper
             sx={{

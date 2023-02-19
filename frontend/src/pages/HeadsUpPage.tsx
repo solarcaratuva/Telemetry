@@ -153,8 +153,8 @@ const HeadsUpPage = () => {
             gap="16px"
             justifyContent="center"
           >
-            <RPM  rpm={500}/>
-            <BatteryTempGuage temp={300}/>
+            <RPM rpm={500} darkMode={true}/>
+            <BatteryTempGuage temp={300} darkMode={true}/>
           </Box>
         </Box>
       </Box>
