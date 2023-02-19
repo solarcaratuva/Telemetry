@@ -26,5 +26,6 @@ yarn-debug.log*
 yarn-error.log*
 *.pyc
 .yarnrc.yml
+yarn.lock
 
 .vscode
