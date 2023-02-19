@@ -1,13 +1,33 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 // @ts-ignore
 import Arrow from "react-arrow";
 import {Box} from "@mui/material";
 
 interface Props {
+  mph: number,
+  leftTurn: boolean,
+  rightTurn: boolean
 }
 
-const MPHandTurnSignal: React.FC<Props> = () => {
+const MPHandTurnSignal: React.FC<Props> = ({mph, leftTurn, rightTurn}) => {
 
+  const [leftSignal, setLeftSignal] = useState(false);
+
+  useEffect(()=>{
+    const intervalId = setInterval(()=>{
+      setLeftSignal(leftSignal => leftTurn ? !leftSignal : false);
+    }, 500);
+    return ()=>{clearInterval(intervalId)};
+  }, []);
+
+  const [rightSignal, setRightSignal] = useState(false);
+
+  useEffect(()=>{
+    const intervalId = setInterval(()=>{
+      setRightSignal(rightSignal => rightTurn ? !rightSignal : false);
+    }, 500);
+    return ()=>{clearInterval(intervalId)};
+  }, []);
 
   return (
     <Box>
@@ -25,12 +45,12 @@ const MPHandTurnSignal: React.FC<Props> = () => {
           shaftLength={24}
           headWidth={60}
           headLength={30}
-          fill="black"
+          fill={leftSignal ? "green" : "black"}
           stroke="green"
           strokeWidth={4}
         />
         <Box>
-          <h1 style={{ fontSize: '50px', color: "white"}}>37</h1>
+          <h1 style={{ fontSize: '50px', color: "white"}}>{mph}</h1>
           {/*<Box height="70%">*/}
           {/*  <h3>37</h3>*/}
           {/*</Box>*/}
@@ -42,7 +62,7 @@ const MPHandTurnSignal: React.FC<Props> = () => {
           shaftLength={24}
           headWidth={60}
           headLength={30}
-          fill="black"
+          fill={rightSignal ? "green" : "black"}
           stroke="green"
           strokeWidth={4}
         />

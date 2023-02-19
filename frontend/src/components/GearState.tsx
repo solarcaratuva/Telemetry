@@ -3,10 +3,29 @@ import React from "react";
 import Arrow from "react-arrow";
 import {Box} from "@mui/material";
 
+
 interface Props {
+  state: string;
 }
 
-const GearState: React.FC<Props> = () => {
+function getActive(dir: string) {
+  return(
+    <h1 style={{color: 'black', backgroundColor: 'white'}}>{dir}</h1>
+    // <Box height="30px" bgcolor="white">
+    //   <h1 style={{color: 'black', backgroundColor: 'white'}}>{dir}</h1>
+    // </Box>
+  )
+}
+
+function getInActive(dir: string) {
+  return(
+    <Box bgcolor="black">
+      <h1 style={{color: 'white', backgroundColor: 'black'}}>{dir}</h1>
+    </Box>
+  )
+}
+
+const GearState: React.FC<Props> = ({state}) => {
 
 
   return (
@@ -19,12 +38,10 @@ const GearState: React.FC<Props> = () => {
   justifyContent="center"
   alignItems="center"
   >
-        <Box bgcolor="black">
-          <h1 style={{color: 'white', backgroundColor: 'black'}}>P</h1>
-        </Box>
-        <h1>R</h1>
-        <h1>N</h1>
-        <h1>D</h1>
+        {state == "Drive" ? getActive("D") : getInActive("D")}
+        {state == "Park" ? getActive("P") : getInActive("P")}
+        {state == "Neutral" ? getActive("N") : getInActive("N")}
+        {state == "Reverse" ? getActive("R") : getInActive("R")}
   </Box>
   </Box>
 );

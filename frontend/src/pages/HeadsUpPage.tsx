@@ -125,15 +125,16 @@ const HeadsUpPage = () => {
           bgcolor="black"
           justifyContent="center"
         >
+          <h3 style={{color: 'white', backgroundColor: 'black'}} >{time}</h3>
           <Box sx={{
             display: "flex",
             justifyContent: "space-around",
             gap: "16px",
             height: "33vh",
           }}>
-            <MPHandTurnSignal />
+            <MPHandTurnSignal mph={54} leftTurn={true} rightTurn={true}/>
           </Box>
-          <GearState />
+          <GearState state={"Reverse"}/>
           <OnePedalDrive value={ data.pedal_value.length !== 0 ? data.pedal_value[data.pedal_value.length - 1].value : 50 } />
           <AlertBox data={ data.battery_temp.length !== 0 && data.battery_temp[0].value>50 ? ["high bat tmp"] : ["test alert"] }/>
         </Box>
