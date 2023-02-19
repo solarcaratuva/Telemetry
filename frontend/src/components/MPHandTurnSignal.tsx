@@ -20,17 +20,17 @@ const MPHandTurnSignal: React.FC<Props> = () => {
         alignItems="center"
       >
         <Arrow
-          direction="left"
+          direction="left" //sus af
           shaftWidth={20}
           shaftLength={24}
           headWidth={60}
           headLength={30}
-          fill="blue"
-          stroke="red"
+          fill="black"
+          stroke="green"
           strokeWidth={4}
         />
         <Box>
-          <h1 style={{ fontSize: '30px' }}>37</h1>
+          <h1 style={{ fontSize: '50px', color: "white"}}>37</h1>
           {/*<Box height="70%">*/}
           {/*  <h3>37</h3>*/}
           {/*</Box>*/}
@@ -38,12 +38,12 @@ const MPHandTurnSignal: React.FC<Props> = () => {
         </Box>
         <Arrow
           direction="right"
-          shaftWidth={20}
+          shaftWidth={20} 
           shaftLength={24}
           headWidth={60}
           headLength={30}
-          fill="blue"
-          stroke="red"
+          fill="black"
+          stroke="green"
           strokeWidth={4}
         />
       </Box>

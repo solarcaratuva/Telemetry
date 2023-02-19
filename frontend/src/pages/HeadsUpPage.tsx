@@ -108,12 +108,13 @@ const HeadsUpPage = () => {
   }, []);
 
   return (
-    <Box p="16px" height="100vh" boxSizing="border-box" className="container">
+    <Box  height="100vh" boxSizing="border-box" bgcolor = "white" className="container">
       <Box
         height="100%"
         display="flex"
         flexDirection="row"
         gap="16px"
+        bgcolor="black"
         justifyContent="center"
       >
         <Box
@@ -121,9 +122,9 @@ const HeadsUpPage = () => {
           display="flex"
           flexDirection="column"
           gap="16px"
+          bgcolor="black"
           justifyContent="center"
         >
-          <h3>{time}</h3>
           <Box sx={{
             display: "flex",
             justifyContent: "space-around",
