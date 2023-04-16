@@ -7,20 +7,30 @@ import time
 
 sio = socketio.Server(cors_allowed_origins=["http://localhost:3000"])
 app = socketio.WSGIApp(sio)
-ser = serial.Serial(port="/dev/serial0")
-print("Listening on: "+ser.name)
-
-#val = ser.read(100).decode('utf-8')
-#val = random.randint(1, 100)
+isRunning = False
+def send_data():
+    while True:
+        val = random.randint(1, 100)
+        val = 100
+        current_date = datetime.now()
+        timestamp = current_date.isoformat()
+        sio.emit("pedal_value", {"timestamp": timestamp, "number": val})
+        print("MESSAGE ID " + str(random.randint(1, 20)) + " RECIEVED! VALUE IS: " + str(val))
+        sio.sleep(1)  # Add sleep time to control the frequency of sending data
+        val = 1
+        current_date = datetime.now()
+        timestamp = current_date.isoformat()
+        sio.emit("pedal_value", {"timestamp": timestamp, "number": val})
+        print("MESSAGE ID " + str(random.randint(1, 20)) + " RECIEVED! VALUE IS: " + str(val))
+        sio.sleep(1)  # Add sleep time to control the frequency of sending data
 
 @sio.event
 def connect(sid, environ):
     print('connect ', sid)
-    val = ser.read(100).decode('utf-8')
-    current_date = datetime.now()
-    timestamp = current_date.isoformat()
-    sio.emit("pedal_value", {"timestamp": timestamp, "number": val})
-    print("MESSAGE ID "+str(random.randint(1,20))+ " RECIEVED! VALUE IS: "+str(val))
+    global isRunning
+    if not isRunning:
+        isRunning = True
+        sio.start_background_task(send_data)
 
 
 @sio.event
@@ -32,7 +42,7 @@ def disconnect(sid):
     print('disconnect ', sid)
 
 if __name__ == '__main__':
-    eventlet.wsgi.server(eventlet.listen(('', 5050)), app)
+    eventlet.wsgi.server(eventlet.listen(('localhost', 5050)), app)
 
 """
 import serial, socketio, json, time
