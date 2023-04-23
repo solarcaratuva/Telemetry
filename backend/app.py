@@ -7,6 +7,7 @@ import time
 import struct
 from decode_can_dbc import decode_dbc
 
+
 sio = socketio.Server(cors_allowed_origins=["http://localhost:3000"])
 app = socketio.WSGIApp(sio)
 ser = serial.Serial(port="/dev/serial0")
@@ -24,14 +25,14 @@ isRunning = False
 
 def send_data():
     while True:
-        val = ser.read(8)
+        encoded_message = ser.read(8)
         current_date = datetime.now()
         timestamp = current_date.isoformat()
-        name, values = decode_dbc(extract_message_id(val), val)
+        name, values = decode_dbc(extract_message_id(encoded_message), encoded_message)
         print(name)
         print(values)
-        sio.emit("pedal_value", {"timestamp": timestamp, "number": val})
-        print("MESSAGE ID " + str(random.randint(1, 20)) + " RECIEVED! VALUE IS: " + str(val))
+        sio.emit("pedal_value", {"timestamp": timestamp, "number": 100})
+        print("MESSAGE ID " + str(random.randint(1, 20)) + " RECIEVED! VALUE IS: " + str(encoded_message))
         sio.sleep(1)  # Add sleep time to control the frequency of sending data
 
 
