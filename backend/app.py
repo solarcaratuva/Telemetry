@@ -7,17 +7,12 @@ import time
 
 sio = socketio.Server(cors_allowed_origins=["http://localhost:3000"])
 app = socketio.WSGIApp(sio)
+ser = serial.Serial(port="/dev/serial0")
+
 isRunning = False
 def send_data():
     while True:
-        val = random.randint(1, 100)
-        val = 100
-        current_date = datetime.now()
-        timestamp = current_date.isoformat()
-        sio.emit("pedal_value", {"timestamp": timestamp, "number": val})
-        print("MESSAGE ID " + str(random.randint(1, 20)) + " RECIEVED! VALUE IS: " + str(val))
-        sio.sleep(1)  # Add sleep time to control the frequency of sending data
-        val = 1
+        val = ser.read(100).decode('utf-8')
         current_date = datetime.now()
         timestamp = current_date.isoformat()
         sio.emit("pedal_value", {"timestamp": timestamp, "number": val})
