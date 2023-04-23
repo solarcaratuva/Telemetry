@@ -4,6 +4,8 @@ import eventlet
 import socketio
 from datetime import datetime
 import time
+from decode_can_dbc import decode_dbc
+
 
 sio = socketio.Server(cors_allowed_origins=["http://localhost:3000"])
 app = socketio.WSGIApp(sio)
@@ -12,9 +14,12 @@ ser = serial.Serial(port="/dev/serial0")
 isRunning = False
 def send_data():
     while True:
-        val = ser.read(100).decode('utf-8')
+        val = ser.read(8)
         current_date = datetime.now()
         timestamp = current_date.isoformat()
+        name, values = decode_dbc(1062, val)
+        print(name)
+        print(values)
         sio.emit("pedal_value", {"timestamp": timestamp, "number": val})
         print("MESSAGE ID " + str(random.randint(1, 20)) + " RECIEVED! VALUE IS: " + str(val))
         sio.sleep(1)  # Add sleep time to control the frequency of sending data
