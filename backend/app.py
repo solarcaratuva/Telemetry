@@ -4,25 +4,36 @@ import eventlet
 import socketio
 from datetime import datetime
 import time
+import struct
 from decode_can_dbc import decode_dbc
-
 
 sio = socketio.Server(cors_allowed_origins=["http://localhost:3000"])
 app = socketio.WSGIApp(sio)
 ser = serial.Serial(port="/dev/serial0")
 
+
+def extract_message_id(can_message):
+    # Assuming the message ID is a 4-byte little-endian unsigned integer
+    message_id_bytes = can_message[:4]  # Get the first 4 bytes of the message
+    message_id = struct.unpack('<I', message_id_bytes)[0]  # Unpack the bytes as a little-endian unsigned integer
+    return message_id
+
+
 isRunning = False
+
+
 def send_data():
     while True:
         val = ser.read(8)
         current_date = datetime.now()
         timestamp = current_date.isoformat()
-        name, values = decode_dbc(1062, val)
+        name, values = decode_dbc(extract_message_id(val), val)
         print(name)
         print(values)
         sio.emit("pedal_value", {"timestamp": timestamp, "number": val})
         print("MESSAGE ID " + str(random.randint(1, 20)) + " RECIEVED! VALUE IS: " + str(val))
         sio.sleep(1)  # Add sleep time to control the frequency of sending data
+
 
 @sio.event
 def connect(sid, environ):
@@ -37,9 +48,11 @@ def connect(sid, environ):
 def my_message(sid, data):
     print('message ', data)
 
+
 @sio.event
 def disconnect(sid):
     print('disconnect ', sid)
+
 
 if __name__ == '__main__':
     eventlet.wsgi.server(eventlet.listen(('localhost', 5050)), app)
