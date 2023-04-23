@@ -14,14 +14,13 @@ ser = serial.Serial(port="/dev/serial0")
 isRunning = False
 def send_data():
     while True:
-        val = ser.read(8)
-        current_date = datetime.now()
-        timestamp = current_date.isoformat()
-        name, values = decode_dbc(1062, val)
-        print(name)
-        print(values)
-        sio.emit("pedal_value", {"timestamp": timestamp, "number": val})
-        print("MESSAGE ID " + str(random.randint(1, 20)) + " RECIEVED! VALUE IS: " + str(val))
+        encoded_message = ser.read(8)
+        timestamp = datetime.now().isoformat
+        name, values = decode_dbc(513, encoded_message)
+        print("NAME: "+str(name))
+        print("VALUES: "+str(values))
+        #sio.emit("pedal_value", {"timestamp": timestamp, "number": 5})
+        print("MESSAGE ID " + str(random.randint(1, 20)) + " RECIEVED! VALUE IS: " + str(encoded_message))
         sio.sleep(1)  # Add sleep time to control the frequency of sending data
 
 @sio.event
