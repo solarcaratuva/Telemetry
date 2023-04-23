@@ -14,9 +14,7 @@ ser = serial.Serial(port="/dev/serial0")
 
 
 def extract_message_id(can_message):
-    # Assuming the message ID is a 4-byte little-endian unsigned integer
-    message_id_bytes = can_message[:4]  # Get the first 4 bytes of the message
-    message_id = struct.unpack('<I', message_id_bytes)[0]  # Unpack the bytes as a little-endian unsigned integer
+    message_id = int.from_bytes(can_message[:4], byteorder='big') >> 21
     return message_id
 
 
