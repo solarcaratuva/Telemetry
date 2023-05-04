@@ -24,10 +24,10 @@ function App() {
         <ThemeProvider theme={theme}>
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<InteractivePage />} />
-              <Route path="monitor_one" element={<MonitorOnePage />} />
-              <Route path="monitor_two" element={<MonitorTwoPage />} />
-              <Route path="heads_up" element={<HeadsUpPage />} />
+              <Route path="/" element={<HeadsUpPage />} />
+              {/* <Route path="monitor_one" element={<MonitorOnePage />} /> //these appear to do nothing
+              <Route path="monitor_two" element={<MonitorTwoPage />} /> */}
+              <Route path="interactive_page" element={<InteractivePage />} />
             </Routes>
           </BrowserRouter>
         </ThemeProvider>
