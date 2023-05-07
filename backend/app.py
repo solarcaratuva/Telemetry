@@ -7,7 +7,7 @@ import socketio
 
 from decode_can_dbc import decode_dbc
 
-from digi.xbee.devices import XBeeDevice
+#from digi.xbee.devices import XBeeDevice
 
 sio = socketio.Server(cors_allowed_origins=["http://localhost:3000"])
 app = socketio.WSGIApp(sio)
@@ -18,12 +18,12 @@ CANframes = {"ECUPowerAuxCommands": ['hazards', 'brake_lights', 'headlights', 'l
             "ECUMotorCommands": ['throttle']} #, 'regen', 'cruse_control_speed', 'cruise_control_en', 'forward_en', 'reverse_en', 'motor_on']}
 # ... more to come
 
-device = XBeeDevice("/dev/ttyUSB0", 9600)
+#device = XBeeDevice("/dev/ttyUSB0", 9600)
 
 def exit_handler():
     print("Closing serial port")
     ser.close()
-    device.close()
+    #device.close()
 
 
 atexit.register(exit_handler)
