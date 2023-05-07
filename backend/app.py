@@ -29,6 +29,10 @@ isRunning = False
 def broadcast_message(message):
     device.send_data_broadcast(message)
 
+def read_message():
+    return device.read_data()
+
+
 def send_data():
     while True:
         encoded_message = ser.read(64)
@@ -39,7 +43,7 @@ def send_data():
         # print(f"id: {message_id}, name: {name}, values: {values}")
         if name == "ECUMotorCommands":
             sio.emit("pedal_value", {"timestamp": timestamp, "number": values["throttle"]})
-            broadcast_message(encoded_message)
+        broadcast_message(encoded_message)
         sio.sleep(1)  # Add sleep time to control the frequency of sending data
 
 
