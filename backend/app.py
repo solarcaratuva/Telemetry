@@ -7,6 +7,8 @@ import socketio
 
 from decode_can_dbc import decode_dbc
 
+from digi.xbee.devices import XBeeDevice
+
 sio = socketio.Server(cors_allowed_origins=["http://localhost:3000"])
 app = socketio.WSGIApp(sio)
 ser = serial.Serial(port="/dev/serial0")
@@ -16,10 +18,12 @@ CANframes = {"ECUPowerAuxCommands": ['hazards', 'brake_lights', 'headlights', 'l
             "ECUMotorCommands": ['throttle']} #, 'regen', 'cruse_control_speed', 'cruise_control_en', 'forward_en', 'reverse_en', 'motor_on']}
 # ... more to come
 
+device = XBeeDevice("/dev/ttyUSB0", 9600)
 
 def exit_handler():
     print("Closing serial port")
     ser.close()
+    device.close()
 
 
 atexit.register(exit_handler)
@@ -48,7 +52,14 @@ def sendData():     # replacement for send_data
 
 
 
-def send_data(): # to be deleted once 'sendData()' is done
+def broadcast_message(message):
+    device.send_data_broadcast(message)
+
+def read_message():
+    return device.read_data()
+
+
+def send_data(): # will be deleted after 'sendData()' is done
     while True:
         encoded_message = ser.read(64)
         current_date = datetime.now()
@@ -58,7 +69,7 @@ def send_data(): # to be deleted once 'sendData()' is done
         # print(f"id: {message_id}, name: {name}, values: {values}")
         if name == "ECUMotorCommands":
             sio.emit("pedal_value", {"timestamp": timestamp, "number": values["throttle"]})
-
+        broadcast_message(encoded_message)
         sio.sleep(1)  # Add sleep time to control the frequency of sending data
 
 
