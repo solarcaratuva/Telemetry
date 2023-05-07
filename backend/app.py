@@ -7,14 +7,17 @@ import socketio
 
 from decode_can_dbc import decode_dbc
 
+from digi.xbee.devices import XBeeDevice
+
 sio = socketio.Server(cors_allowed_origins=["http://localhost:3000"])
 app = socketio.WSGIApp(sio)
 ser = serial.Serial(port="/dev/serial0")
-
+device = XBeeDevice("/dev/ttyUSB0", 9600)
 
 def exit_handler():
     print("Closing serial port")
     ser.close()
+    device.close()
 
 
 atexit.register(exit_handler)
@@ -22,6 +25,9 @@ atexit.register(exit_handler)
 
 isRunning = False
 
+
+def broadcast_message(message):
+    device.send_data_broadcast(message)
 
 def send_data():
     while True:
@@ -33,7 +39,7 @@ def send_data():
         # print(f"id: {message_id}, name: {name}, values: {values}")
         if name == "ECUMotorCommands":
             sio.emit("pedal_value", {"timestamp": timestamp, "number": values["throttle"]})
-
+            broadcast_message(encoded_message)
         sio.sleep(1)  # Add sleep time to control the frequency of sending data
 
 
@@ -43,6 +49,7 @@ def connect(sid, environ):
     if not isRunning:
         isRunning = True
         sio.start_background_task(send_data)
+        device.open()
 
 
 if __name__ == '__main__':
