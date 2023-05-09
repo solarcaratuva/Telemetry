@@ -11,23 +11,23 @@ interface Props {
 
 const MPHandTurnSignal: React.FC<Props> = ({mph, leftTurn, rightTurn}) => {
 
-  const [leftSignal, setLeftSignal] = useState(false);
-
-  useEffect(()=>{
-    const intervalId = setInterval(()=>{
-      setLeftSignal(leftSignal => leftTurn ? !leftSignal : false);
-    }, 500);
-    return ()=>{clearInterval(intervalId)};
-  }, []);
-
-  const [rightSignal, setRightSignal] = useState(false);
-
-  useEffect(()=>{
-    const intervalId = setInterval(()=>{
-      setRightSignal(rightSignal => rightTurn ? !rightSignal : false);
-    }, 500);
-    return ()=>{clearInterval(intervalId)};
-  }, []);
+  // const [leftSignal, setLeftSignal] = useState(false);
+  //
+  // useEffect(()=>{
+  //   const intervalId = setInterval(()=>{
+  //     setLeftSignal(leftSignal => leftTurn ? !leftSignal : false);
+  //   }, 500);
+  //   return ()=>{clearInterval(intervalId)};
+  // }, []);
+  //
+  // const [rightSignal, setRightSignal] = useState(false);
+  //
+  // useEffect(()=>{
+  //   const intervalId = setInterval(()=>{
+  //     setRightSignal(rightSignal => rightTurn ? !rightSignal : false);
+  //   }, 500);
+  //   return ()=>{clearInterval(intervalId)};
+  // }, []);
 
   return (
     <Box>
@@ -45,7 +45,7 @@ const MPHandTurnSignal: React.FC<Props> = ({mph, leftTurn, rightTurn}) => {
           shaftLength={24}
           headWidth={60}
           headLength={30}
-          fill={leftSignal ? "green" : "black"}
+          fill={leftTurn ? "green" : "black"}
           stroke="green"
           strokeWidth={4}
         />
@@ -62,7 +62,7 @@ const MPHandTurnSignal: React.FC<Props> = ({mph, leftTurn, rightTurn}) => {
           shaftLength={24}
           headWidth={60}
           headLength={30}
-          fill={rightSignal ? "green" : "black"}
+          fill={rightTurn ? "green" : "black"}
           stroke="green"
           strokeWidth={4}
         />

@@ -33,7 +33,7 @@ message_frame_id = 513
 ex_dict = {"throttle": 200, "regen": 100, "cruise_control_speed": 123, "cruise_control_en": 1, "forward_en": 0,
            "reverse_en": 0, "motor_on": 0}
 
-send_serial_message(powerAuxDb, ex_dict, message_frame_id, "ECUMotorCommands")
+# send_serial_message(powerAuxDb, ex_dict, message_frame_id, "ECUMotorCommands")
 
 rpm_frame_dict = {
     "battery_voltage": 5.0,  # In Volts (V)
@@ -70,9 +70,17 @@ bps_error_example = {
     "internal_logic_fault": 0,
 }
 
+powerAuxCommandsExample = {
+    "hazards": 1,
+    "brake_lights": 0,
+    "headlights": 1,
+    "left_turn_signal": 0,
+    "right_turn_signal": 1
+}
+
 # send_serial_message(motorDb, rpm_frame_dict, 805, "MotorControllerPowerStatus")
-send_serial_message(bpsDB, bps_error_example, 262, "BPSError")
-pass
+# send_serial_message(bpsDB, bps_error_example, 262, "BPSError")
+send_serial_message(powerAuxDb, powerAuxCommandsExample, 769, "ECUPowerAuxCommands")
 
 def exit_handler():
     print("Closing serial port")

@@ -19,8 +19,8 @@ interface Data {
   battery_temp: DataSet;
   panel_temp: DataSet;
   throttle: DataSet;
-  left_turn_signal: DataSet;
-  right_turn_signal: DataSet;
+  hazards: DataSet;
+  brake_lights: DataSet;
   forward_en: DataSet;
   motor_rpm: DataSet;
 }
@@ -53,14 +53,24 @@ interface StringArrayUpdate {
   timestamp: string
 }
 
+interface BooleanData {
+  left_turn_signal: number,
+  right_turn_signal: number
+}
+
+interface BooleanUpdate {
+  number: number,
+  timestamp: number
+}
+
 const HeadsUpPage = () => {
   const [data, setData] = useState<Data>({
     car_speed: [],
     battery_temp: [],
     panel_temp: [],
     throttle: [],
-    left_turn_signal: [],
-    right_turn_signal: [],
+    hazards: [],
+    brake_lights: [],
     forward_en: [],
     motor_rpm: []
   });
@@ -78,12 +88,49 @@ const HeadsUpPage = () => {
     PowerAuxError: []
   });
 
+  const [booleanData, setBooleanData] = useState<BooleanData>({
+    left_turn_signal: 0,
+    right_turn_signal: 0
+  });
+
   const [time, setTime] = useState(new Date().toLocaleTimeString());
 
   useEffect(()=>{
     const intervalId = setInterval(()=>{
       setTime(new Date().toLocaleTimeString());
     }, 1000);
+    return ()=>{clearInterval(intervalId)};
+  }, []);
+
+  const [leftBlinker, setLeftBlinker] = useState(false);
+  const [rightBlinker, setRightBlinker] = useState(false);
+
+  useEffect(()=>{
+    const intervalId = setInterval(()=>{
+      // const brakeLightsEnabled = data.brake_lights.length == 0 || data.brake_lights[data.brake_lights.length - 1];
+      // const flashHazards = data.hazards.length == 0 || data.hazards[data.hazards.length - 1];
+      // console.log("left: " + data.left_turn_signal.join(", "));
+      // console.log("right: " + data.right_turn_signal.join(", "));
+      // data.left_turn_signal.forEach((val) => {
+      //   console.log("left: " + val.value);
+      // })
+      if (booleanData.left_turn_signal) {
+        // console.log("flash left");
+        setLeftBlinker((oldValue) => {
+          return !oldValue;
+        });
+        setRightBlinker((oldValue) => {
+          return false;
+        });
+      } else if (booleanData.right_turn_signal) {
+        setRightBlinker((oldValue) => {
+          return !oldValue;
+        });
+        setLeftBlinker((oldValue) => {
+          return false;
+        });
+      }
+    }, 500);
     return ()=>{clearInterval(intervalId)};
   }, []);
 
@@ -127,16 +174,19 @@ const HeadsUpPage = () => {
 
     (Object.keys(stringArrayData) as Array<keyof StringArrayData>).forEach((name) => {
       socket.on(name, (update: StringArrayUpdate) => {
-        console.log(name + " : ");
-        update.array.forEach(console.log);
         setStringArrayData((oldData) => {
-          console.log("len " + update.array.length);
           oldData[name] = update.array;
           return oldData;
         });
-        stringArrayData.BPSError.forEach((val) => {
-          console.log("bps err: " + val);
-        })
+      });
+    });
+
+    Object.keys(booleanData).forEach((name) => {
+      socket.on(name, (update: BooleanUpdate) => {
+        setBooleanData((oldData) => {
+          oldData[name as keyof BooleanData] = update.number;
+          return oldData;
+        });
       });
     });
 
@@ -182,7 +232,7 @@ const HeadsUpPage = () => {
               gap: "8px",
               height: "7vh",
             }}>
-              <MPHandTurnSignal mph={54} leftTurn={true} rightTurn={true}/>
+              <MPHandTurnSignal mph={54} leftTurn={leftBlinker} rightTurn={rightBlinker}/>
             </Box>
             <GearState state={"Reverse"}/>
             <OnePedalDrive value={ data.throttle.length !== 0 ? data.throttle[data.throttle.length - 1].value : 50 } />
