@@ -25,8 +25,10 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<HeadsUpPage />} />
-              {/* <Route path="monitor_one" element={<MonitorOnePage />} /> //these appear to do nothing
-              <Route path="monitor_two" element={<MonitorTwoPage />} /> */}
+              <Route path="monitor_one" element={<MonitorOnePage />} />
+              <Route path="monitor_two" element={<MonitorTwoPage />} />
+              {/*  //these appear to do nothing
+               */}
               <Route path="interactive_page" element={<InteractivePage />} />
             </Routes>
           </BrowserRouter>

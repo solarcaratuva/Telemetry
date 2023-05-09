@@ -18,7 +18,11 @@ interface Data {
   car_speed: DataSet;
   battery_temp: DataSet;
   panel_temp: DataSet;
-  pedal_value: DataSet;
+  throttle: DataSet;
+  left_turn_signal: DataSet;
+  right_turn_signal: DataSet;
+  forward_en: DataSet;
+  motor_rpm: DataSet;
 }
 
 interface Update {
@@ -31,25 +35,47 @@ interface StringData {
   gear_state: StringDataSet;
   hazard_state: StringDataSet;
   turn_state: StringDataSet;
+  motor_faults: StringDataSet
 }
 interface StringUpdate {
   string: string;
   timestamp: string;
 }
 
+interface StringArrayData {
+  BPSError: string[],
+  MotorControllerError: string[],
+  PowerAuxError: string[]
+}
+
+interface StringArrayUpdate {
+  array: string[];
+  timestamp: string
+}
 
 const HeadsUpPage = () => {
   const [data, setData] = useState<Data>({
     car_speed: [],
     battery_temp: [],
     panel_temp: [],
-    pedal_value: [],
+    throttle: [],
+    left_turn_signal: [],
+    right_turn_signal: [],
+    forward_en: [],
+    motor_rpm: []
   });
 
   const [stringData, setStringData] = useState<StringData>({
     gear_state: [],
     hazard_state: [],
     turn_state: [],
+    motor_faults: []
+  });
+
+  const [stringArrayData, setStringArrayData] = useState<StringArrayData>({
+    BPSError: [],
+    MotorControllerError: [],
+    PowerAuxError: []
   });
 
   const [time, setTime] = useState(new Date().toLocaleTimeString());
@@ -99,6 +125,21 @@ const HeadsUpPage = () => {
       });
     });
 
+    (Object.keys(stringArrayData) as Array<keyof StringArrayData>).forEach((name) => {
+      socket.on(name, (update: StringArrayUpdate) => {
+        console.log(name + " : ");
+        update.array.forEach(console.log);
+        setStringArrayData((oldData) => {
+          console.log("len " + update.array.length);
+          oldData[name] = update.array;
+          return oldData;
+        });
+        stringArrayData.BPSError.forEach((val) => {
+          console.log("bps err: " + val);
+        })
+      });
+    });
+
     //Removes all socket listeners for each value of the data object on unmount
     //This is to prevent multiple listeners from being attached to the same value
     return () => {
@@ -144,8 +185,8 @@ const HeadsUpPage = () => {
               <MPHandTurnSignal mph={54} leftTurn={true} rightTurn={true}/>
             </Box>
             <GearState state={"Reverse"}/>
-            <OnePedalDrive value={ data.pedal_value.length !== 0 ? data.pedal_value[data.pedal_value.length - 1].value : 50 } />
-            <AlertBox data={ data.battery_temp.length !== 0 && data.battery_temp[0].value>50 ? ["high bat tmp"] : ["test alert"] }/>
+            <OnePedalDrive value={ data.throttle.length !== 0 ? data.throttle[data.throttle.length - 1].value : 50 } />
+            <AlertBox data={stringArrayData.BPSError.concat(stringArrayData.MotorControllerError, stringArrayData.PowerAuxError)}/>
           </Box>
           <Box
             height="100%"
@@ -168,7 +209,7 @@ const HeadsUpPage = () => {
           marginLeft="19%"
         >
           <BatteryDischarge bat_discharge={67} darkMode={true} />
-          <RPM rpm={500} darkMode={true}/>
+          <RPM rpm={data.motor_rpm.length !== 0 ? data.motor_rpm[data.motor_rpm.length - 1].value : 0} darkMode={true}/>
           <BatteryTempGuage temp={300} darkMode={true}/>
         </Box>
       </Box>
