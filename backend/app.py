@@ -20,7 +20,11 @@ CANframes = {"ECUPowerAuxCommands": ['hazards', 'brake_lights', 'headlights', 'l
              # , 'regen', 'cruse_control_speed', 'cruise_control_en', 'forward_en', 'reverse_en', 'motor_on']
              "MotorControllerPowerStatus": ["motor_rpm"],
              "BPSError": cantools.database.load_file("backend/CAN-messages/BPS.dbc").get_message_by_name(
-                 "BPSError").signal_tree
+                 "BPSError").signal_tree,
+             "MotorControllerError": cantools.database.load_file(
+                 "backend/CAN-messages/MotorController.dbc").get_message_by_name("MotorControllerError").signal_tree,
+             "PowerAuxError": cantools.database.load_file("backend/CAN-messages/Rivanna2.dbc").get_message_by_name(
+                 "PowerAuxError").signal_tree,
              }
 
 
