@@ -8,7 +8,7 @@ import RPM from "../components/RPM";
 import BatteryTempGuage from "../components/BatteryTempGuage";
 import MPHandTurnSignal from "../components/MPHandTurnSignal";
 import GearState from "../components/GearState";
-import BatteryDischarge from "../components/BatteryDischargeGuage";
+import CurrentGuage from "../components/BatteryDischargeGuage";
 
 const socket = io("http://localhost:5050");
 const MAX_LENGTH = 50;
@@ -23,6 +23,8 @@ interface Data {
   brake_lights: DataSet;
   forward_en: DataSet;
   motor_rpm: DataSet;
+  pack_current: DataSet;
+  high_temperature: DataSet;
 }
 
 interface Update {
@@ -55,7 +57,9 @@ interface StringArrayUpdate {
 
 interface BooleanData {
   left_turn_signal: number,
-  right_turn_signal: number
+  right_turn_signal: number,
+  forward_en: number,
+  reverse_en: number
 }
 
 interface BooleanUpdate {
@@ -72,7 +76,9 @@ const HeadsUpPage = () => {
     hazards: [],
     brake_lights: [],
     forward_en: [],
-    motor_rpm: []
+    motor_rpm: [],
+    pack_current: [],
+    high_temperature: []
   });
 
   const [stringData, setStringData] = useState<StringData>({
@@ -90,7 +96,9 @@ const HeadsUpPage = () => {
 
   const [booleanData, setBooleanData] = useState<BooleanData>({
     left_turn_signal: 0,
-    right_turn_signal: 0
+    right_turn_signal: 0,
+    forward_en: 0,
+    reverse_en: 0
   });
 
   const [time, setTime] = useState(new Date().toLocaleTimeString());
@@ -114,6 +122,8 @@ const HeadsUpPage = () => {
       // data.left_turn_signal.forEach((val) => {
       //   console.log("left: " + val.value);
       // })
+      // console.log("left: " + booleanData.left_turn_signal);
+      // console.log("right: " + booleanData.right_turn_signal);
       if (booleanData.left_turn_signal) {
         // console.log("flash left");
         setLeftBlinker((oldValue) => {
@@ -127,6 +137,13 @@ const HeadsUpPage = () => {
           return !oldValue;
         });
         setLeftBlinker((oldValue) => {
+          return false;
+        });
+      } else {
+        setLeftBlinker((oldValue) => {
+          return false;
+        });
+        setRightBlinker((oldValue) => {
           return false;
         });
       }
@@ -183,6 +200,7 @@ const HeadsUpPage = () => {
 
     Object.keys(booleanData).forEach((name) => {
       socket.on(name, (update: BooleanUpdate) => {
+        console.log("update" + name + " to " + update.number);
         setBooleanData((oldData) => {
           oldData[name as keyof BooleanData] = update.number;
           return oldData;
@@ -206,7 +224,7 @@ const HeadsUpPage = () => {
         display="flex"
         flexDirection="column"
         gap="16px"
-        bgcolor="black"
+        bgcolor="white"
         justifyContent="center"
       >
         <Box
@@ -221,20 +239,24 @@ const HeadsUpPage = () => {
             display="flex"
             flexDirection="column"
             gap="10px"
-            bgcolor="black"
+            bgcolor="white"
             justifyContent="center"
           >
-            <h3 style={{color: 'black', backgroundColor: 'black'}} >sdf</h3>
-            <h3 style={{color: 'white', backgroundColor: 'black'}} >{time}</h3>
+            <h3 style={{color: 'white', backgroundColor: 'black'}} ></h3>
+            <h3 style={{color: 'black', backgroundColor: 'white'}} >{time}</h3>
             <Box sx={{
               display: "flex",
               justifyContent: "space-around",
               gap: "8px",
               height: "7vh",
             }}>
-              <MPHandTurnSignal mph={54} leftTurn={leftBlinker} rightTurn={rightBlinker}/>
+              {/*tire diameter = 20.472in
+                C = pi*diameter
+                M/H = M/60min = 60 in/ 63360min = 60*20.472*pi/63360 * rpm
+              */}
+              <MPHandTurnSignal mph={data.motor_rpm.length !== 0 ? Math.floor(data.motor_rpm[data.motor_rpm.length - 1].value * 60*20.472*Math.PI/63360) : 0} leftTurn={leftBlinker} rightTurn={rightBlinker}/>
             </Box>
-            <GearState state={"Reverse"}/>
+            <GearState state={booleanData.forward_en ? "Forward" : (booleanData.reverse_en ? "Reverse" : "Park")}/>
             <OnePedalDrive value={ data.throttle.length !== 0 ? data.throttle[data.throttle.length - 1].value : 50 } />
             <AlertBox data={stringArrayData.BPSError.concat(stringArrayData.MotorControllerError, stringArrayData.PowerAuxError)}/>
           </Box>
@@ -246,22 +268,21 @@ const HeadsUpPage = () => {
             justifyContent="center"
           >
             <VideoFeed />
-
+            <Box
+              height="100%"
+              display="flex"
+              flexDirection="row"
+              gap="10px"
+              justifyContent="center"
+              width = "60%"
+              marginLeft="19%"
+            >
+              <CurrentGuage current={data.pack_current.length !== 0 ? data.pack_current[data.pack_current.length - 1].value : 0} darkMode={false} />
+              <BatteryTempGuage temp={data.high_temperature.length !== 0 ? data.high_temperature[data.high_temperature.length - 1].value : 0} darkMode={false}/>
+            </Box>
           </Box>
         </Box>
-        <Box
-          height="100%"
-          display="flex"
-          flexDirection="row"
-          gap="10px"
-          justifyContent="center"
-          width = "60%"
-          marginLeft="19%"
-        >
-          <BatteryDischarge bat_discharge={67} darkMode={true} />
-          <RPM rpm={data.motor_rpm.length !== 0 ? data.motor_rpm[data.motor_rpm.length - 1].value : 0} darkMode={true}/>
-          <BatteryTempGuage temp={300} darkMode={true}/>
-        </Box>
+
       </Box>
     </Box>
   );

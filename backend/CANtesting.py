@@ -30,7 +30,7 @@ bpsDB = cantools.database.load_file('backend/CAN-messages/BPS.dbc')
 motorDb = cantools.database.load_file("backend/CAN-messages/MotorController.dbc")
 powerAuxDb = cantools.database.load_file("backend/CAN-messages/Rivanna2.dbc")
 message_frame_id = 513
-ex_dict = {"throttle": 200, "regen": 100, "cruise_control_speed": 123, "cruise_control_en": 1, "forward_en": 0,
+ex_dict = {"throttle": 200, "regen": 100, "cruise_control_speed": 123, "cruise_control_en": 1, "forward_en": 1,
            "reverse_en": 0, "motor_on": 0}
 
 # send_serial_message(powerAuxDb, ex_dict, message_frame_id, "ECUMotorCommands")
@@ -75,7 +75,7 @@ powerAuxCommandsExample = {
     "brake_lights": 0,
     "headlights": 1,
     "left_turn_signal": 0,
-    "right_turn_signal": 1
+    "right_turn_signal": 0
 }
 
 # send_serial_message(motorDb, rpm_frame_dict, 805, "MotorControllerPowerStatus")

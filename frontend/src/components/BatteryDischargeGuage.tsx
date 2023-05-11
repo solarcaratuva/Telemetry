@@ -4,25 +4,25 @@ import React from "react";
 import ReactSpeedometer from "react-d3-speedometer";
 
 interface Props {
-  bat_discharge: number;
+  current: number;
   darkMode: boolean;
 }
 
-const BatteryDischarge: React.FC<Props> = ({ bat_discharge, darkMode}) => {
+const CurrentGuage: React.FC<Props> = ({ current, darkMode}) => {
 
 
   return (
     <Box flex="1 0 0">
       <Typography variant="h5" color ={darkMode ? "white" : "black"} pb={1}>
-        Discharge
+        Current
       </Typography>
       <Box>
         {
-          <ReactSpeedometer textColor = {darkMode ? "white" : "black"} value={bat_discharge} />
+          <ReactSpeedometer ringWidth={40} minValue={-10} maxValue={10} segments={2} segmentColors={["orange", "yellow"]} textColor = {darkMode ? "white" : "black"} value={current} />
         }
       </Box>
     </Box>
   );
 };
 
-export default BatteryDischarge;
+export default CurrentGuage;

@@ -13,7 +13,7 @@ const AlertBox: React.FC<Props> = ({ data}) => {
     <Box flex="1 0 0">
       <Paper sx={{ p: 2 }} elevation={2}>
         <Typography variant="h5" pb={1}>
-          Motor Fault Alerts
+          Errors
         </Typography>
         <Box>
             {

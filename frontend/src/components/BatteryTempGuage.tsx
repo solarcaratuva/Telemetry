@@ -18,7 +18,7 @@ const BatteryTempGuage: React.FC<Props> = ({ temp, darkMode}) => {
         </Typography>
         <Box>
           {
-            <ReactSpeedometer textColor = {darkMode ? "white" : "black"} value={temp} />
+            <ReactSpeedometer textColor = {darkMode ? "white" : "black"} minValue={0} maxValue={200} value={temp} />
           }
         </Box>
     </Box>

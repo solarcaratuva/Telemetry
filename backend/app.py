@@ -16,8 +16,7 @@ ser = serial.Serial(port="/dev/serial0")
 
 # Lists of frames for each applicable CAN message
 CANframes = {"ECUPowerAuxCommands": ['hazards', 'brake_lights', 'headlights', 'left_turn_signal', 'right_turn_signal'],
-             "ECUMotorCommands": ['throttle'],
-             # , 'regen', 'cruse_control_speed', 'cruise_control_en', 'forward_en', 'reverse_en', 'motor_on']
+             "ECUMotorCommands": ['throttle', "forward_en", "reverse_en"],
              "MotorControllerPowerStatus": ["motor_rpm"],
              "BPSError": cantools.database.load_file("backend/CAN-messages/BPS.dbc").get_message_by_name(
                  "BPSError").signal_tree,
@@ -25,6 +24,8 @@ CANframes = {"ECUPowerAuxCommands": ['hazards', 'brake_lights', 'headlights', 'l
                  "backend/CAN-messages/MotorController.dbc").get_message_by_name("MotorControllerError").signal_tree,
              "PowerAuxError": cantools.database.load_file("backend/CAN-messages/Rivanna2.dbc").get_message_by_name(
                  "PowerAuxError").signal_tree,
+             "BPSPackInformation": ["pack_current"],
+             "BPSCellTemperature": ["high_temperature"]
              }
 
 
@@ -41,7 +42,10 @@ def exit_handler():
 atexit.register(exit_handler)
 
 isRunning = False
-
+# remove rpm
+# discharge -> current
+# make motor faults longer/ all faults
+# white mode
 
 def sendData():  # replacement for send_data
     print("LISTENING FOR DATA")
@@ -61,6 +65,7 @@ def sendData():  # replacement for send_data
 
             print("ERRORS: " + str(errors))
             sio.emit(name, {"timestamp": timestamp, "array": errors})
+            continue
         curr_frame = CANframes[name]
         for data in curr_frame:
             sio.emit(data, {"timestamp": timestamp, "number": values[data]})
@@ -78,18 +83,18 @@ def sendData():  # replacement for send_data
 #     return device.read_data()
 
 
-def send_data():  # will be deleted after 'sendData()' is done
-    while True:
-        encoded_message = ser.read(64)
-        current_date = datetime.now()
-        timestamp = current_date.isoformat()
-        message_id = int.from_bytes(encoded_message[:4], byteorder="little")
-        name, values = decode_dbc(message_id, encoded_message[4:-1])
-        # print(f"id: {message_id}, name: {name}, values: {values}")
-        if name == "ECUMotorCommands":
-            sio.emit("pedal_value", {"timestamp": timestamp, "number": values["throttle"]})
-        # broadcast_message(encoded_message)
-        sio.sleep(1)  # Add sleep time to control the frequency of sending data
+# def send_data():  # will be deleted after 'sendData()' is done
+#     while True:
+#         encoded_message = ser.read(64)
+#         current_date = datetime.now()
+#         timestamp = current_date.isoformat()
+#         message_id = int.from_bytes(encoded_message[:4], byteorder="little")
+#         name, values = decode_dbc(message_id, encoded_message[4:-1])
+#         # print(f"id: {message_id}, name: {name}, values: {values}")
+#         if name == "ECUMotorCommands":
+#             sio.emit("pedal_value", {"timestamp": timestamp, "number": values["throttle"]})
+#         # broadcast_message(encoded_message)
+#         sio.sleep(1)  # Add sleep time to control the frequency of sending data
 
 
 @sio.event

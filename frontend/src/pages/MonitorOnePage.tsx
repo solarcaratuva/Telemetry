@@ -7,7 +7,7 @@ import ToggleButtons from "../components/ToggleButtons";
 import AlertBox from "../components/AlertBox";
 import RPM from "../components/RPM";
 import BatteryTempGuage from "../components/BatteryTempGuage";
-import BatteryDischarge from "../components/BatteryDischargeGuage";
+import CurrentGuage from "../components/BatteryDischargeGuage";
 
 const socket = io("http://localhost:5050");
 const MAX_LENGTH = 50;
@@ -130,7 +130,7 @@ const MonitorOnePage = () => {
           {/* Replace this paper component with battery pack temp */}
 
           <BatteryTempGuage temp={40} darkMode={false}/>
-          <BatteryDischarge bat_discharge={46} darkMode={false} />
+          <CurrentGuage current={46} darkMode={false} />
         </Box>
         <Box sx={{ display: "flex", gap: "16px", width: "100%" }}>
           <Box

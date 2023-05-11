@@ -45,12 +45,12 @@ const MPHandTurnSignal: React.FC<Props> = ({mph, leftTurn, rightTurn}) => {
           shaftLength={24}
           headWidth={60}
           headLength={30}
-          fill={leftTurn ? "green" : "black"}
+          fill={leftTurn ? "green" : "white"}
           stroke="green"
           strokeWidth={4}
         />
         <Box>
-          <h1 style={{ fontSize: '50px', color: "white"}}>{mph}</h1>
+          <h1 style={{ fontSize: '50px', color: "black"}}>{mph}</h1>
           {/*<Box height="70%">*/}
           {/*  <h3>37</h3>*/}
           {/*</Box>*/}
@@ -62,7 +62,7 @@ const MPHandTurnSignal: React.FC<Props> = ({mph, leftTurn, rightTurn}) => {
           shaftLength={24}
           headWidth={60}
           headLength={30}
-          fill={rightTurn ? "green" : "black"}
+          fill={rightTurn ? "green" : "white"}
           stroke="green"
           strokeWidth={4}
         />
