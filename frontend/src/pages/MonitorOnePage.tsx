@@ -36,6 +36,9 @@ interface StringUpdate {
   timestamp: string;
 }
 
+// TODO - add below for monitor one/two
+//  all stuff from hud
+//  rpm, voltage
 const MonitorOnePage = () => {
   const [data, setData] = useState<Data>({
     car_speed: [],
