@@ -67,6 +67,7 @@ interface BooleanUpdate {
   timestamp: number
 }
 
+// TODO - refactor into class then have hud and monitors subclass, reuse data functionality
 const HeadsUpPage = () => {
   const [data, setData] = useState<Data>({
     car_speed: [],
