@@ -14,10 +14,8 @@ def get_xbee_connection():
         # Try to open a connection to each port.
         try:
             device = XBeeDevice(port.device, BAUD_RATE)
-            try:
+            if not device.is_open():
                 device.open()
-            except XBeeException:
-                pass
 
             # If we get here, we've successfully opened a connection.
             # We can now try to read a parameter from the device.
@@ -42,6 +40,8 @@ def main():
         # Instantiate a remote XBee device object to send data.
         # remote_device = RemoteXBeeDevice(local_device, XBee64BitAddress.from_hex_string(REMOTE_DEVICE_ADDRESS))
         while True:
+            if not local_device.is_open():
+                local_device.open()
             local_device.send_data_broadcast(f"hi world {i}")
             i += 1
             time.sleep(3)
