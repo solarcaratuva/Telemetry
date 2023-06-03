@@ -13,8 +13,8 @@ CANframes = {"ECUPowerAuxCommands": ['hazards', 'brake_lights', 'headlights', 'l
              "BPSError": cantools.database.load_file(os.path.join(can_dir, "BPS.dbc")).get_message_by_name(
                  "BPSError").signal_tree,
              "MotorControllerError": cantools.database.load_file(
-                 "backend/CAN-messages/MotorController.dbc").get_message_by_name("MotorControllerError").signal_tree,
-             "PowerAuxError": cantools.database.load_file("backend/CAN-messages/Rivanna2.dbc").get_message_by_name(
+                 os.path.join(can_dir, "MotorController.dbc")).get_message_by_name("MotorControllerError").signal_tree,
+             "PowerAuxError": cantools.database.load_file(os.path.join(can_dir, "Rivanna2.dbc")).get_message_by_name(
                  "PowerAuxError").signal_tree,
              "BPSPackInformation": ["pack_current"],
              "BPSCellTemperature": ["high_temperature"]

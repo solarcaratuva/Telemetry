@@ -102,6 +102,7 @@ if __name__ == '__main__':
     def time_handler(msg):
         global time_received
         msgtxt: str = msg.data.decode("utf8")
+        print(f"recieved: {msgtxt}")
         if msgtxt.startswith("Time:"):
             print(f"set time to {msgtxt[5:]}")
             linux_set_time(int(int(msgtxt[5:])/1000))

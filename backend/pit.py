@@ -5,7 +5,7 @@ import eventlet
 import serial.tools.list_ports
 from digi.xbee.devices import XBeeDevice
 
-from send_from_can import CANSender
+from send_from_can import CANSender, get_xbee_connection
 
 # XBee Mac addresses
 # 0013A20041C4ACC3
@@ -19,7 +19,7 @@ app = socketio.WSGIApp(sio)
 # ... more to come
 # TODO - how do we get this dynamically
 XBEEPORT = "COM3"
-device = XBeeDevice(XBEEPORT, 9600)
+device = get_xbee_connection()
 
 def exit_handler():
     print("Closing serial port")
@@ -67,7 +67,9 @@ if __name__ == '__main__':
 
     device.add_data_received_callback(ack_handler)
     while not ack_received:
-        device.send_data_broadcast(f"Time:{int(time.time()-1000)}")
+        sending = f"Time:{int(time.time()-1000)}"
+        device.send_data_broadcast(sending)
+        print(f"sent: {sending}")
         time.sleep(2)
     print("continueing")
     eventlet.wsgi.server(eventlet.listen(('localhost', 5050)), app)
