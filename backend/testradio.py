@@ -8,7 +8,7 @@ PORT = "/dev/ttyUSB0"
 # TODO: Replace with the port where your local module is connected to.
 # TODO: Replace with the baud rate of your local module.
 BAUD_RATE = 9600
-:
+
 i = 0
 
 def main():
