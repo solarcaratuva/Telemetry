@@ -8,10 +8,11 @@ PORT = "/dev/ttyUSB0"
 # TODO: Replace with the port where your local module is connected to.
 # TODO: Replace with the baud rate of your local module.
 BAUD_RATE = 9600
-
+:
 i = 0
 
 def main():
+    global i
     local_device = XBeeDevice(PORT, BAUD_RATE)
 
     try:
@@ -21,6 +22,7 @@ def main():
         # remote_device = RemoteXBeeDevice(local_device, XBee64BitAddress.from_hex_string(REMOTE_DEVICE_ADDRESS))
         while True:
             local_device.send_data_broadcast(f"hi world {i}")
+            i += 1
             time.sleep(10)
         # Send data using the remote object.
         # local_device.send_data(remote_device, "Hello XBee!")
