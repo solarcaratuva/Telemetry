@@ -18,6 +18,7 @@ def get_xbee_connection():
             # We can now try to read a parameter from the device.
             try:
                 device.get_64bit_addr()
+                print(f"Connecting to {port.device}")
                 return device
             except:
                 continue
