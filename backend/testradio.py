@@ -39,8 +39,6 @@ def main():
     local_device = get_xbee_connection()
 
     try:
-        local_device.open()
-
         # Instantiate a remote XBee device object to send data.
         # remote_device = RemoteXBeeDevice(local_device, XBee64BitAddress.from_hex_string(REMOTE_DEVICE_ADDRESS))
         while True:
