@@ -17,13 +17,13 @@ ser = serial.Serial(port="/dev/serial0")
 # Lists of frames for each applicable CAN message
 
 
-
 # ... more to come
 
 # TODO - how do we get this dynamically
 XBEEPORT = "COM3"
 device = XBeeDevice(XBEEPORT, 9600)
 device.open()
+
 
 def exit_handler():
     print("Closing serial port")
@@ -37,6 +37,8 @@ atexit.register(exit_handler)
 sender = CANSender(sio)
 
 isRunning = False
+
+
 # remove rpm
 # discharge -> current
 # make motor faults longer/ all faults
@@ -59,11 +61,22 @@ def connect(sid, environ):
         sio.start_background_task(sendData)
 
 
+time_received = False
 if __name__ == '__main__':
     # pit starts by looping time messages
     # Car comes on, recieves time message
     # Sends acknnoledgement
     # Pit receives ack, sneds back ack
     # Car recives ack and starts transmitting data
+    def time_handler(msg):
+        global time_received
+        msgtxt: str = msg.data.decode("utf8")
+        if msgtxt.startswith("Time:"):
+            print(f"set time to {msgtxt[5:]}")
+            time_received = True
+            device.del_data_received_callback(time_received)
 
+    device.add_data_received_callback(time_handler)
+    while not time_received:
+        pass
     eventlet.wsgi.server(eventlet.listen(('localhost', 5050)), app)
