@@ -67,7 +67,7 @@ if __name__ == '__main__':
 
     device.add_data_received_callback(ack_handler)
     while not ack_received:
-        device.send_data_broadcast(f"Time:{int(time.time())}")
+        device.send_data_broadcast(f"Time:{int(time.time()-1000)}")
         time.sleep(2)
     print("continueing")
     eventlet.wsgi.server(eventlet.listen(('localhost', 5050)), app)

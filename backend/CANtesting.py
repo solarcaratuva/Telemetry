@@ -14,12 +14,15 @@ def append_int_as_le_bytes(input_bytes, integer):
 
     return result_bytes
 
-
-def send_serial_message(db, data, message_frame_id, frame_name):
+def get_serial_message(db, data, message_frame_id, frame_name):
     encoded_message = db.encode_message(frame_name, data)
     towrite = append_int_as_le_bytes(encoded_message, message_frame_id)
     ten = 10
     towrite += ten.to_bytes(1, 'little')
+    return towrite
+
+def send_serial_message(db, data, message_frame_id, frame_name):
+    towrite = get_serial_message(db, data, message_frame_id, frame_name)
     ser.write(towrite)
 
 
@@ -75,12 +78,15 @@ powerAuxCommandsExample = {
     "brake_lights": 0,
     "headlights": 1,
     "left_turn_signal": 0,
-    "right_turn_signal": 0
+    "right_turn_signal": 1
 }
 
 # send_serial_message(motorDb, rpm_frame_dict, 805, "MotorControllerPowerStatus")
 # send_serial_message(bpsDB, bps_error_example, 262, "BPSError")
-send_serial_message(powerAuxDb, powerAuxCommandsExample, 769, "ECUPowerAuxCommands")
+testmsg = get_serial_message(powerAuxDb, powerAuxCommandsExample, 769, "ECUPowerAuxCommands")
+
+def get_test_msg():
+    return testmsg
 
 def exit_handler():
     print("Closing serial port")

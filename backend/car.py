@@ -16,7 +16,7 @@ import time
 # ports = serial.tools.list_ports.comports()
 sio = socketio.Server(cors_allowed_origins=["http://localhost:3000"])
 app = socketio.WSGIApp(sio)
-ser = serial.Serial(port="/dev/serial0")
+# ser = serial.Serial(port="/dev/serial0")
 
 # Lists of frames for each applicable CAN message
 
@@ -30,7 +30,7 @@ device = get_xbee_connection()
 
 def exit_handler():
     print("Closing serial port")
-    ser.close()
+    # ser.close()
     if device is not None and device.is_open():
         device.close()
 
@@ -49,11 +49,12 @@ isRunning = False
 
 def sendData():
     print("LISTENING FOR DATA")
-    while True:
-        encoded_message = ser.read(64)
-        if sender.send(encoded_message):
-            device.send_data_broadcast(encoded_message)
-        sio.sleep(1)
+    # while True:
+    #     # encoded_message = ser.read(64)
+    #     encoded_message = None
+    #     if sender.send(encoded_message):
+    #         device.send_data_broadcast(encoded_message)
+    #     sio.sleep(1)
 
 
 @sio.event
