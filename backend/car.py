@@ -1,6 +1,6 @@
 import atexit
 from datetime import datetime
-
+import serial.tools.list_ports
 import cantools
 import eventlet
 import serial
@@ -8,8 +8,12 @@ import socketio
 
 from decode_can_dbc import decode_dbc
 
-# from digi.xbee.devices import XBeeDevice
+from digi.xbee.devices import XBeeDevice
+# XBee Mac addresses
+# pit - 0013A20041C4ACC3
+# car - 0013A20041C4AC5F
 
+ports = serial.tools.list_ports.comports()
 sio = socketio.Server(cors_allowed_origins=["http://localhost:3000"])
 app = socketio.WSGIApp(sio)
 ser = serial.Serial(port="/dev/serial0")
@@ -31,12 +35,12 @@ CANframes = {"ECUPowerAuxCommands": ['hazards', 'brake_lights', 'headlights', 'l
 
 # ... more to come
 
-# device = XBeeDevice("/dev/ttyUSB0", 9600)
+device = XBeeDevice("COM3", 9600)
 
 def exit_handler():
     print("Closing serial port")
     ser.close()
-    # device.close()
+    device.close()
 
 
 atexit.register(exit_handler)
