@@ -23,7 +23,7 @@ def main():
         while True:
             local_device.send_data_broadcast(f"hi world {i}")
             i += 1
-            time.sleep(10)
+            time.sleep(3)
         # Send data using the remote object.
         # local_device.send_data(remote_device, "Hello XBee!")
 
