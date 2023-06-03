@@ -2,32 +2,34 @@ from digi.xbee.devices import XBeeDevice
 import serial.tools.list_ports
 from digi.xbee.exception import XBeeException
 
+from send_from_can import get_xbee_connection
 
-def get_xbee_connection():
-    BAUD_RATE = 9600
-    ports = serial.tools.list_ports.comports()
 
-    for port in ports:
-        # Try to open a connection to each port.
-        try:
-            device = XBeeDevice(port.device, BAUD_RATE)
-            try:
-                device.open()
-            except XBeeException:
-                pass
-            # If we get here, we've successfully opened a connection.
-            # We can now try to read a parameter from the device.
-            try:
-                device.get_64bit_addr()
-                print(f"Connecting to {port.device}")
-                return device
-            except:
-                continue
-        except:
-            # Couldn't open a connection to this port. It's either in use
-            # or doesn't have an XBee connected.
-            pass
-    return None
+# def get_xbee_connection():
+#     BAUD_RATE = 9600
+#     ports = serial.tools.list_ports.comports()
+#
+#     for port in ports:
+#         # Try to open a connection to each port.
+#         try:
+#             device = XBeeDevice(port.device, BAUD_RATE)
+#             try:
+#                 device.open()
+#             except XBeeException:
+#                 pass
+#             # If we get here, we've successfully opened a connection.
+#             # We can now try to read a parameter from the device.
+#             try:
+#                 device.get_64bit_addr()
+#                 print(f"Connecting to {port.device}")
+#                 return device
+#             except:
+#                 continue
+#         except:
+#             # Couldn't open a connection to this port. It's either in use
+#             # or doesn't have an XBee connected.
+#             pass
+#     return None
 
 
 def main():
