@@ -1,12 +1,14 @@
 import atexit
 from datetime import datetime, timezone, time
-
+import can
+import socketio
 import eventlet
 import serial.tools.list_ports
-import socketio
 from digi.xbee.devices import XBeeDevice
 
 from backend.send_from_can import CANSender
+
+# from backend.send_from_can import CANSender
 
 # XBee Mac addresses
 # 0013A20041C4ACC3

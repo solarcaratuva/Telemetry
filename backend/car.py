@@ -1,9 +1,13 @@
 import atexit
+from datetime import datetime
+
 import eventlet
 import serial
 import socketio
 from backend.send_from_can import CANSender
 from digi.xbee.devices import XBeeDevice
+import ctypes.util
+import time
 
 # XBee Mac addresses
 # pit - 0013A20041C4ACC3
@@ -61,6 +65,33 @@ def connect(sid, environ):
         sio.start_background_task(sendData)
 
 
+def linux_set_time(seconds: int):
+    # /usr/include/linux/time.h:
+    #
+    # define CLOCK_REALTIME                     0
+    CLOCK_REALTIME = 0
+
+    # /usr/include/time.h
+    #
+    # struct timespec
+    #  {
+    #    __time_t tv_sec;            /* Seconds.  */
+    #    long int tv_nsec;           /* Nanoseconds.  */
+    #  };
+    class timespec(ctypes.Structure):
+        _fields_ = [("tv_sec", ctypes.c_long),
+                    ("tv_nsec", ctypes.c_long)]
+
+    librt = ctypes.CDLL(ctypes.util.find_library("rt"))
+
+    ts = timespec()
+    ts.tv_sec = seconds
+    ts.tv_nsec = 0  # Millisecond to nanosecond
+
+    # http://linux.die.net/man/3/clock_settime
+    librt.clock_settime(CLOCK_REALTIME, ctypes.byref(ts))
+
+
 time_received = False
 if __name__ == '__main__':
     # pit starts by looping time messages
@@ -73,8 +104,10 @@ if __name__ == '__main__':
         msgtxt: str = msg.data.decode("utf8")
         if msgtxt.startswith("Time:"):
             print(f"set time to {msgtxt[5:]}")
+            linux_set_time(int(int(msgtxt[5:])/1000))
             time_received = True
             device.del_data_received_callback(time_received)
+
 
     device.add_data_received_callback(time_handler)
     while not time_received:
