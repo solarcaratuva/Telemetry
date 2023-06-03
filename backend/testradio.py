@@ -2,8 +2,6 @@ import time
 
 from digi.xbee.devices import XBeeDevice
 
-from send_from_can import get_xbee_connection
-
 import serial.tools.list_ports
 
 
