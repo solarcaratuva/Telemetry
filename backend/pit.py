@@ -7,8 +7,6 @@ from digi.xbee.devices import XBeeDevice
 
 from send_from_can import CANSender
 
-# from backend.send_from_can import CANSender
-
 # XBee Mac addresses
 # 0013A20041C4ACC3
 # 0013A20041C4AC5F
@@ -22,7 +20,6 @@ app = socketio.WSGIApp(sio)
 # TODO - how do we get this dynamically
 XBEEPORT = "COM3"
 device = XBeeDevice(XBEEPORT, 9600)
-device.open()
 
 def exit_handler():
     print("Closing serial port")

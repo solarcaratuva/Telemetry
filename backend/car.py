@@ -4,7 +4,7 @@ from datetime import datetime
 import eventlet
 import serial
 import socketio
-from backend.send_from_can import CANSender
+from send_from_can import CANSender, get_xbee_connection
 from digi.xbee.devices import XBeeDevice
 import ctypes.util
 import time
@@ -25,8 +25,7 @@ ser = serial.Serial(port="/dev/serial0")
 
 # TODO - how do we get this dynamically
 XBEEPORT = "COM3"
-device = XBeeDevice(XBEEPORT, 9600)
-device.open()
+device = get_xbee_connection()
 
 
 def exit_handler():
