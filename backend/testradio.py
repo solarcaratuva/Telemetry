@@ -1,19 +1,12 @@
 import time
 
-from digi.xbee.devices import XBeeDevice, RemoteXBeeDevice
-import serial.tools.list_ports
-from digi.xbee.models.address import XBee64BitAddress
-
-PORT = "/dev/ttyUSB1"
-# TODO: Replace with the port where your local module is connected to.
-# TODO: Replace with the baud rate of your local module.
-BAUD_RATE = 9600
+from backend.send_from_can import get_xbee_connection
 
 i = 0
 
 def main():
     global i
-    local_device = XBeeDevice(PORT, BAUD_RATE)
+    local_device = get_xbee_connection()
 
     try:
         local_device.open()
