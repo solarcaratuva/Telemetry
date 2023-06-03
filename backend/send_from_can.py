@@ -3,12 +3,14 @@ import serial.tools.list_ports
 from digi.xbee.devices import XBeeDevice
 import cantools
 
-from backend.decode_can_dbc import decode_dbc
-
+from decode_can_dbc import decode_dbc
+import os
+curr_path = os.path.dirname(os.path.abspath(__file__))
+can_dir = os.path.join(curr_path, "CAN-messages")
 CANframes = {"ECUPowerAuxCommands": ['hazards', 'brake_lights', 'headlights', 'left_turn_signal', 'right_turn_signal'],
              "ECUMotorCommands": ['throttle', "forward_en", "reverse_en"],
              "MotorControllerPowerStatus": ["motor_rpm"],
-             "BPSError": cantools.database.load_file("backend/CAN-messages/BPS.dbc").get_message_by_name(
+             "BPSError": cantools.database.load_file(os.path.join(can_dir, "BPS.dbc")).get_message_by_name(
                  "BPSError").signal_tree,
              "MotorControllerError": cantools.database.load_file(
                  "backend/CAN-messages/MotorController.dbc").get_message_by_name("MotorControllerError").signal_tree,

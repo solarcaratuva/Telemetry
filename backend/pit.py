@@ -1,12 +1,11 @@
 import atexit
-from datetime import datetime, timezone, time
-import can
+import time
 import socketio
 import eventlet
 import serial.tools.list_ports
 from digi.xbee.devices import XBeeDevice
 
-from backend.send_from_can import CANSender
+from send_from_can import CANSender
 
 # from backend.send_from_can import CANSender
 
@@ -71,6 +70,7 @@ if __name__ == '__main__':
 
     device.add_data_received_callback(ack_handler)
     while not ack_received:
-        device.send_data_broadcast("Time:" + datetime.replace(tzinfo=timezone.utc).timestamp() * 1000)
+        device.send_data_broadcast(f"Time:{int(time.time())}")
         time.sleep(2)
+    print("continueing")
     eventlet.wsgi.server(eventlet.listen(('localhost', 5050)), app)

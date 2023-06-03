@@ -107,9 +107,11 @@ if __name__ == '__main__':
             linux_set_time(int(int(msgtxt[5:])/1000))
             time_received = True
             device.del_data_received_callback(time_received)
+            device.send_data_broadcast("ack")
 
 
     device.add_data_received_callback(time_handler)
     while not time_received:
         pass
+    print("continueing")
     eventlet.wsgi.server(eventlet.listen(('localhost', 5050)), app)
