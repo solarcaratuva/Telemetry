@@ -3,6 +3,7 @@ import time
 from digi.xbee.devices import XBeeDevice
 
 import serial.tools.list_ports
+from digi.xbee.exception import XBeeException
 
 
 def get_xbee_connection():
@@ -13,7 +14,11 @@ def get_xbee_connection():
         # Try to open a connection to each port.
         try:
             device = XBeeDevice(port.device, BAUD_RATE)
-            device.open()
+            try:
+                device.open()
+            except XBeeException:
+                pass
+
             # If we get here, we've successfully opened a connection.
             # We can now try to read a parameter from the device.
             try:
