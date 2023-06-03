@@ -60,4 +60,10 @@ def connect(sid, environ):
 
 
 if __name__ == '__main__':
+    # pit starts by looping time messages
+    # Car comes on, recieves time message
+    # Sends acknnoledgement
+    # Pit receives ack, sneds back ack
+    # Car recives ack and starts transmitting data
+
     eventlet.wsgi.server(eventlet.listen(('localhost', 5050)), app)

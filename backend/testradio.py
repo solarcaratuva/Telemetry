@@ -4,7 +4,7 @@ from digi.xbee.devices import XBeeDevice, RemoteXBeeDevice
 import serial.tools.list_ports
 from digi.xbee.models.address import XBee64BitAddress
 
-PORT = "/dev/ttyUSB0"
+PORT = "/dev/ttyUSB1"
 # TODO: Replace with the port where your local module is connected to.
 # TODO: Replace with the baud rate of your local module.
 BAUD_RATE = 9600

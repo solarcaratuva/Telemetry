@@ -1,4 +1,5 @@
 import atexit
+from datetime import datetime, timezone
 
 import eventlet
 import serial.tools.list_ports
@@ -56,6 +57,13 @@ def connect(sid, environ):
         isRunning = True
         sio.start_background_task(sendData)
 
-
+ack_received = False
 if __name__ == '__main__':
+
+    def ack_handler(msg):
+
+
+    device.add_data_received_callback
+    while not ack_received:
+        device.send_data_broadcast(datetime.replace(tzinfo=timezone.utc).timestamp() * 1000)
     eventlet.wsgi.server(eventlet.listen(('localhost', 5050)), app)
