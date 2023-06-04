@@ -1,5 +1,5 @@
 import atexit
-from datetime import datetime
+import datetime
 
 import eventlet
 import serial
