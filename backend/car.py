@@ -104,7 +104,7 @@ if __name__ == '__main__':
         msgtxt: str = msg.data.decode("utf8")
         print(f"recieved: {msgtxt}")
         if msgtxt.startswith("Time:"):
-            print(f"set time to {msgtxt[5:]}")
+            print(f"set time to {msgtxt[5:]}, was {time.time()}")
             linux_set_time(int(int(msgtxt[5:])/1000))
             time_received = True
             device.del_data_received_callback(time_received)

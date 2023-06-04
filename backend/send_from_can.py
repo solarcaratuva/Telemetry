@@ -29,6 +29,8 @@ def get_xbee_connection():
         # Try to open a connection to each port.
         try:
             device = XBeeDevice(port.device, BAUD_RATE)
+            if device.is_open():
+                device.close()
             if not device.is_open():
                 device.open()
             # If we get here, we've successfully opened a connection.
