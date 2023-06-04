@@ -1,39 +1,43 @@
 import atexit
-import datetime
 import os
-import eventlet
-import serial
-import socketio
-from pip._internal.utils import subprocess
 
-from set_time import set_system_time
+import cantools
+import eventlet
+import socketio
+
 from send_from_can import CANSender, get_xbee_connection
-from digi.xbee.devices import XBeeDevice
-import ctypes.util
-import time
 
 # XBee Mac addresses
 # pit - 0013A20041C4ACC3
 # car - 0013A20041C4AC5F
 
-# ports = serial.tools.list_ports.comports()
+
 sio = socketio.Server(cors_allowed_origins=["http://localhost:3000"])
 app = socketio.WSGIApp(sio)
 # ser = serial.Serial(port="/dev/serial0")
 
+curr_path = os.path.dirname(os.path.abspath(__file__))
+can_dir = os.path.join(curr_path, "CAN-messages")
 # Lists of frames for each applicable CAN message
+CANframes = {"ECUPowerAuxCommands": ['hazards', 'brake_lights', 'headlights', 'left_turn_signal', 'right_turn_signal'],
+             "ECUMotorCommands": ['throttle', "forward_en", "reverse_en"],
+             "MotorControllerPowerStatus": ["motor_rpm"],
+             "BPSError": cantools.database.load_file(os.path.join(can_dir, "BPS.dbc")).get_message_by_name(
+                 "BPSError").signal_tree,
+             "MotorControllerError": cantools.database.load_file(
+                 os.path.join(can_dir, "MotorController.dbc")).get_message_by_name("MotorControllerError").signal_tree,
+             "PowerAuxError": cantools.database.load_file(os.path.join(can_dir, "Rivanna2.dbc")).get_message_by_name(
+                 "PowerAuxError").signal_tree,
+             "BPSPackInformation": ["pack_current"],
+             "BPSCellTemperature": ["high_temperature"]
+             }
 
-time_offset = 0
 
-# ... more to come
-
-# TODO - how do we get this dynamically
-XBEEPORT = "COM3"
 device = get_xbee_connection()
 
 
 def exit_handler():
-    print("Closing serial port")
+    # print("Closing serial port")
     # ser.close()
     if device is not None and device.is_open():
         device.close()
@@ -41,7 +45,7 @@ def exit_handler():
 
 atexit.register(exit_handler)
 
-sender = CANSender(sio)
+sender = CANSender(sio, CANframes)
 
 isRunning = False
 
@@ -52,21 +56,18 @@ isRunning = False
 # white mode
 
 def sendData():
-    print("LISTENING FOR DATA")
-    # while True:
-    #     # encoded_message = ser.read(64)
-    #     encoded_message = None
-    #     if sender.send(encoded_message):
-    #         device.send_data_broadcast(encoded_message)
-    #     sio.sleep(1)
+    # print("LISTENING FOR DATA")
+    while True:
+        # encoded_message = ser.read(64)
+        encoded_message = None
+        sender.send(encoded_message)
+        device.send_data_broadcast(encoded_message)
+        sio.sleep(1)
 
 
 @sio.event
 def connect(sid, environ):
     global isRunning, sio
-
-    sio.emit("set_time_offset", time_offset)
-
     if not isRunning:
         isRunning = True
         sio.start_background_task(sendData)
@@ -83,14 +84,9 @@ if __name__ == '__main__':
         if time_received:
             return
         msgtxt: str = msg.data.decode("utf8")
-        print(f"recieved: {msgtxt}")
         if msgtxt.startswith("Time:"):
             seconds = int(msgtxt[5:])
             os.system(f"sudo date -s '@{seconds}'")
-            print(f"set time to {seconds}, was {time.time()}")
-            time_offset = seconds - time.time()
-            with open("/home/cwise/log_car.txt", "w+") as outfile:
-                outfile.write(f"system time: {time.time()}\ntime offset:{time_offset}\ntime recieved:{seconds}")
             time_received = True
             # device.del_data_received_callback(time_received)
             device.send_data_broadcast("ack")
@@ -99,5 +95,4 @@ if __name__ == '__main__':
     device.add_data_received_callback(time_handler)
     while not time_received:
         pass
-    print("continueing")
     eventlet.wsgi.server(eventlet.listen(('localhost', 5050)), app)

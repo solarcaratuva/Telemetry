@@ -1,24 +1,9 @@
 from datetime import datetime
+
 import serial.tools.list_ports
 from digi.xbee.devices import XBeeDevice
-import cantools
 
 from decode_can_dbc import decode_dbc
-import os
-curr_path = os.path.dirname(os.path.abspath(__file__))
-can_dir = os.path.join(curr_path, "CAN-messages")
-CANframes = {"ECUPowerAuxCommands": ['hazards', 'brake_lights', 'headlights', 'left_turn_signal', 'right_turn_signal'],
-             "ECUMotorCommands": ['throttle', "forward_en", "reverse_en"],
-             "MotorControllerPowerStatus": ["motor_rpm"],
-             "BPSError": cantools.database.load_file(os.path.join(can_dir, "BPS.dbc")).get_message_by_name(
-                 "BPSError").signal_tree,
-             "MotorControllerError": cantools.database.load_file(
-                 os.path.join(can_dir, "MotorController.dbc")).get_message_by_name("MotorControllerError").signal_tree,
-             "PowerAuxError": cantools.database.load_file(os.path.join(can_dir, "Rivanna2.dbc")).get_message_by_name(
-                 "PowerAuxError").signal_tree,
-             "BPSPackInformation": ["pack_current"],
-             "BPSCellTemperature": ["high_temperature"]
-             }
 
 
 def get_xbee_connection():
@@ -48,25 +33,26 @@ def get_xbee_connection():
 
 
 class CANSender:
-    def __init__(self, sio):
+    def __init__(self, sio, can_messages):
         self.sio = sio
+        self.can_messages = can_messages
 
     def send(self, encoded_message: bytes) -> bool:
         timestamp = datetime.now().isoformat()
         message_id = int.from_bytes(encoded_message[:4], byteorder="little")
         name, values = decode_dbc(message_id, encoded_message[4:-1])
-        if name not in CANframes:
+        if name not in self.can_messages:
             return False
         if name in ("BPSError", "MotorControllerError", "PowerAuxError"):
             errors = []
-            for data in CANframes[name]:
+            for data in self.can_messages[name]:
                 if values[data]:
                     errors.append(data)
 
             # print("ERRORS: " + str(errors))
             self.sio.emit(name, {"timestamp": timestamp, "array": errors})
-            return
-        curr_frame = CANframes[name]
+            return True
+        curr_frame = self.can_messages[name]
         for data in curr_frame:
             self.sio.emit(data, {"timestamp": timestamp, "number": values[data]})
             print("DATA: " + data + " " + str(values[data]))
