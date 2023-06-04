@@ -17,7 +17,6 @@ const MAX_LENGTH = 50;
 // TODO - refactor into class then have hud and monitors subclass, reuse data functionality
 const HeadsUpPage = () => {
   const [data, setData] = useState<Data>({
-    car_speed: [],
     battery_temp: [],
     panel_temp: [],
     throttle: [],

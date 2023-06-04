@@ -1,14 +1,13 @@
 export type DataSet = { value: number; timestamp: Date }[];
 
 export interface Data {
-    car_speed: DataSet;
+    motor_rpm: DataSet
     battery_temp: DataSet;
     panel_temp: DataSet;
     throttle: DataSet;
     hazards: DataSet;
     brake_lights: DataSet;
     forward_en: DataSet;
-    motor_rpm: DataSet;
     total_current: DataSet;
     high_temperature: DataSet;
 }

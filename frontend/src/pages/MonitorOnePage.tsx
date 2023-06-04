@@ -8,7 +8,30 @@ import AlertBox from "../components/AlertBox";
 import RPM from "../components/RPM";
 import BatteryTempGuage from "../components/BatteryTempGuage";
 import CurrentGuage from "../components/BatteryDischargeGuage";
-import { Data, Update, StringData, StringUpdate, StringArrayData, StringArrayUpdate, BooleanData, BooleanUpdate } from './UpdateTypes';
+import {
+    Update,
+    StringData,
+    StringUpdate,
+    StringArrayData,
+    StringArrayUpdate,
+    BooleanData,
+    BooleanUpdate,
+    DataSet
+} from './UpdateTypes';
+import {Data as DataBase} from './UpdateTypes'
+
+interface Data extends DataBase {
+    panel1_voltage: DataSet,
+    panel2_voltage: DataSet,
+    panel3_voltage: DataSet,
+    panel4_voltage: DataSet,
+    panel1_temp: DataSet,
+    panel2_temp: DataSet,
+    panel3_temp: DataSet,
+    panel4_temp: DataSet,
+    pack_voltage: DataSet,
+    pack_current: DataSet
+}
 
 const socket = io("http://localhost:5050");
 const MAX_LENGTH = 50;
@@ -18,7 +41,6 @@ const MAX_LENGTH = 50;
 //  rpm, voltage
 const MonitorOnePage = () => {
     const [data, setData] = useState<Data>({
-        car_speed: [],
         battery_temp: [],
         panel_temp: [],
         throttle: [],
@@ -27,7 +49,17 @@ const MonitorOnePage = () => {
         forward_en: [],
         motor_rpm: [],
         total_current: [],
-        high_temperature: []
+        high_temperature: [],
+        panel1_voltage: [],
+        panel2_voltage: [],
+        panel3_voltage: [],
+        panel4_voltage: [],
+        panel1_temp: [],
+        panel2_temp: [],
+        panel3_temp: [],
+        panel4_temp: [],
+        pack_voltage: [],
+        pack_current: []
     });
 
     const [stringData, setStringData] = useState<StringData>({
