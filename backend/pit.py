@@ -67,7 +67,7 @@ if __name__ == '__main__':
 
     device.add_data_received_callback(ack_handler)
     while not ack_received:
-        sending = f"Time:{int(time.time()-1000)}"
+        sending = f"Time:{int(time.time())}"
         device.send_data_broadcast(sending)
         print(f"sent: {sending}")
         time.sleep(2)
