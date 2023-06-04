@@ -71,6 +71,5 @@ if __name__ == '__main__':
         device.send_data_broadcast(sending)
         print(f"sent: {sending}")
         time.sleep(2)
-    print("continueing")
     exit(0)
     eventlet.wsgi.server(eventlet.listen(('localhost', 5050)), app)

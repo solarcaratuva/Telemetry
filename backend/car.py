@@ -28,7 +28,7 @@ CANframes = {"ECUPowerAuxCommands": ['hazards', 'brake_lights', 'headlights', 'l
                  os.path.join(can_dir, "MotorController.dbc")).get_message_by_name("MotorControllerError").signal_tree,
              "PowerAuxError": cantools.database.load_file(os.path.join(can_dir, "Rivanna2.dbc")).get_message_by_name(
                  "PowerAuxError").signal_tree,
-             "BPSPackInformation": ["pack_current"],
+             "SolarCurrent": ["total_current"],
              "BPSCellTemperature": ["high_temperature"]
              }
 
@@ -80,7 +80,7 @@ if __name__ == '__main__':
     # Pit receives ack, sneds back ack
     # Car recives ack and starts transmitting data
     def time_handler(msg):
-        global time_received, time_offset
+        global time_received
         if time_received:
             return
         msgtxt: str = msg.data.decode("utf8")
@@ -88,11 +88,12 @@ if __name__ == '__main__':
             seconds = int(msgtxt[5:])
             os.system(f"sudo date -s '@{seconds}'")
             time_received = True
-            # device.del_data_received_callback(time_received)
+            device.del_data_received_callback(time_received)
             device.send_data_broadcast("ack")
 
 
     device.add_data_received_callback(time_handler)
     while not time_received:
         pass
+    exit(0)
     eventlet.wsgi.server(eventlet.listen(('localhost', 5050)), app)
