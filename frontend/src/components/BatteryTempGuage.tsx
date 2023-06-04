@@ -14,7 +14,7 @@ const BatteryTempGuage: React.FC<Props> = ({ temp, darkMode}) => {
   return (
     <Box flex="1 0 0">
         <Typography variant="h5" color = {darkMode ? "white" : "black"} pb={1}>
-          Battery Temp
+          High Battery Temp
         </Typography>
         <Box>
           {

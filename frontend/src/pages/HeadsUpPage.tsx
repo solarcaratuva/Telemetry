@@ -23,7 +23,7 @@ interface Data {
   brake_lights: DataSet;
   forward_en: DataSet;
   motor_rpm: DataSet;
-  pack_current: DataSet;
+  total_current: DataSet;
   high_temperature: DataSet;
 }
 
@@ -78,7 +78,7 @@ const HeadsUpPage = () => {
     brake_lights: [],
     forward_en: [],
     motor_rpm: [],
-    pack_current: [],
+    total_current: [],
     high_temperature: []
   });
 
@@ -278,7 +278,7 @@ const HeadsUpPage = () => {
               width = "60%"
               marginLeft="19%"
             >
-              <CurrentGuage current={data.pack_current.length !== 0 ? data.pack_current[data.pack_current.length - 1].value : 0} darkMode={false} />
+              <CurrentGuage current={data.total_current.length !== 0 ? data.total_current[data.total_current.length - 1].value : 0} darkMode={false} />
               <BatteryTempGuage temp={data.high_temperature.length !== 0 ? data.high_temperature[data.high_temperature.length - 1].value : 0} darkMode={false}/>
             </Box>
           </Box>
