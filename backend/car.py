@@ -4,6 +4,8 @@ from datetime import datetime
 import eventlet
 import serial
 import socketio
+from pip._internal.utils import subprocess
+
 from send_from_can import CANSender, get_xbee_connection
 from digi.xbee.devices import XBeeDevice
 import ctypes.util
@@ -65,31 +67,17 @@ def connect(sid, environ):
         sio.start_background_task(sendData)
 
 
-def linux_set_time(seconds: int):
-    # /usr/include/linux/time.h:
-    #
-    # define CLOCK_REALTIME                     0
-    CLOCK_REALTIME = 0
 
-    # /usr/include/time.h
-    #
-    # struct timespec
-    #  {
-    #    __time_t tv_sec;            /* Seconds.  */
-    #    long int tv_nsec;           /* Nanoseconds.  */
-    #  };
-    class timespec(ctypes.Structure):
-        _fields_ = [("tv_sec", ctypes.c_long),
-                    ("tv_nsec", ctypes.c_long)]
+def set_system_time(epoch_seconds):
+    # Convert the epoch time to a datetime object
+    dt = datetime.datetime.fromtimestamp(epoch_seconds)
 
-    librt = ctypes.CDLL(ctypes.util.find_library("rt"))
+    # Format the date and time in the format expected by the date command
+    date_str = dt.strftime('%m%d%H%M%Y.%S')
 
-    ts = timespec()
-    ts.tv_sec = seconds
-    ts.tv_nsec = 0  # Millisecond to nanosecond
-
-    # http://linux.die.net/man/3/clock_settime
-    librt.clock_settime(CLOCK_REALTIME, ctypes.byref(ts))
+    # Call the date command to set the system time
+    # This must be run with sudo permissions
+    subprocess.run(['sudo', 'date', '-s', date_str])
 
 
 time_received = False
@@ -104,8 +92,9 @@ if __name__ == '__main__':
         msgtxt: str = msg.data.decode("utf8")
         print(f"recieved: {msgtxt}")
         if msgtxt.startswith("Time:"):
-            print(f"set time to {msgtxt[5:]}, was {time.time()}")
-            linux_set_time(int(int(msgtxt[5:])/1000))
+            seconds = int(int(msgtxt[5:])/1000)
+            print(f"set time to {seconds}, was {time.time()}")
+            set_system_time(seconds)
             print(f"time is now {time.time()}")
             time_received = True
             device.del_data_received_callback(time_received)
@@ -116,4 +105,5 @@ if __name__ == '__main__':
     while not time_received:
         pass
     print("continueing")
+    exit(0)
     eventlet.wsgi.server(eventlet.listen(('localhost', 5050)), app)
