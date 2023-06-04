@@ -9,63 +9,10 @@ import BatteryTempGuage from "../components/BatteryTempGuage";
 import MPHandTurnSignal from "../components/MPHandTurnSignal";
 import GearState from "../components/GearState";
 import CurrentGuage from "../components/BatteryDischargeGuage";
+import { Data, Update, StringData, StringUpdate, StringArrayData, StringArrayUpdate, BooleanData, BooleanUpdate } from './UpdateTypes';
 
 const socket = io("http://localhost:5050");
 const MAX_LENGTH = 50;
-
-type DataSet = { value: number; timestamp: Date }[];
-interface Data {
-  car_speed: DataSet;
-  battery_temp: DataSet;
-  panel_temp: DataSet;
-  throttle: DataSet;
-  hazards: DataSet;
-  brake_lights: DataSet;
-  forward_en: DataSet;
-  motor_rpm: DataSet;
-  total_current: DataSet;
-  high_temperature: DataSet;
-}
-
-interface Update {
-  number: number;
-  timestamp: string;
-}
-
-type StringDataSet = { value: string; timestamp: Date }[];
-interface StringData {
-  gear_state: StringDataSet;
-  hazard_state: StringDataSet;
-  turn_state: StringDataSet;
-  motor_faults: StringDataSet
-}
-interface StringUpdate {
-  string: string;
-  timestamp: string;
-}
-
-interface StringArrayData {
-  BPSError: string[],
-  MotorControllerError: string[],
-  PowerAuxError: string[]
-}
-
-interface StringArrayUpdate {
-  array: string[];
-  timestamp: string
-}
-
-interface BooleanData {
-  left_turn_signal: number,
-  right_turn_signal: number,
-  forward_en: number,
-  reverse_en: number
-}
-
-interface BooleanUpdate {
-  number: number,
-  timestamp: number
-}
 
 // TODO - refactor into class then have hud and monitors subclass, reuse data functionality
 const HeadsUpPage = () => {
@@ -213,6 +160,15 @@ const HeadsUpPage = () => {
     //This is to prevent multiple listeners from being attached to the same value
     return () => {
       Object.keys(data).forEach((name) => {
+        socket.off(name);
+      });
+      Object.keys(stringData).forEach((name) => {
+        socket.off(name);
+      });
+      Object.keys(stringArrayData).forEach((name) => {
+        socket.off(name);
+      });
+      Object.keys(booleanData).forEach((name) => {
         socket.off(name);
       });
     };

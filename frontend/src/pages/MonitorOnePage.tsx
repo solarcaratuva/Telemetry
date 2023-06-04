@@ -8,50 +8,59 @@ import AlertBox from "../components/AlertBox";
 import RPM from "../components/RPM";
 import BatteryTempGuage from "../components/BatteryTempGuage";
 import CurrentGuage from "../components/BatteryDischargeGuage";
+import { Data, Update, StringData, StringUpdate, StringArrayData, StringArrayUpdate, BooleanData, BooleanUpdate } from './UpdateTypes';
 
 const socket = io("http://localhost:5050");
 const MAX_LENGTH = 50;
-
-type DataSet = { value: number; timestamp: Date }[];
-interface Data {
-  car_speed: DataSet;
-  battery_temp: DataSet;
-  panel_temp: DataSet;
-  pedal_value: DataSet;
-}
-
-interface Update {
-  number: number;
-  timestamp: string;
-}
-
-type StringDataSet = { value: string; timestamp: Date }[];
-interface StringData {
-  gear_state: StringDataSet;
-  hazard_state: StringDataSet;
-  turn_state: StringDataSet;
-}
-interface StringUpdate {
-  string: string;
-  timestamp: string;
-}
 
 // TODO - add below for monitor one/two
 //  all stuff from hud
 //  rpm, voltage
 const MonitorOnePage = () => {
-  const [data, setData] = useState<Data>({
-    car_speed: [],
-    battery_temp: [],
-    panel_temp: [],
-    pedal_value: [],
-  });
+    const [data, setData] = useState<Data>({
+        car_speed: [],
+        battery_temp: [],
+        panel_temp: [],
+        throttle: [],
+        hazards: [],
+        brake_lights: [],
+        forward_en: [],
+        motor_rpm: [],
+        total_current: [],
+        high_temperature: []
+    });
 
-  const [stringData, setStringData] = useState<StringData>({
-    gear_state: [],
-    hazard_state: [],
-    turn_state: [],
-  });
+    const [stringData, setStringData] = useState<StringData>({
+        gear_state: [],
+        hazard_state: [],
+        turn_state: [],
+        motor_faults: []
+    });
+
+    const [stringArrayData, setStringArrayData] = useState<StringArrayData>({
+        BPSError: [],
+        MotorControllerError: [],
+        PowerAuxError: []
+    });
+
+    const [booleanData, setBooleanData] = useState<BooleanData>({
+        left_turn_signal: 0,
+        right_turn_signal: 0,
+        forward_en: 0,
+        reverse_en: 0
+    });
+
+    const [time, setTime] = useState(new Date().toLocaleTimeString());
+
+    useEffect(()=>{
+        const intervalId = setInterval(()=>{
+            setTime(new Date().toLocaleTimeString());
+        }, 1000);
+        return ()=>{clearInterval(intervalId)};
+    }, []);
+
+    const [leftBlinker, setLeftBlinker] = useState(false);
+    const [rightBlinker, setRightBlinker] = useState(false);
 
   useEffect(() => {
     //Attaches socket listeners for each value of the data object on mount
@@ -96,6 +105,9 @@ const MonitorOnePage = () => {
     return () => {
       Object.keys(data).forEach((name) => {
         socket.off(name);
+      });
+      Object.keys(stringData).forEach((name) => {
+          socket.off(name);
       });
     };
   }, []);
@@ -182,7 +194,7 @@ const MonitorOnePage = () => {
                 flex: "3 0 0",
               }}
             >
-              <OnePedalDrive value={ data.pedal_value.length != 0 ? data.pedal_value[data.pedal_value.length - 1].value : 50 } />
+              <OnePedalDrive value={ data.throttle.length != 0 ? data.throttle[data.throttle.length - 1].value : 50 } />
               <Box
                 sx={{
                   display: "flex",
