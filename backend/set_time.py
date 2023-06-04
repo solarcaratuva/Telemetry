@@ -1,5 +1,4 @@
 import subprocess
-import datetime
 
 def set_system_time(epoch_seconds):
     # Convert the epoch time to a datetime object

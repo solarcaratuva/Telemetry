@@ -6,6 +6,7 @@ import serial
 import socketio
 from pip._internal.utils import subprocess
 
+from set_time import set_system_time
 from send_from_can import CANSender, get_xbee_connection
 from digi.xbee.devices import XBeeDevice
 import ctypes.util
@@ -65,20 +66,6 @@ def connect(sid, environ):
     if not isRunning:
         isRunning = True
         sio.start_background_task(sendData)
-
-
-
-def set_system_time(epoch_seconds):
-    # Convert the epoch time to a datetime object
-    dt = datetime.datetime.fromtimestamp(epoch_seconds)
-
-    # Format the date and time in the format expected by the date command
-    date_str = dt.strftime('%m%d%H%M%Y.%S')
-
-    # Call the date command to set the system time
-    # This must be run with sudo permissions
-    subprocess.call_subprocess(['sudo', 'date', '-s', date_str])
-
 
 time_received = False
 if __name__ == '__main__':
