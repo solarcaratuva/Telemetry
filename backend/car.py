@@ -106,6 +106,7 @@ if __name__ == '__main__':
         if msgtxt.startswith("Time:"):
             print(f"set time to {msgtxt[5:]}, was {time.time()}")
             linux_set_time(int(int(msgtxt[5:])/1000))
+            print(f"time is now {time.time()}")
             time_received = True
             device.del_data_received_callback(time_received)
             device.send_data_broadcast("ack")
