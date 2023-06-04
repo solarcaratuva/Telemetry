@@ -1,9 +1,12 @@
 import atexit
 import time
+
+import cantools
 import socketio
 import eventlet
 import serial.tools.list_ports
 from digi.xbee.devices import XBeeDevice
+import os
 
 from send_from_can import CANSender, get_xbee_connection
 
@@ -15,6 +18,20 @@ ports = serial.tools.list_ports.comports()
 sio = socketio.Server(cors_allowed_origins=["http://localhost:3000"])
 app = socketio.WSGIApp(sio)
 
+curr_path = os.path.dirname(os.path.abspath(__file__))
+can_dir = os.path.join(curr_path, "CAN-messages")
+CANframes = {"ECUPowerAuxCommands": ['hazards', 'brake_lights', 'headlights', 'left_turn_signal', 'right_turn_signal'],
+             "ECUMotorCommands": ['throttle', "forward_en", "reverse_en"],
+             "MotorControllerPowerStatus": ["motor_rpm"],
+             "BPSError": cantools.database.load_file(os.path.join(can_dir, "BPS.dbc")).get_message_by_name(
+                 "BPSError").signal_tree,
+             "MotorControllerError": cantools.database.load_file(
+                 os.path.join(can_dir, "MotorController.dbc")).get_message_by_name("MotorControllerError").signal_tree,
+             "PowerAuxError": cantools.database.load_file(os.path.join(can_dir, "Rivanna2.dbc")).get_message_by_name(
+                 "PowerAuxError").signal_tree,
+             "SolarCurrent": ["total_current"],
+             "BPSCellTemperature": ["high_temperature"]
+             }
 
 # ... more to come
 # TODO - how do we get this dynamically
@@ -29,7 +46,7 @@ def exit_handler():
 
 atexit.register(exit_handler)
 
-sender = CANSender(sio)
+sender = CANSender(sio, CANframes)
 
 isRunning = False
 # remove rpm
