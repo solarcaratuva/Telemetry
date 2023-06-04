@@ -79,7 +79,7 @@ if __name__ == '__main__':
         msgtxt: str = msg.data.decode("utf8")
         print(f"recieved: {msgtxt}")
         if msgtxt.startswith("Time:"):
-            seconds = int(int(msgtxt[5:])/1000)
+            seconds = int(msgtxt[5:])
             print(f"set time to {seconds}, was {time.time()}")
             set_system_time(seconds)
             print(f"time is now {time.time()}")
