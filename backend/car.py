@@ -1,6 +1,6 @@
 import atexit
 import datetime
-
+import os
 import eventlet
 import serial
 import socketio
@@ -86,6 +86,7 @@ if __name__ == '__main__':
         print(f"recieved: {msgtxt}")
         if msgtxt.startswith("Time:"):
             seconds = int(msgtxt[5:])
+            os.system(f"sudo date -s '@{seconds}'")
             print(f"set time to {seconds}, was {time.time()}")
             time_offset = seconds - time.time()
             with open("/home/cwise/log_car.txt", "w+") as outfile:
