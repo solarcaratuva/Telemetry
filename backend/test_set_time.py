@@ -10,7 +10,7 @@ def set_system_time(epoch_seconds):
 
     # Call the date command to set the system time
     # This must be run with sudo permissions
-    subprocess.call(f"""date "$(date -r {epoch_seconds} +'%y%m%d%H%M.%S')\"""")
+    subprocess.call(["date", f"""\"$(date -r {epoch_seconds} +'%y%m%d%H%M.%S')\""""])
 
 if __name__ == "__main__":
     set_system_time(1000)
