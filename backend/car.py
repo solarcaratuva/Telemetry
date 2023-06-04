@@ -65,7 +65,7 @@ def sendData():
 def connect(sid, environ):
     global isRunning, sio
 
-    sio.emit("TimeOffset", time_offset)
+    sio.emit("set_time_offset", time_offset)
 
     if not isRunning:
         isRunning = True
@@ -79,13 +79,13 @@ if __name__ == '__main__':
     # Pit receives ack, sneds back ack
     # Car recives ack and starts transmitting data
     def time_handler(msg):
-        global time_received
+        global time_received, time_offset
         msgtxt: str = msg.data.decode("utf8")
         print(f"recieved: {msgtxt}")
         if msgtxt.startswith("Time:"):
             seconds = int(msgtxt[5:])
             print(f"set time to {seconds}, was {time.time()}")
-            time_offset = time.time() - seconds
+            time_offset = seconds - time.time()
             time_received = True
             device.del_data_received_callback(time_received)
             device.send_data_broadcast("ack")
