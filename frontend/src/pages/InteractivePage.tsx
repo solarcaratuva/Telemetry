@@ -152,19 +152,22 @@ const InteractivePage = () => {
               }}
             >
               <ToggleButtons
-                state={ stringData.gear_state.length != 0 ? stringData.gear_state[stringData.gear_state.length - 1].value : "false" }
+                  leftOn = {false}
+                  rightOn = {true}
                 left={"Low"}
                 right={"High"}
                 label={"Gear:"}
               />
               <ToggleButtons
-                state={ stringData.hazard_state.length != 0 ? stringData.hazard_state[stringData.hazard_state.length - 1].value : "false" }
+                  leftOn = {false}
+                  rightOn = {true}
                 left={"Off"}
                 right={"On"}
                 label={"Hazard State:"}
               />
               <ToggleButtons
-                state={ stringData.turn_state.length != 0 ? stringData.turn_state[stringData.turn_state.length - 1].value : "false" }
+                  leftOn = {false}
+                  rightOn = {true}
                 left={"Left"}
                 right={"Right"}
                 label={"Turn Signal:"}
