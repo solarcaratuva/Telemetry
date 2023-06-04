@@ -23,6 +23,7 @@ app = socketio.WSGIApp(sio)
 
 # Lists of frames for each applicable CAN message
 
+time_offset = 0
 
 # ... more to come
 
@@ -62,7 +63,10 @@ def sendData():
 
 @sio.event
 def connect(sid, environ):
-    global isRunning
+    global isRunning, sio
+
+    sio.emit("TimeOffset", time_offset)
+
     if not isRunning:
         isRunning = True
         sio.start_background_task(sendData)
@@ -81,8 +85,7 @@ if __name__ == '__main__':
         if msgtxt.startswith("Time:"):
             seconds = int(msgtxt[5:])
             print(f"set time to {seconds}, was {time.time()}")
-            set_system_time(seconds)
-            print(f"time is now {time.time()}")
+            time_offset = time.time() - seconds
             time_received = True
             device.del_data_received_callback(time_received)
             device.send_data_broadcast("ack")
@@ -92,5 +95,4 @@ if __name__ == '__main__':
     while not time_received:
         pass
     print("continueing")
-    exit(0)
     eventlet.wsgi.server(eventlet.listen(('localhost', 5050)), app)
