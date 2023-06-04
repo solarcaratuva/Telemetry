@@ -1,12 +1,11 @@
 import atexit
+import os
 import time
 
 import cantools
-import socketio
 import eventlet
 import serial.tools.list_ports
-from digi.xbee.devices import XBeeDevice
-import os
+import socketio
 
 from send_from_can import CANSender, get_xbee_connection
 
@@ -88,5 +87,5 @@ if __name__ == '__main__':
         device.send_data_broadcast(sending)
         print(f"sent: {sending}")
         time.sleep(2)
-    exit(0)
+
     eventlet.wsgi.server(eventlet.listen(('localhost', 5050)), app)
