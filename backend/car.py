@@ -88,6 +88,8 @@ if __name__ == '__main__':
             seconds = int(msgtxt[5:])
             print(f"set time to {seconds}, was {time.time()}")
             time_offset = seconds - time.time()
+            with open("/home/cwise/log_car.txt", "w+") as outfile:
+                outfile.write(f"system time: {time.time()}\ntime offset:{time_offset}\ntime recieved:{seconds}")
             time_received = True
             # device.del_data_received_callback(time_received)
             device.send_data_broadcast("ack")
