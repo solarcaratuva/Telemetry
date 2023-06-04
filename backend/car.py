@@ -77,7 +77,7 @@ def set_system_time(epoch_seconds):
 
     # Call the date command to set the system time
     # This must be run with sudo permissions
-    subprocess.run(['sudo', 'date', '-s', date_str])
+    subprocess.call_subprocess(['sudo', 'date', '-s', date_str])
 
 
 time_received = False
