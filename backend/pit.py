@@ -19,23 +19,24 @@ app = socketio.WSGIApp(sio)
 
 curr_path = os.path.dirname(os.path.abspath(__file__))
 can_dir = os.path.join(curr_path, "CAN-messages")
-CANframes = {"ECUPowerAuxCommands": ['hazards', 'brake_lights', 'headlights', 'left_turn_signal', 'right_turn_signal'],
-             "ECUMotorCommands": ['throttle', "forward_en", "reverse_en"],
-             "MotorControllerPowerStatus": ["motor_rpm"],
-             "BPSError": cantools.database.load_file(os.path.join(can_dir, "BPS.dbc")).get_message_by_name(
-                 "BPSError").signal_tree,
+CANframes = {"BPSError": cantools.database.load_file(os.path.join(can_dir, "BPS.dbc")).get_message_by_name(
+    "BPSError").signal_tree,
              "MotorControllerError": cantools.database.load_file(
                  os.path.join(can_dir, "MotorController.dbc")).get_message_by_name("MotorControllerError").signal_tree,
              "PowerAuxError": cantools.database.load_file(os.path.join(can_dir, "Rivanna2.dbc")).get_message_by_name(
                  "PowerAuxError").signal_tree,
              "SolarCurrent": ["total_current"],
-             "BPSCellTemperature": ["high_temperature"]
+             "BPSCellTemperature": ["high_temperature"],
+             "ECUPowerAuxCommands": ['hazards', 'brake_lights', 'headlights', 'left_turn_signal', 'right_turn_signal'],
+             "ECUMotorCommands": ['throttle', "forward_en", "reverse_en"],
+             "MotorControllerPowerStatus": ["motor_rpm"],
+             "SolarVoltage": ["panel1_voltage", "panel2_voltage", "panel3_voltage", "panel4_voltage"],
+             "SolarTemp": ["panel1_temp", "panel2_temp", "panel3_temp", "panel4_temp"],
+             "BPSPackInformation": ["pack_voltage", "pack_current"]
              }
 
-# ... more to come
-# TODO - how do we get this dynamically
-XBEEPORT = "COM3"
 device = get_xbee_connection()
+
 
 def exit_handler():
     print("Closing serial port")
@@ -48,6 +49,8 @@ atexit.register(exit_handler)
 sender = CANSender(sio, CANframes)
 
 isRunning = False
+
+
 # remove rpm
 # discharge -> current
 # make motor faults longer/ all faults
@@ -63,6 +66,7 @@ def sendData():  # replacement for send_data
         print("Received data from %s: %s" % (address, data))
 
     device.add_data_received_callback(data_receive_callback)
+
 
 @sio.event
 def connect(sid, environ):
@@ -80,6 +84,7 @@ if __name__ == '__main__':
         if msg.data.decode("utf8") == "ack":
             ack_received = True
             device.del_data_received_callback(ack_received)
+
 
     device.add_data_received_callback(ack_handler)
     while not ack_received:
