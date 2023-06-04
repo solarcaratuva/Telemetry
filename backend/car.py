@@ -80,6 +80,8 @@ if __name__ == '__main__':
     # Car recives ack and starts transmitting data
     def time_handler(msg):
         global time_received, time_offset
+        if time_received:
+            return
         msgtxt: str = msg.data.decode("utf8")
         print(f"recieved: {msgtxt}")
         if msgtxt.startswith("Time:"):
@@ -87,7 +89,7 @@ if __name__ == '__main__':
             print(f"set time to {seconds}, was {time.time()}")
             time_offset = seconds - time.time()
             time_received = True
-            device.del_data_received_callback(time_received)
+            # device.del_data_received_callback(time_received)
             device.send_data_broadcast("ack")
 
 
