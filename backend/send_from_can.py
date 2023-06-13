@@ -32,6 +32,11 @@ def get_xbee_connection():
     return None
 
 
+def get_can_data(encoded_message: bytes):
+    message_id = int.from_bytes(encoded_message[1:5], byteorder="little")
+    name, values = decode_dbc(message_id, encoded_message[5:-1])
+    return name, values
+
 class CANSender:
     def __init__(self, sio, can_messages):
         self.sio = sio
@@ -39,8 +44,8 @@ class CANSender:
 
     def send(self, encoded_message: bytes) -> bool:
         timestamp = datetime.now().isoformat()
-        message_id = int.from_bytes(encoded_message[:4], byteorder="little")
-        name, values = decode_dbc(message_id, encoded_message[4:-1])
+        name, values = get_can_data(encoded_message)
+
         if name not in self.can_messages:
             return False
         if name in ("BPSError", "MotorControllerError", "PowerAuxError"):

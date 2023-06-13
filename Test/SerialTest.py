@@ -3,6 +3,8 @@ import atexit
 import serial.tools.list_ports
 import serial
 
+from backend.send_from_can import get_can_data
+
 
 def get_serial_connection():
     ports = serial.tools.list_ports.comports()
@@ -20,9 +22,12 @@ def get_serial_connection():
 
 def main_loop(serconn):
     while True:
-        txt = serconn.read(64)
-        print(f"Message recieved: {txt}")
+        txt = serconn.read(25)
+        name, values = get_can_data(txt)
+        print(f"~~~~~~~~~\nRaw data: {txt}\nMessage Name: {name}\nValues: {values}\n~~~~~~~~~~")
 
+# Can format:
+#   249_id1,id2_canmsg(17)_250
 
 if __name__ == "__main__":
     ser = get_serial_connection()
