@@ -1,3 +1,5 @@
+import os
+
 import can
 import cantools
 from pathlib import Path
@@ -5,13 +7,17 @@ import binascii
 
 
 def decode_dbc(message_id, message_data): #message_id -> frame_id, message_data -> binary representation of the message data
-    bpsDB = cantools.database.load_file('CAN-messages/BPS.dbc')
-    motorControllerDB = cantools.database.load_file('CAN-messages/MotorController.dbc')
-    mpptDB = cantools.database.load_file('CAN-messages/MPPT.dbc')
-    rivanna2DB = cantools.database.load_file('CAN-messages/Rivanna2.dbc')
-    
     message = make_hex_great_again(message_data)
     
+
+    curr_path = os.path.dirname(os.path.abspath(__file__))
+    can_dir = os.path.join(curr_path, "CAN-messages")
+
+    bpsDB = cantools.database.load_file(os.path.join(can_dir, "BPS.dbc"))
+    motorControllerDB = cantools.database.load_file(os.path.join(can_dir, "MotorController.dbc"))
+    mpptDB = cantools.database.load_file(os.path.join(can_dir, "MPPT.dbc"))
+    rivanna2DB = cantools.database.load_file(os.path.join(can_dir, "Rivanna2.dbc"))
+
     #Testing
     # data = bpsDB.messages
     #

@@ -43,6 +43,7 @@ const HeadsUpPage = () => {
   const [booleanData, setBooleanData] = useState<BooleanData>({
     left_turn_signal: 0,
     right_turn_signal: 0,
+    hazards: 0,
     forward_en: 0,
     reverse_en: 0
   });
@@ -70,7 +71,15 @@ const HeadsUpPage = () => {
       // })
       // console.log("left: " + booleanData.left_turn_signal);
       // console.log("right: " + booleanData.right_turn_signal);
-      if (booleanData.left_turn_signal) {
+      if (booleanData.hazards) {
+        // let newState: boolean = !leftBlinker;
+        setLeftBlinker((oldValue) => {
+          setRightBlinker((_) => {
+            return !oldValue;
+          });
+          return !oldValue;
+        });
+      } else if (booleanData.left_turn_signal) {
         // console.log("flash left");
         setLeftBlinker((oldValue) => {
           return !oldValue;
@@ -150,6 +159,7 @@ const HeadsUpPage = () => {
         setBooleanData((oldData) => {
           oldData[name as keyof BooleanData] = update.number;
           return oldData;
+          // return {...oldData, [name as keyof BooleanData]: update.number};
         });
       });
     });
