@@ -37,7 +37,7 @@ def get_can_data(encoded_message: bytes):
     for byte in encoded_message:
         ints.append(byte)
     message_id = int.from_bytes(encoded_message[1:3], "big") #first two bytes are message id
-    message_body = ints[3:21] #next 18 bytes are message body
+    message_body = encoded_message[3:17] #next 16 bytes are message body
     name, values = decode_dbc(message_id, message_body)
     return name, values
 
@@ -49,6 +49,9 @@ class CANSender:
     def send(self, encoded_message: bytes) -> bool:
         timestamp = datetime.now().isoformat()
         name, values = get_can_data(encoded_message)
+        print(name)
+        print(values)
+        print(encoded_message)
 
         if name not in self.can_messages:
             return False

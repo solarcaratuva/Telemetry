@@ -13,7 +13,7 @@ from send_from_can import CANSender, get_xbee_connection
 # car - 0013A20041C4AC5F
 
 #USB port on PI (UART splitter)
-ser = serial.Serial("/dev/ttyUSB1",9600)
+ser = serial.Serial("/dev/ttyUSB0",9600)
 sio = socketio.Server(cors_allowed_origins=["http://localhost:3000"])
 app = socketio.WSGIApp(sio)
 # ser = serial.Serial(port="/dev/serial0")
@@ -76,6 +76,14 @@ def connect(sid, environ):
 
 time_received = False
 if __name__ == '__main__':
+    while True:
+        encoded_message = ser.read(1)
+        start_byte = int.from_bytes(encoded_message,"big") #Checks for start byte as int for beginning of message
+        if(start_byte == 249): #249 is the start message byte
+            encoded_message += ser.read(24) #read rest of 25 byte message
+            sender.send(encoded_message) #Send data to be parsed to CAN
+            #device.send_data_broadcast(encoded_message) #Send over radio to Telemetry
+            sio.sleep(1)
     # pit starts by looping time messages
     # Car comes on, recieves time message
     # Sends acknnoledgement
@@ -90,11 +98,11 @@ if __name__ == '__main__':
             seconds = int(msgtxt[5:])
             os.system(f"sudo date -s '@{seconds}'")
             time_received = True
-            device.del_data_received_callback(time_received)
-            device.send_data_broadcast("ack")
+            #device.del_data_received_callback(time_received)
+            #device.send_data_broadcast("ack")
 
 
-    device.add_data_received_callback(time_handler)
+    #device.add_data_received_callback(time_handler)
     while not time_received:
         pass
     exit(0)

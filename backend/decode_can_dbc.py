@@ -1,14 +1,17 @@
 import can
 import cantools
 from pathlib import Path
+import binascii
 
 
 def decode_dbc(message_id, message_data): #message_id -> frame_id, message_data -> binary representation of the message data
-    bpsDB = cantools.database.load_file('backend/CAN-messages/BPS.dbc')
-    motorControllerDB = cantools.database.load_file('backend/CAN-messages/MotorController.dbc')
-    mpptDB = cantools.database.load_file('backend/CAN-messages/MPPT.dbc')
-    rivanna2DB = cantools.database.load_file('backend/CAN-messages/Rivanna2.dbc')
-
+    bpsDB = cantools.database.load_file('CAN-messages/BPS.dbc')
+    motorControllerDB = cantools.database.load_file('CAN-messages/MotorController.dbc')
+    mpptDB = cantools.database.load_file('CAN-messages/MPPT.dbc')
+    rivanna2DB = cantools.database.load_file('CAN-messages/Rivanna2.dbc')
+    
+    message = make_hex_great_again(message_data)
+    
     #Testing
     # data = bpsDB.messages
     #
@@ -19,12 +22,27 @@ def decode_dbc(message_id, message_data): #message_id -> frame_id, message_data 
     # message_data = encoded_message
 
     if message_id in bpsDB._frame_id_to_message: # First Returned Value is the Name of the Message, Second Returned Value is a Dictionary with the names and associated values
-        return bpsDB._frame_id_to_message[message_id].name, bpsDB.decode_message(message_id, message_data)
+        return bpsDB._frame_id_to_message[message_id].name, bpsDB.decode_message(message_id, message)
     elif message_id in motorControllerDB._frame_id_to_message:
-        return motorControllerDB._frame_id_to_message[message_id].name, motorControllerDB.decode_message(message_id, message_data)
+        return motorControllerDB._frame_id_to_message[message_id].name, motorControllerDB.decode_message(message_id, message)
     elif message_id in mpptDB._frame_id_to_message:
-        return mpptDB._frame_id_to_message[message_id].name, mpptDB.decode_message(message_id, message_data)
+        return mpptDB._frame_id_to_message[message_id].name, mpptDB.decode_message(message_id, message)
     elif message_id in rivanna2DB._frame_id_to_message:
-        return rivanna2DB._frame_id_to_message[message_id].name, rivanna2DB.decode_message(message_id, message_data)
+        return rivanna2DB._frame_id_to_message[message_id].name, rivanna2DB.decode_message(message_id, message)
     else:
         return "ID does not exist"
+        
+def make_hex_great_again(message_data):
+    ints = []
+    for x in message_data:
+        ints.append(x)
+    new_message = ""
+    for x in ints: #manually convert int to hex
+        if x>=48 and x <= 57:
+            new_message += hex(x-48)[2:]
+        elif x>=65 and x <= 70:
+            new_message += hex(x-55)[2:]
+        else:
+            new_message += hex(0)[2:]
+    return bytes.fromhex(new_message)        
+                
