@@ -71,7 +71,7 @@ class MyTestCase(unittest.TestCase):
     def send_sio(self, message):
         app = socketio.WSGIApp(self.sio)
 
-        @self.sio.event
+        @self.sio.on("connect")
         def connect(sid, environ):
             print("connected")
             self.sender.send(message)
@@ -83,8 +83,8 @@ class MyTestCase(unittest.TestCase):
             "hazards": 0,
             "brake_lights": 0,
             "headlights": 0,
-            "left_turn_signal": 1,
-            "right_turn_signal": 0
+            "left_turn_signal": 0,
+            "right_turn_signal": 1
         }
 
         testmsg = get_serial_message(powerAuxDb, left_turn_on_msg, 769, "ECUPowerAuxCommands")
@@ -118,93 +118,8 @@ class MyTestCase(unittest.TestCase):
 
         testmsg = get_serial_message(bpsDB, bps_error_example, 262, "BPSError")
 
-        self.sender.send(testmsg)
+        self.send_sio(testmsg)
 
 
 if __name__ == '__main__':
-    # unittest.main()
-    import eventlet
-    import eventlet.wsgi
-    import socketio
-    import threading
-
-
-    class Server:
-        def __init__(self):
-
-            sio = socketio.Server(cors_allowed_origins=["http://localhost:3000"])
-            curr_path = os.path.dirname(os.path.abspath(__file__))
-            can_dir = os.path.join(curr_path, "..", "backend", "CAN-messages")
-            CANframes = {
-                "BPSError": cantools.database.load_file(os.path.join(can_dir, "BPS.dbc")).get_message_by_name(
-                    "BPSError").signal_tree,
-                "MotorControllerError": cantools.database.load_file(
-                    os.path.join(can_dir, "MotorController.dbc")).get_message_by_name(
-                    "MotorControllerError").signal_tree,
-                "PowerAuxError": cantools.database.load_file(
-                    os.path.join(can_dir, "Rivanna2.dbc")).get_message_by_name(
-                    "PowerAuxError").signal_tree,
-                "SolarCurrent": ["total_current"],
-                "BPSCellTemperature": ["high_temperature"],
-                "ECUPowerAuxCommands": ['hazards', 'brake_lights', 'headlights', 'left_turn_signal',
-                                        'right_turn_signal'],
-                "ECUMotorCommands": ['throttle', "forward_en", "reverse_en"]
-                }
-            self.sender = CANSender(sio, CANframes)
-
-            self.sio = socketio.Server()
-            self.server_thread = None
-            self.should_stop = threading.Event()  # This event will be used to signal the server to stop
-
-        def send_sio(self, message):
-            app = socketio.WSGIApp(self.sio)
-
-            @self.sio.event
-            def connect(sid, environ):
-                print("connected")
-                self.sender.send(message)
-
-            self.server_thread = threading.Thread(target=self.run_server, args=(app,))
-            self.server_thread.start()
-
-        def run_server(self, app):
-            with eventlet.Timeout(0, False) as timeout_handler:
-                while not self.should_stop.is_set():  # While we don't want to stop the server
-                    eventlet.wsgi.server(eventlet.listen(('localhost', 5050)), app)
-                    eventlet.sleep(0)  # Yield to other threads
-
-        def stop_server(self):
-            self.should_stop.set()  # Signal that we want to stop the server
-            if self.server_thread:
-                self.server_thread.join()  # Wait for the server thread to finish
-
-
-    server = Server()
-    bps_error_example = {
-        "internal_communications_fault": 0,
-        "internal_conversion_fault": 0,
-        "weak_cell_fault": 1,
-        "low_cell_voltage_fault": 0,
-        "open_wiring_fault": 0,
-        "current_sensor_fault": 0,
-        "pack_voltage_sensor_fault": 0,
-        "weak_pack_fault": 0,
-        "voltage_redundancy_fault": 0,
-        "fan_monitor_fault": 0,
-        "thermistor_fault": 0,
-        "CANBUS_communications_fault": 0,
-        "always_on_supply_fault": 0,
-        "high_voltage_isolation_fault": 0,
-        "power_supply_12v_fault": 0,
-        "charge_limit_enforcement_fault": 0,
-        "discharge_limit_enforcement_fault": 0,
-        "charger_safety_relay_fault": 0,
-        "internal_memory_fault": 0,
-        "internal_thermistor_fault": 0,
-        "internal_logic_fault": 0,
-    }
-
-    testmsg = get_serial_message(bpsDB, bps_error_example, 262, "BPSError")
-    server.send_sio(testmsg)
-    # when you want to stop the server
-    server.stop_server()
+    unittest.main()
