@@ -33,8 +33,12 @@ def get_xbee_connection():
 
 
 def get_can_data(encoded_message: bytes):
-    message_id = int.from_bytes(encoded_message[1:5], byteorder="little")
-    name, values = decode_dbc(message_id, encoded_message[5:-1])
+    ints = []
+    for byte in encoded_message:
+        ints.append(byte)
+    message_id = int.from_bytes(encoded_message[1:3], "big") #first two bytes are message id
+    message_body = ints[3:21] #next 18 bytes are message body
+    name, values = decode_dbc(message_id, message_body)
     return name, values
 
 class CANSender:

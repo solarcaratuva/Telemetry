@@ -28,9 +28,3 @@ def decode_dbc(message_id, message_data): #message_id -> frame_id, message_data 
         return rivanna2DB._frame_id_to_message[message_id].name, rivanna2DB.decode_message(message_id, message_data)
     else:
         return "ID does not exist"
-
-#Testing
-"""
-if __name__ == "__main__":
-    print(decode_dbc(0, 0))
-"""

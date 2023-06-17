@@ -7,7 +7,7 @@ import ToggleButtons from "../components/ToggleButtons";
 import AlertBox from "../components/AlertBox";
 import RPM from "../components/RPM";
 import BatteryTempGuage from "../components/BatteryTempGuage";
-import CurrentGuage from "../components/BatteryDischargeGuage";
+import CurrentGuage from "../components/NetCurrentGuage";
 import {
     Update,
     StringData,

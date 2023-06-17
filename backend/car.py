@@ -1,6 +1,7 @@
+#Runs on the PI, takes data off ECU board over UART, parses CAN and publishes to server
 import atexit
 import os
-
+import serial,time
 import cantools
 import eventlet
 import socketio
@@ -11,7 +12,8 @@ from send_from_can import CANSender, get_xbee_connection
 # pit - 0013A20041C4ACC3
 # car - 0013A20041C4AC5F
 
-
+#USB port on PI (UART splitter)
+ser = serial.Serial("/dev/ttyUSB1",9600)
 sio = socketio.Server(cors_allowed_origins=["http://localhost:3000"])
 app = socketio.WSGIApp(sio)
 # ser = serial.Serial(port="/dev/serial0")
@@ -44,7 +46,7 @@ def exit_handler():
 
 atexit.register(exit_handler)
 
-sender = CANSender(sio, CANframes)
+sender = CANSender(sio, CANframes) #from send_from_can.py
 
 isRunning = False
 
@@ -55,13 +57,14 @@ isRunning = False
 # white mode
 
 def sendData():
-    # print("LISTENING FOR DATA")
     while True:
-        # encoded_message = ser.read(64)
-        encoded_message = None
-        sender.send(encoded_message)
-        device.send_data_broadcast(encoded_message)
-        sio.sleep(1)
+        encoded_message = ser.read(1)
+        start_byte = int.from_bytes(encoded_message,"big") #Checks for start byte as int for beginning of message
+        if(start_byte == 249): #249 is the start message byte
+            encoded_message += ser.read(24) #read rest of 25 byte message
+            sender.send(encoded_message) #Send data to be parsed to CAN
+            device.send_data_broadcast(encoded_message) #Send over radio to Telemetry
+            sio.sleep(1)
 
 
 @sio.event

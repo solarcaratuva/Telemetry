@@ -4,11 +4,10 @@ import VideoFeed from "../components/VideoFeed";
 import OnePedalDrive from "../components/OnePedalDrive";
 import {io} from "socket.io-client";
 import AlertBox from "../components/AlertBox";
-import RPM from "../components/RPM";
 import BatteryTempGuage from "../components/BatteryTempGuage";
 import MPHandTurnSignal from "../components/MPHandTurnSignal";
 import GearState from "../components/GearState";
-import CurrentGuage from "../components/BatteryDischargeGuage";
+import CurrentGuage from "../components/NetCurrentGuage";
 import { Data, Update, StringData, StringUpdate, StringArrayData, StringArrayUpdate, BooleanData, BooleanUpdate } from './UpdateTypes';
 
 const socket = io("http://localhost:5050");

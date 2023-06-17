@@ -14,11 +14,11 @@ const CurrentGuage: React.FC<Props> = ({ current, darkMode}) => {
   return (
     <Box flex="1 0 0">
       <Typography variant="h5" color ={darkMode ? "white" : "black"} pb={1}>
-        Solar Current
+        Net Current
       </Typography>
       <Box>
         {
-          <ReactSpeedometer ringWidth={40} minValue={-10} maxValue={10} segments={2} segmentColors={["orange", "yellow"]} textColor = {darkMode ? "white" : "black"} value={current} />
+          <ReactSpeedometer ringWidth={40} minValue={-20} maxValue={20} segments={2} segmentColors={["#2ffc31", "#2f93fc"]} textColor = {darkMode ? "white" : "black"} value={current} />
         }
       </Box>
     </Box>
