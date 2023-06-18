@@ -64,7 +64,11 @@ class MyTestCase(unittest.TestCase):
                          "BPSCellTemperature": ["high_temperature"],
                          "ECUPowerAuxCommands": ['hazards', 'brake_lights', 'headlights', 'left_turn_signal',
                                                  'right_turn_signal'],
-                         "ECUMotorCommands": ['throttle', "forward_en", "reverse_en"]
+                         "ECUMotorCommands": ['throttle', "forward_en", "reverse_en"],
+                         "MotorControllerPowerStatus": ["motor_rpm"],
+                         "SolarVoltage": ["panel1_voltage", "panel2_voltage", "panel3_voltage", "panel4_voltage"],
+                         "SolarTemp": ["panel1_temp", "panel2_temp", "panel3_temp", "panel4_temp"],
+                         "BPSPackInformation": ["pack_voltage", "pack_current", "is_charging_signal_status"]
                          }
         cls.sender = CANSender(cls.sio, cls.CANframes)
 
@@ -83,7 +87,7 @@ class MyTestCase(unittest.TestCase):
             "hazards": 0,
             "brake_lights": 0,
             "headlights": 0,
-            "left_turn_signal": 1,
+            "left_turn_signal": 0,
             "right_turn_signal": 0
         }
 
@@ -91,7 +95,7 @@ class MyTestCase(unittest.TestCase):
 
         self.send_sio(testmsg)
 
-    def test_send_errors(self):
+    def test_bps_errors(self):
         bps_error_example = {
             "internal_communications_fault": 0,
             "internal_conversion_fault": 0,
@@ -120,6 +124,60 @@ class MyTestCase(unittest.TestCase):
 
         self.send_sio(testmsg)
 
+    def test_motor_error(self):
+        motor_controller_error = {
+            "analog_sensor_err": 0,
+            "motor_current_sensor_u_err": 0,
+            "motor_current_sensor_w_err": 0,
+            "fet_thermistor_err": 0,
+            "battery_voltage_sensor_err": 0,
+            "battery_current_sensor_err": 0,
+            "battery_current_sensor_adj_err": 0,
+            "motor_current_sensor_adj_err": 0,
+            "accelerator_position_err": 0,
+            "controller_voltage_sensor_err": 0,
+            "power_system_err": 0,
+            "overcurrent_err": 0,
+            "overvoltage_err": 1,
+            "overcurrent_limit": 0,
+            "motor_system_err": 0,
+            "motor_lock": 0,
+            "hall_sensor_short": 0,
+            "hall_sensor_open": 0,
+            "overheat_level": 0,
+        }
+        testmsg = get_serial_message(motorDb, motor_controller_error, 277, "MotorControllerError")
+
+        self.send_sio(testmsg)
+
+    def test_ecu_commands(self):
+        ecu_motor_commands = {
+            "throttle": 100,
+            "regen": 0,
+            "cruise_control_speed": 0,
+            "cruise_control_en": 0,
+            "forward_en": 0,
+            "reverse_en": 0,
+            "motor_on": 0,
+        }
+        testmsg = get_serial_message(powerAuxDb, ecu_motor_commands, 513, "ECUMotorCommands")
+
+        self.send_sio(testmsg)
+
+    def test_motor_power_status(self):
+        motor_controller_power_status = {
+            "battery_voltage": 0,
+            "battery_current": 0,
+            "battery_current_direction": 0,
+            "motor_current": 0,
+            "fet_temp": 0,
+            "motor_rpm": 100,
+            "pwm_duty": 0,
+            "lead_angle": 0,
+        }
+        testmsg = get_serial_message(motorDb, motor_controller_power_status, 805, "MotorControllerPowerStatus")
+
+        self.send_sio(testmsg)
 
 if __name__ == '__main__':
     unittest.main()
