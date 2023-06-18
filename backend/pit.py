@@ -32,7 +32,7 @@ CANframes = {"BPSError": cantools.database.load_file(os.path.join(can_dir, "BPS.
              "MotorControllerPowerStatus": ["motor_rpm"],
              "SolarVoltage": ["panel1_voltage", "panel2_voltage", "panel3_voltage", "panel4_voltage"],
              "SolarTemp": ["panel1_temp", "panel2_temp", "panel3_temp", "panel4_temp"],
-             "BPSPackInformation": ["pack_voltage", "pack_current"]
+             "BPSPackInformation": ["pack_voltage", "pack_current", "is_charging_signal_status"]
              }
 
 device = get_xbee_connection()
