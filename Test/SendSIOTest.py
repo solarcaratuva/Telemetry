@@ -152,7 +152,7 @@ class MyTestCase(unittest.TestCase):
 
     def test_ecu_commands(self):
         ecu_motor_commands = {
-            "throttle": 100,
+            "throttle": 255,
             "regen": 0,
             "cruise_control_speed": 0,
             "cruise_control_en": 0,
@@ -171,11 +171,30 @@ class MyTestCase(unittest.TestCase):
             "battery_current_direction": 0,
             "motor_current": 0,
             "fet_temp": 0,
-            "motor_rpm": 100,
+            "motor_rpm": 1000,
             "pwm_duty": 0,
             "lead_angle": 0,
         }
         testmsg = get_serial_message(motorDb, motor_controller_power_status, 805, "MotorControllerPowerStatus")
+
+        self.send_sio(testmsg)
+
+    def test_solar_current(self):
+        solar_current_example = {
+            "total_current": 30
+        }
+        testmsg = get_serial_message(powerAuxDb, solar_current_example, 1076, "SolarCurrent")
+
+        self.send_sio(testmsg)
+
+    def test_battery_temp(self):
+        bps_cell_temperature_example = {
+            "low_temperature": 0,
+            "low_thermistor_id": 0,
+            "high_temperature": 100,
+            "high_thermistor_id": 0
+        }
+        testmsg = get_serial_message(bpsDB, bps_cell_temperature_example, 1062, "BPSCellTemperature")
 
         self.send_sio(testmsg)
 
