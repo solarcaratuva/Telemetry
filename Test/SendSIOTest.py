@@ -83,8 +83,8 @@ class MyTestCase(unittest.TestCase):
             "hazards": 0,
             "brake_lights": 0,
             "headlights": 0,
-            "left_turn_signal": 0,
-            "right_turn_signal": 1
+            "left_turn_signal": 1,
+            "right_turn_signal": 0
         }
 
         testmsg = get_serial_message(powerAuxDb, left_turn_on_msg, 769, "ECUPowerAuxCommands")

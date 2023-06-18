@@ -46,7 +46,8 @@ export interface BooleanData {
     left_turn_signal: number,
     right_turn_signal: number,
     forward_en: number,
-    reverse_en: number
+    reverse_en: number,
+    hazards: number
 }
 
 export interface BooleanUpdate {

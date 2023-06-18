@@ -79,6 +79,7 @@ const MonitorOnePage = () => {
         left_turn_signal: 0,
         right_turn_signal: 0,
         forward_en: 0,
+        hazards: 0,
         reverse_en: 0
     });
 
