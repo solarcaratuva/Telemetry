@@ -303,7 +303,7 @@ const MonitorOnePage = () => {
                     height: "calc(25vh - 8px)",
                   }}
                 >
-                  <Typography>Fifa Chart</Typography>
+                    <RPM  rpm={data.motor_rpm.length !== 0 ? data.motor_rpm[data.motor_rpm.length - 1].value : 0} darkMode={false}/>
                 </Paper>
               </Box>
             </Box>

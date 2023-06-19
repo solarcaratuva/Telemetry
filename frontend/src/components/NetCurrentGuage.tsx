@@ -14,7 +14,7 @@ const CurrentGuage: React.FC<Props> = ({ current, darkMode}) => {
   return (
     <Box flex="1 0 0">
       <Typography variant="h5" color ={darkMode ? "white" : "black"} pb={1}>
-        Net Current
+        Net Current (Solar)
       </Typography>
       <Box>
         {
