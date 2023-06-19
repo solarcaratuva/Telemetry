@@ -133,15 +133,41 @@ const MonitorOnePage = () => {
       });
     });
 
+      (Object.keys(stringArrayData) as Array<keyof StringArrayData>).forEach((name) => {
+          socket.on(name, (update: StringArrayUpdate) => {
+              setStringArrayData((oldData) => {
+                  oldData[name] = update.array;
+                  return oldData;
+              });
+          });
+      });
+
+      Object.keys(booleanData).forEach((name) => {
+          socket.on(name, (update: BooleanUpdate) => {
+              console.log("update" + name + " to " + update.number);
+              setBooleanData((oldData) => {
+                  oldData[name as keyof BooleanData] = update.number;
+                  return oldData;
+                  // return {...oldData, [name as keyof BooleanData]: update.number};
+              });
+          });
+      });
+
     //Removes all socket listeners for each value of the data object on unmount
     //This is to prevent multiple listeners from being attached to the same value
     return () => {
-      Object.keys(data).forEach((name) => {
-        socket.off(name);
-      });
-      Object.keys(stringData).forEach((name) => {
-          socket.off(name);
-      });
+        Object.keys(data).forEach((name) => {
+            socket.off(name);
+        });
+        Object.keys(stringData).forEach((name) => {
+            socket.off(name);
+        });
+        Object.keys(stringArrayData).forEach((name) => {
+            socket.off(name);
+        });
+        Object.keys(booleanData).forEach((name) => {
+            socket.off(name);
+        });
     };
   }, []);
 
@@ -239,17 +265,9 @@ const MonitorOnePage = () => {
                 }}
               >
                 {/* Replace this paper component with motor faults */}
-                <Paper
-                  sx={{
-                    flex: "1 0 0",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "calc(25vh - 8px)",
-                  }}
-                >
-                  <AlertBox data={["Alert 1", "Alert2"]}/>
-                </Paper>
+
+                  <AlertBox data={stringArrayData.BPSError.concat(stringArrayData.MotorControllerError, stringArrayData.PowerAuxError)}/>
+
                 {/* Replace this paper component with fifa chart */}
                 <Paper
                   sx={{

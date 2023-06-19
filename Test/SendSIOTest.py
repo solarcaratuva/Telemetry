@@ -87,7 +87,7 @@ class MyTestCase(unittest.TestCase):
             "hazards": 0,
             "brake_lights": 0,
             "headlights": 0,
-            "left_turn_signal": 0,
+            "left_turn_signal": 1,
             "right_turn_signal": 0
         }
 
