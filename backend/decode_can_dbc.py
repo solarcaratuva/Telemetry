@@ -8,8 +8,8 @@ import binascii
 
 def decode_dbc(message_id, message_data): #message_id -> frame_id, message_data -> binary representation of the message data
     # Switch comment below and uncomment line 2 below for testing, vice versa for prod
-    # message = make_hex_great_again(message_data)
-    message = message_data
+    message = make_hex_great_again(message_data)
+    # message = message_data
 
     curr_path = os.path.dirname(os.path.abspath(__file__))
     can_dir = os.path.join(curr_path, "CAN-messages")
