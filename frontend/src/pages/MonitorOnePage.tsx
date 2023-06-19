@@ -200,7 +200,7 @@ const MonitorOnePage = () => {
           >
             <Typography>Motor Temp</Typography>
           </Paper>
-          <RPM  rpm={data.motor_rpm[data.motor_rpm.length - 1].value} darkMode={false}/>
+          <RPM  rpm={data.motor_rpm.length !== 0 ? data.motor_rpm[data.motor_rpm.length - 1].value : 0} darkMode={false}/>
           {/* Replace this paper component with battery pack temp */}
 
           <BatteryTempGuage temp={data.high_temperature.length !== 0 ? data.high_temperature[data.high_temperature.length - 1].value : 0} darkMode={false}/>
@@ -226,22 +226,22 @@ const MonitorOnePage = () => {
               }}
             >
               <ToggleButtons
-                leftOn = {false}
-                rightOn = {true}
-                left={"Low"}
-                right={"High"}
+                leftOn = {booleanData.forward_en === 1}
+                rightOn = {booleanData.reverse_en === 1}
+                left={"Forward"}
+                right={"Reverse"}
                 label={"Gear:"}
               />
               <ToggleButtons
-                leftOn = {false}
-                rightOn = {true}
+                leftOn = {booleanData.hazards === 0}
+                rightOn = {booleanData.hazards === 1}
                 left={"Off"}
                 right={"On"}
                 label={"Hazard State:"}
               />
               <ToggleButtons
-                leftOn = {false}
-                rightOn = {true}
+                leftOn = {booleanData.left_turn_signal === 1}
+                rightOn = {booleanData.right_turn_signal === 1}
                 left={"Left"}
                 right={"Right"}
                 label={"Turn Signal:"}

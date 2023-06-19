@@ -87,7 +87,7 @@ class MyTestCase(unittest.TestCase):
             "hazards": 0,
             "brake_lights": 0,
             "headlights": 0,
-            "left_turn_signal": 1,
+            "left_turn_signal": 0,
             "right_turn_signal": 0
         }
 
@@ -156,8 +156,8 @@ class MyTestCase(unittest.TestCase):
             "regen": 0,
             "cruise_control_speed": 0,
             "cruise_control_en": 0,
-            "forward_en": 0,
-            "reverse_en": 0,
+            "forward_en": 1,
+            "reverse_en": 1,
             "motor_on": 0,
         }
         testmsg = get_serial_message(powerAuxDb, ecu_motor_commands, 513, "ECUMotorCommands")
