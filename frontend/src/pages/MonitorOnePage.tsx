@@ -14,11 +14,11 @@ import {
     StringUpdate,
     StringArrayData,
     StringArrayUpdate,
-    BooleanData,
     BooleanUpdate,
     DataSet
 } from './UpdateTypes';
 import {Data as DataBase} from './UpdateTypes'
+import {BooleanData as BooleanDataBase} from './UpdateTypes'
 
 interface Data extends DataBase {
     panel1_voltage: DataSet,
@@ -31,6 +31,11 @@ interface Data extends DataBase {
     panel4_temp: DataSet,
     pack_voltage: DataSet,
     pack_current: DataSet
+}
+
+interface BooleanData extends BooleanDataBase {
+    brake_lights: number,
+    headlights: number
 }
 
 const socket = io("http://localhost:5050");
@@ -79,6 +84,8 @@ const MonitorOnePage = () => {
         left_turn_signal: 0,
         right_turn_signal: 0,
         forward_en: 0,
+        brake_lights: 0,
+        headlights: 0,
         hazards: 0,
         reverse_en: 0
     });
@@ -230,21 +237,39 @@ const MonitorOnePage = () => {
                 rightOn = {booleanData.reverse_en === 1}
                 left={"Forward"}
                 right={"Reverse"}
-                label={"Gear:"}
+                label={"Gear"}
               />
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        gap: "15px",
+                        height: "40vh",
+                        flex: "1 0 0",
+                    }}
+                >
               <ToggleButtons
-                leftOn = {booleanData.hazards === 0}
-                rightOn = {booleanData.hazards === 1}
+                leftOn = {booleanData.brake_lights === 0}
+                rightOn = {booleanData.brake_lights === 1}
                 left={"Off"}
                 right={"On"}
-                label={"Hazard State:"}
+                label={"Brake Lights"}
               />
+                    <ToggleButtons
+                        leftOn = {booleanData.headlights === 0}
+                        rightOn = {booleanData.headlights === 1}
+                        left={"Off"}
+                        right={"On"}
+                        label={"Head Lights"}
+                    />
+                </Box>
               <ToggleButtons
-                leftOn = {booleanData.left_turn_signal === 1}
-                rightOn = {booleanData.right_turn_signal === 1}
+                leftOn = {booleanData.hazards === 1 || booleanData.left_turn_signal === 1}
+                rightOn = {booleanData.hazards === 1 || booleanData.right_turn_signal === 1}
                 left={"Left"}
                 right={"Right"}
-                label={"Turn Signal:"}
+                label={"Turn Signal"}
               />
             </Box>
             <Box

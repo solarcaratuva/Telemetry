@@ -17,8 +17,7 @@ const ToggleButtons: React.FC<Props> = ({ leftOn, rightOn, left, right, label })
     <Box>
       <Typography> {label} </Typography>
       <ToggleButtonGroup
-        value={leftOn ? "left" : (rightOn ? "right" : "None")}
-        exclusive
+        value={[leftOn ? "left" : "None", rightOn ? "right" : "None"]}
         disabled
         aria-label="text alignment"
       >
