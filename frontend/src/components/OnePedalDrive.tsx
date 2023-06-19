@@ -27,7 +27,7 @@ const OnePedalDrive: React.FC<Props> = ({ value }) => {
     : (50 - value) / 50;
 
   return (
-    <Box>
+    <Box marginTop = {2}>
       <Box
         width="100%"
         display="flex"

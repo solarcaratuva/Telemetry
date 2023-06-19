@@ -12,7 +12,7 @@ const RPM: React.FC<Props> = ({ rpm, darkMode}) => {
 
 
   return (
-    <Box flex="1 0 0">
+    <Box flex="1 0 0" marginBottom = {50}>
         <Typography variant="h5" color ={darkMode ? "white" : "black"} pb={1}>
           RPM
         </Typography>

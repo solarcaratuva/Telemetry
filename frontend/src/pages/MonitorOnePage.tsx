@@ -207,7 +207,6 @@ const MonitorOnePage = () => {
           >
             <Typography>Motor Temp</Typography>
           </Paper>
-          <RPM  rpm={data.motor_rpm.length !== 0 ? data.motor_rpm[data.motor_rpm.length - 1].value : 0} darkMode={false}/>
           {/* Replace this paper component with battery pack temp */}
 
           <BatteryTempGuage temp={data.high_temperature.length !== 0 ? data.high_temperature[data.high_temperature.length - 1].value : 0} darkMode={false}/>
@@ -294,17 +293,18 @@ const MonitorOnePage = () => {
                   <AlertBox data={stringArrayData.BPSError.concat(stringArrayData.MotorControllerError, stringArrayData.PowerAuxError)}/>
 
                 {/* Replace this paper component with fifa chart */}
-                <Paper
+                <Box
                   sx={{
                     flex: "1 0 0",
                     display: "flex",
-                    alignItems: "center",
+                    alignItems: "flex-start",
                     justifyContent: "center",
-                    height: "calc(25vh - 8px)",
+                    height: "calc(25vh - 8px)"
                   }}
+                  marginBottom = {10}
                 >
-                    <RPM  rpm={data.motor_rpm.length !== 0 ? data.motor_rpm[data.motor_rpm.length - 1].value : 0} darkMode={false}/>
-                </Paper>
+                    <RPM rpm={data.motor_rpm.length !== 0 ? data.motor_rpm[data.motor_rpm.length - 1].value : 0} darkMode={false}/>
+                </Box>
               </Box>
             </Box>
           </Box>
