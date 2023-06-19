@@ -7,7 +7,7 @@ import eventlet
 import serial
 import socketio
 
-from backend import Config
+import Config
 from send_from_can import CANSender, get_xbee_connection
 
 # XBee Mac addresses
@@ -41,10 +41,13 @@ if Config.USE_RADIO:
 
 
 def exit_handler():
-    # print("Closing serial port")
-    # ser.close()
-    if device is not None and device.is_open():
-        device.close()
+    if ser is not None and ser.is_open():
+        print("Closing serial")
+        ser.close()
+    if Config.USE_RADIO:
+        if device is not None and device.is_open():
+            print("Closing radio")
+            device.close()
 
 
 atexit.register(exit_handler)
@@ -66,7 +69,8 @@ def sendData():
         if start_byte == 249:  # 249 is the start message byte
             encoded_message += ser.read(24)  # read rest of 25 byte message
             sender.send(encoded_message)  # Send data to be parsed to CAN
-            device.send_data_broadcast(encoded_message)  # Send over radio to Telemetry
+            if Config.USE_RADIO:
+                device.send_data_broadcast(encoded_message)  # Send over radio to Telemetry
             sio.sleep(1)
 
 
