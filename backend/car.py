@@ -1,5 +1,6 @@
 # Runs on the PI, takes data off ECU board over UART, parses CAN and publishes to server
 import atexit
+from datetime import datetime
 import os
 
 import cantools
@@ -15,7 +16,7 @@ from send_from_can import CANSender, get_xbee_connection
 # car - 0013A20041C4AC5F
 
 # USB port on PI (UART splitter)
-ser = serial.Serial("/dev/ttyUSB0", 9600)
+# ser = serial.Serial("/dev/ttyUSB0", 9600)
 sio = socketio.Server(cors_allowed_origins=["http://localhost:3000"])
 app = socketio.WSGIApp(sio)
 # ser = serial.Serial(port="/dev/serial0")
@@ -41,9 +42,9 @@ if Config.USE_RADIO:
 
 
 def exit_handler():
-    if ser is not None and ser.is_open():
-        print("Closing serial")
-        ser.close()
+    # if ser is not None and ser.is_open():
+    #     print("Closing serial")
+    #     ser.close()
     if Config.USE_RADIO:
         if device is not None and device.is_open():
             print("Closing radio")
@@ -77,9 +78,8 @@ def sendData():
 @sio.event
 def connect(sid, environ):
     global isRunning, sio
-    if not isRunning:
-        isRunning = True
-        sio.start_background_task(sendData)
+    timestamp = datetime.now().isoformat()
+    sio.emit("left_turn_signal", {"timestamp": timestamp, "number": 1})
 
 
 time_received = False
