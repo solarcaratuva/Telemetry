@@ -79,6 +79,7 @@ def sendData():
 def connect(sid, environ):
     global isRunning, sio
     timestamp = datetime.now().isoformat()
+    print("sent socket message to turn left signal on")
     sio.emit("left_turn_signal", {"timestamp": timestamp, "number": 1})
 
 
