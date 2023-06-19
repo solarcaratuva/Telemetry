@@ -200,11 +200,11 @@ const MonitorOnePage = () => {
           >
             <Typography>Motor Temp</Typography>
           </Paper>
-          <RPM  rpm={50} darkMode={false}/>
+          <RPM  rpm={data.motor_rpm[data.motor_rpm.length - 1].value} darkMode={false}/>
           {/* Replace this paper component with battery pack temp */}
 
-          <BatteryTempGuage temp={40} darkMode={false}/>
-          <CurrentGuage current={46} darkMode={false} />
+          <BatteryTempGuage temp={data.high_temperature.length !== 0 ? data.high_temperature[data.high_temperature.length - 1].value : 0} darkMode={false}/>
+          <CurrentGuage current={data.total_current.length !== 0 ? data.total_current[data.total_current.length - 1].value : 0} darkMode={false} />
         </Box>
         <Box sx={{ display: "flex", gap: "16px", width: "100%" }}>
           <Box

@@ -171,7 +171,7 @@ class MyTestCase(unittest.TestCase):
             "battery_current_direction": 0,
             "motor_current": 0,
             "fet_temp": 0,
-            "motor_rpm": 1000,
+            "motor_rpm": 100,
             "pwm_duty": 0,
             "lead_angle": 0,
         }
