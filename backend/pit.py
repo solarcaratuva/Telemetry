@@ -29,9 +29,9 @@ CANframes = {"BPSError": cantools.database.load_file(os.path.join(can_dir, "BPS.
              "ECUPowerAuxCommands": ['hazards', 'brake_lights', 'headlights', 'left_turn_signal', 'right_turn_signal'],
              "ECUMotorCommands": ['throttle', "forward_en", "reverse_en"],
              "MotorControllerPowerStatus": ["motor_rpm"],
+             "BPSPackInformation": ["pack_voltage", "pack_current", "is_charging_signal_status"],
              "SolarVoltage": ["panel1_voltage", "panel2_voltage", "panel3_voltage", "panel4_voltage"],
-             "SolarTemp": ["panel1_temp", "panel2_temp", "panel3_temp", "panel4_temp"],
-             "BPSPackInformation": ["pack_voltage", "pack_current", "is_charging_signal_status"]
+             "SolarTemp": ["panel1_temp", "panel2_temp", "panel3_temp", "panel4_temp"]
              }
 
 device = get_xbee_connection()

@@ -213,7 +213,7 @@ class MyTestCase(unittest.TestCase):
             "multipurpose_input_signal_status": 0,
             "always_on_signal_status": 0,
             "is_ready_signal_status": 0,
-            "is_charging_signal_status": 0,
+            "is_charging_signal_status": 1,
         }
         testmsg = get_serial_message(bpsDB, bps_pack_information, 1030, "BPSPackInformation")
 

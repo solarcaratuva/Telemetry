@@ -20,6 +20,8 @@ import {
 import {Data as DataBase} from './UpdateTypes'
 import {BooleanData as BooleanDataBase} from './UpdateTypes'
 import PackVoltageGuage from "../components/PackVoltageGuage";
+import ToggleButton from "@mui/material/ToggleButton";
+import * as React from "react";
 
 interface Data extends DataBase {
     panel1_voltage: DataSet,
@@ -36,7 +38,8 @@ interface Data extends DataBase {
 
 interface BooleanData extends BooleanDataBase {
     brake_lights: number,
-    headlights: number
+    headlights: number,
+    is_charging_signal_status: number
 }
 
 const socket = io("http://localhost:5050");
@@ -87,7 +90,8 @@ const MonitorOnePage = () => {
         brake_lights: 0,
         headlights: 0,
         hazards: 0,
-        reverse_en: 0
+        reverse_en: 0,
+        is_charging_signal_status: 0
     });
 
     const [time, setTime] = useState(new Date().toLocaleTimeString());
@@ -267,6 +271,9 @@ const MonitorOnePage = () => {
                                 right={"Right"}
                                 label={"Turn Signal"}
                             />
+                            <ToggleButton disabled value={"charging"} selected={booleanData.is_charging_signal_status==1} aria-label="left aligned">
+                                Battery Charging
+                            </ToggleButton>
                         </Box>
                         <Box
                             sx={{
