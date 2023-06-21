@@ -8,7 +8,7 @@ export interface Data {
     hazards: DataSet;
     brake_lights: DataSet;
     forward_en: DataSet;
-    total_current: DataSet;
+    pack_current: DataSet;
     high_temperature: DataSet;
 }
 

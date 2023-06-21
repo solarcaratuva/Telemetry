@@ -54,7 +54,7 @@ const MonitorTwoPage = () => {
         brake_lights: [],
         forward_en: [],
         motor_rpm: [],
-        total_current: [],
+        pack_current: [],
         high_temperature: [],
         panel1_voltage: [],
         panel2_voltage: [],
@@ -64,8 +64,7 @@ const MonitorTwoPage = () => {
         panel2_temp: [],
         panel3_temp: [],
         panel4_temp: [],
-        pack_voltage: [],
-        pack_current: []
+        pack_voltage: []
     });
 
     const [stringData, setStringData] = useState<StringData>({
@@ -203,7 +202,7 @@ const MonitorTwoPage = () => {
                         temp={data.high_temperature.length !== 0 ? data.high_temperature[data.high_temperature.length - 1].value : 0}
                         darkMode={false}/>
                     <CurrentGuage
-                        current={data.total_current.length !== 0 ? data.total_current[data.total_current.length - 1].value : 0}
+                        current={data.pack_current.length !== 0 ? data.pack_current[data.pack_current.length - 1].value : 0}
                         darkMode={false}/>
                     <PackVoltageGuage
                         voltage={data.pack_voltage.length !== 0 ? data.pack_voltage[data.pack_voltage.length - 1].value : 0}/>

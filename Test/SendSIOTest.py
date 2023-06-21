@@ -63,7 +63,7 @@ class MyTestCase(unittest.TestCase):
                          "PowerAuxError": cantools.database.load_file(
                              os.path.join(can_dir, "Rivanna2.dbc")).get_message_by_name(
                              "PowerAuxError").signal_tree,
-                         "SolarCurrent": ["total_current"],
+                         "SolarCurrent": ["pack_current"],
                          "BPSCellTemperature": ["high_temperature"],
                          "ECUPowerAuxCommands": ['hazards', 'brake_lights', 'headlights', 'left_turn_signal',
                                                  'right_turn_signal'],
@@ -184,7 +184,7 @@ class MyTestCase(unittest.TestCase):
 
     def test_solar_current(self):
         solar_current_example = {
-            "total_current": 30
+            "pack_current": 30
         }
         testmsg = get_serial_message(powerAuxDb, solar_current_example, 1076, "SolarCurrent")
 

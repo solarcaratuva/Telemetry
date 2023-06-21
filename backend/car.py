@@ -32,7 +32,8 @@ CANframes = {"BPSError": cantools.database.load_file(os.path.join(can_dir, "BPS.
              "BPSCellTemperature": ["high_temperature"],
              "ECUPowerAuxCommands": ['hazards', 'brake_lights', 'headlights', 'left_turn_signal', 'right_turn_signal'],
              "ECUMotorCommands": ['throttle', "forward_en", "reverse_en"],
-             "MotorControllerPowerStatus": ["motor_rpm"]
+             "MotorControllerPowerStatus": ["motor_rpm"],
+             "BPSPackInformation": ["pack_current"]
              }
 
 if Config.USE_RADIO:
