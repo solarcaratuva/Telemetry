@@ -3,7 +3,10 @@ from datetime import datetime
 import serial.tools.list_ports
 from digi.xbee.devices import XBeeDevice
 
-from decode_can_dbc import decode_dbc
+try:
+    from backend.decode_can_dbc import decode_dbc
+except ModuleNotFoundError:
+    import decode_can_dbc
 
 
 def get_xbee_connection():

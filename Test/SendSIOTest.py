@@ -5,7 +5,10 @@ import cantools
 import eventlet
 import socketio
 
-from backend.send_from_can import CANSender
+try:
+    from backend.send_from_can import CANSender
+except ModuleNotFoundError:
+    from send_from_can import CANSender
 
 bpsDB = cantools.database.load_file('../backend/CAN-messages/BPS.dbc')
 motorDb = cantools.database.load_file("../backend/CAN-messages/MotorController.dbc")
@@ -49,7 +52,7 @@ class MyTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.sio = socketio.Server(cors_allowed_origins=["http://localhost:3000"])
+        cls.sio = socketio.Server(cors_allowed_origins=["http://localhost:3000", "http://localhost:12345"])
         curr_path = os.path.dirname(os.path.abspath(__file__))
         can_dir = os.path.join(curr_path, "..", "backend", "CAN-messages")
         cls.CANframes = {"BPSError": cantools.database.load_file(os.path.join(can_dir, "BPS.dbc")).get_message_by_name(
@@ -87,7 +90,7 @@ class MyTestCase(unittest.TestCase):
             "hazards": 1,
             "brake_lights": 1,
             "headlights": 0,
-            "left_turn_signal": 0,
+            "left_turn_signal": 1,
             "right_turn_signal": 0
         }
 
