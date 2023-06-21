@@ -201,5 +201,24 @@ class MyTestCase(unittest.TestCase):
 
         self.send_sio(testmsg)
 
+    def test_bps_info(self):
+        bps_pack_information = {
+            "pack_voltage": 100,
+            "pack_current": 33,
+            "pack_soc": 0,
+            "discharge_relay_status": 0,
+            "charge_relay_status": 0,
+            "charger_safety_status": 0,
+            "dtc_status": 0,
+            "multipurpose_input_signal_status": 0,
+            "always_on_signal_status": 0,
+            "is_ready_signal_status": 0,
+            "is_charging_signal_status": 0,
+        }
+        testmsg = get_serial_message(bpsDB, bps_pack_information, 1030, "BPSPackInformation")
+
+        self.send_sio(testmsg)
+
+
 if __name__ == '__main__':
     unittest.main()
