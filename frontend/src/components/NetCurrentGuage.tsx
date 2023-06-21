@@ -18,7 +18,7 @@ const CurrentGuage: React.FC<Props> = ({ current, darkMode}) => {
       </Typography>
       <Box>
         {
-          <ReactSpeedometer ringWidth={40} minValue={0} maxValue={100} segments={3} segmentColors={["#EDCBD2", "#80C4B7", "#E3856B"]} textColor = {darkMode ? "white" : "black"} value={current} />
+          <ReactSpeedometer ringWidth={40} minValue={-30} maxValue={90} customSegmentStops={[-30, -20, 80, 90]} segmentColors={["#fc312f", "#2ffc31", "#fc312f"]} textColor = {darkMode ? "white" : "black"} value={current} />
         }
       </Box>
     </Box>
