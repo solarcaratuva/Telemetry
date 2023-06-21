@@ -1,226 +1,319 @@
-import { Box, Paper, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import {Box, Paper, Typography} from "@mui/material";
+import {useEffect, useState} from "react";
 
 import OnePedalDrive from "../components/OnePedalDrive";
-import { io } from "socket.io-client";
+import {io} from "socket.io-client";
 import ToggleButtons from "../components/ToggleButtons";
 import AlertBox from "../components/AlertBox";
 import RPM from "../components/RPM";
 import BatteryTempGuage from "../components/BatteryTempGuage";
 import CurrentGuage from "../components/NetCurrentGuage";
+import {
+    Update,
+    StringData,
+    StringUpdate,
+    StringArrayData,
+    StringArrayUpdate,
+    BooleanUpdate,
+    DataSet
+} from './UpdateTypes';
+import {Data as DataBase} from './UpdateTypes'
+import {BooleanData as BooleanDataBase} from './UpdateTypes'
+import PackVoltageGuage from "../components/PackVoltageGuage";
+
+interface Data extends DataBase {
+    panel1_voltage: DataSet,
+    panel2_voltage: DataSet,
+    panel3_voltage: DataSet,
+    panel4_voltage: DataSet,
+    panel1_temp: DataSet,
+    panel2_temp: DataSet,
+    panel3_temp: DataSet,
+    panel4_temp: DataSet,
+    pack_voltage: DataSet,
+    pack_current: DataSet
+}
+
+interface BooleanData extends BooleanDataBase {
+    brake_lights: number,
+    headlights: number
+}
 
 const socket = io("http://localhost:5050");
 const MAX_LENGTH = 50;
 
-type DataSet = { value: number; timestamp: Date }[];
-interface Data {
-  car_speed: DataSet;
-  battery_temp: DataSet;
-  panel_temp: DataSet;
-  pedal_value: DataSet;
-}
-
-interface Update {
-  number: number;
-  timestamp: string;
-}
-
-type StringDataSet = { value: string; timestamp: Date }[];
-interface StringData {
-  gear_state: StringDataSet;
-  hazard_state: StringDataSet;
-  turn_state: StringDataSet;
-}
-interface StringUpdate {
-  string: string;
-  timestamp: string;
-}
-
+// TODO - add below for monitor one/two
+//  all stuff from hud
+//  rpm, voltage
 const MonitorTwoPage = () => {
-  const [data, setData] = useState<Data>({
-    car_speed: [],
-    battery_temp: [],
-    panel_temp: [],
-    pedal_value: [],
-  });
-
-  const [stringData, setStringData] = useState<StringData>({
-    gear_state: [],
-    hazard_state: [],
-    turn_state: [],
-  });
-
-  useEffect(() => {
-    //Attaches socket listeners for each value of the data object on mount
-    Object.keys(data).forEach((name) => {
-      socket.on(name, (update: Update) => {
-        setData((oldData) => {
-          const updatedData = {
-            ...oldData,
-            [name]: [
-              ...oldData[name as keyof Data],
-              { value: update.number, timestamp: new Date(update.timestamp) },
-            ],
-          };
-          if (updatedData[name as keyof Data].length > MAX_LENGTH) {
-            updatedData[name as keyof Data] = updatedData[name as keyof Data].slice(-MAX_LENGTH);
-          }
-          return updatedData;
-        });
-      });
+    const [data, setData] = useState<Data>({
+        battery_temp: [],
+        panel_temp: [],
+        throttle: [],
+        hazards: [],
+        brake_lights: [],
+        forward_en: [],
+        motor_rpm: [],
+        total_current: [],
+        high_temperature: [],
+        panel1_voltage: [],
+        panel2_voltage: [],
+        panel3_voltage: [],
+        panel4_voltage: [],
+        panel1_temp: [],
+        panel2_temp: [],
+        panel3_temp: [],
+        panel4_temp: [],
+        pack_voltage: [],
+        pack_current: []
     });
 
-    Object.keys(stringData).forEach((name) => {
-      socket.on(name, (update: StringUpdate) => {
-        setStringData((oldData) => {
-          const updatedData = {
-            ...oldData,
-            [name]: [
-              ...oldData[name as keyof StringData],
-              { value: update.string, timestamp: new Date(update.timestamp) },
-            ],
-          };
-          if (updatedData[name as keyof StringData].length > MAX_LENGTH) {
-            updatedData[name as keyof StringData] = updatedData[name as keyof StringData].slice(-MAX_LENGTH);
-          }
-          return updatedData;
-        });
-      });
+    const [stringData, setStringData] = useState<StringData>({
+        gear_state: [],
+        hazard_state: [],
+        turn_state: [],
+        motor_faults: []
     });
 
-    //Removes all socket listeners for each value of the data object on unmount
-    //This is to prevent multiple listeners from being attached to the same value
-    return () => {
-      Object.keys(data).forEach((name) => {
-        socket.off(name);
-      });
-    };
-  }, []);
+    const [stringArrayData, setStringArrayData] = useState<StringArrayData>({
+        BPSError: [],
+        MotorControllerError: [],
+        PowerAuxError: []
+    });
 
-  return (
-    <Box p="16px" height="100vh" boxSizing="border-box">
-      {/* Page is vertically centered and will adapt based on actual component sizes */}
-      <Box
-        height="100%"
-        display="flex"
-        flexDirection="column"
-        gap="16px"
-        justifyContent="center"
-      >
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-around",
-            gap: "16px",
-            height: "33vh",
-          }}
-        >
-          {/* Replace this paper component with motor temp */}
-          <Paper
-            sx={{
-              flex: "1 0 0",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Typography>Motor Temp</Typography>
-          </Paper>
-          <RPM  rpm={50} darkMode={false}/>
-          {/* Replace this paper component with battery pack temp */}
+    const [booleanData, setBooleanData] = useState<BooleanData>({
+        left_turn_signal: 0,
+        right_turn_signal: 0,
+        forward_en: 0,
+        brake_lights: 0,
+        headlights: 0,
+        hazards: 0,
+        reverse_en: 0
+    });
 
-          <BatteryTempGuage temp={40} darkMode={false}/>
-          <CurrentGuage current={46} darkMode={false} />
-        </Box>
-        <Box sx={{ display: "flex", gap: "16px", width: "100%" }}>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-around",
-              gap: "16px",
-              width: "100%",
-            }}
-          >
+    const [time, setTime] = useState(new Date().toLocaleTimeString());
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setTime(new Date().toLocaleTimeString());
+        }, 1000);
+        return () => {
+            clearInterval(intervalId)
+        };
+    }, []);
+
+    const [leftBlinker, setLeftBlinker] = useState(false);
+    const [rightBlinker, setRightBlinker] = useState(false);
+
+    useEffect(() => {
+        //Attaches socket listeners for each value of the data object on mount
+        Object.keys(data).forEach((name) => {
+            socket.on(name, (update: Update) => {
+                setData((oldData) => {
+                    const updatedData = {
+                        ...oldData,
+                        [name]: [
+                            ...oldData[name as keyof Data],
+                            {value: update.number, timestamp: new Date(update.timestamp)},
+                        ],
+                    };
+                    if (updatedData[name as keyof Data].length > MAX_LENGTH) {
+                        updatedData[name as keyof Data] = updatedData[name as keyof Data].slice(-MAX_LENGTH);
+                    }
+                    return updatedData;
+                });
+            });
+        });
+
+        Object.keys(stringData).forEach((name) => {
+            socket.on(name, (update: StringUpdate) => {
+                setStringData((oldData) => {
+                    const updatedData = {
+                        ...oldData,
+                        [name]: [
+                            ...oldData[name as keyof StringData],
+                            {value: update.string, timestamp: new Date(update.timestamp)},
+                        ],
+                    };
+                    if (updatedData[name as keyof StringData].length > MAX_LENGTH) {
+                        updatedData[name as keyof StringData] = updatedData[name as keyof StringData].slice(-MAX_LENGTH);
+                    }
+                    return updatedData;
+                });
+            });
+        });
+
+        (Object.keys(stringArrayData) as Array<keyof StringArrayData>).forEach((name) => {
+            socket.on(name, (update: StringArrayUpdate) => {
+                setStringArrayData((oldData) => {
+                    oldData[name] = update.array;
+                    return oldData;
+                });
+            });
+        });
+
+        Object.keys(booleanData).forEach((name) => {
+            socket.on(name, (update: BooleanUpdate) => {
+                console.log("update" + name + " to " + update.number);
+                setBooleanData((oldData) => {
+                    oldData[name as keyof BooleanData] = update.number;
+                    return oldData;
+                    // return {...oldData, [name as keyof BooleanData]: update.number};
+                });
+            });
+        });
+
+        //Removes all socket listeners for each value of the data object on unmount
+        //This is to prevent multiple listeners from being attached to the same value
+        return () => {
+            Object.keys(data).forEach((name) => {
+                socket.off(name);
+            });
+            Object.keys(stringData).forEach((name) => {
+                socket.off(name);
+            });
+            Object.keys(stringArrayData).forEach((name) => {
+                socket.off(name);
+            });
+            Object.keys(booleanData).forEach((name) => {
+                socket.off(name);
+            });
+        };
+    }, []);
+
+    return (
+        <Box p="16px" height="100vh" boxSizing="border-box">
+            {/* Page is vertically centered and will adapt based on actual component sizes */}
             <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-around",
-                gap: "16px",
-                height: "40vh",
-                flex: "1 0 0",
-              }}
+                height="100%"
+                display="flex"
+                flexDirection="column"
+                gap="16px"
+                justifyContent="center"
             >
-              <ToggleButtons
-                  leftOn = {false}
-                  rightOn = {true}
-                left={"Low"}
-                right={"High"}
-                label={"Gear:"}
-              />
-              <ToggleButtons
-                  leftOn = {false}
-                  rightOn = {true}
-                left={"Off"}
-                right={"On"}
-                label={"Hazard State:"}
-              />
-              <ToggleButtons
-                  leftOn = {false}
-                  rightOn = {true}
-                left={"Left"}
-                right={"Right"}
-                label={"Turn Signal:"}
-              />
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-around",
-                gap: "16px",
-                flex: "3 0 0",
-              }}
-            >
-              <OnePedalDrive value={ data.pedal_value.length != 0 ? data.pedal_value[data.pedal_value.length - 1].value : 50 } />
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-around",
-                  gap: "16px",
-                }}
-              >
-                {/* Replace this paper component with motor faults */}
-                <Paper
-                  sx={{
-                    flex: "1 0 0",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "calc(25vh - 8px)",
-                  }}
+                <Box
+                    sx={{
+                        display: "flex",
+                        justifyContent: "space-around",
+                        gap: "16px",
+                        height: "33vh",
+                    }}
                 >
-                  <AlertBox data={["Alert 1", "Alert2"]}/>
-                </Paper>
-                {/* Replace this paper component with fifa chart */}
-                <Paper
-                  sx={{
-                    flex: "1 0 0",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "calc(25vh - 8px)",
-                  }}
-                >
-                  <Typography>Fifa Chart</Typography>
-                </Paper>
-              </Box>
+                    <BatteryTempGuage
+                        temp={data.high_temperature.length !== 0 ? data.high_temperature[data.high_temperature.length - 1].value : 0}
+                        darkMode={false}/>
+                    <CurrentGuage
+                        current={data.total_current.length !== 0 ? data.total_current[data.total_current.length - 1].value : 0}
+                        darkMode={false}/>
+                    <PackVoltageGuage
+                        voltage={data.pack_voltage.length !== 0 ? data.pack_voltage[data.pack_voltage.length - 1].value : 0}/>
+
+                </Box>
+                <Box sx={{display: "flex", gap: "16px", width: "100%"}}>
+                    <Box
+                        style={{ marginTop: "30px" }}
+                        sx={{
+                            display: "flex",
+                            justifyContent: "space-around",
+                            gap: "16px",
+                            width: "100%",
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                display: "flex",
+                                flexDirection: "column",
+                                justifyContent: "space-around",
+                                gap: "16px",
+                                height: "40vh",
+                                flex: "1 0 0",
+                            }}
+                        >
+                            <ToggleButtons
+                                leftOn={booleanData.forward_en === 1}
+                                rightOn={booleanData.reverse_en === 1}
+                                left={"Forward"}
+                                right={"Reverse"}
+                                label={"Gear"}
+                            />
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    justifyContent: "center",
+                                    gap: "15px",
+                                    height: "40vh",
+                                    flex: "1 0 0",
+                                }}
+                            >
+                                <ToggleButtons
+                                    leftOn={booleanData.brake_lights === 0}
+                                    rightOn={booleanData.brake_lights === 1}
+                                    left={"Off"}
+                                    right={"On"}
+                                    label={"Brake Lights"}
+                                />
+                                <ToggleButtons
+                                    leftOn={booleanData.headlights === 0}
+                                    rightOn={booleanData.headlights === 1}
+                                    left={"Off"}
+                                    right={"On"}
+                                    label={"Head Lights"}
+                                />
+                            </Box>
+                            <ToggleButtons
+                                leftOn={booleanData.hazards === 1 || booleanData.left_turn_signal === 1}
+                                rightOn={booleanData.hazards === 1 || booleanData.right_turn_signal === 1}
+                                left={"Left"}
+                                right={"Right"}
+                                label={"Turn Signal"}
+                            />
+                        </Box>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                flexDirection: "column",
+                                justifyContent: "space-around",
+                                gap: "16px",
+                                flex: "3 0 0",
+                            }}
+                        >
+                            <OnePedalDrive
+                                value={data.throttle.length != 0 ? data.throttle[data.throttle.length - 1].value : 50}/>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    justifyContent: "space-around",
+                                    gap: "16px",
+                                }}
+                            >
+                                {/* Replace this paper component with motor faults */}
+
+                                <AlertBox
+                                    data={stringArrayData.BPSError.concat(stringArrayData.MotorControllerError, stringArrayData.PowerAuxError)}/>
+
+                                {/* Replace this paper component with fifa chart */}
+                                <Box
+                                    sx={{
+                                        flex: "1 0 0",
+                                        display: "flex",
+                                        alignItems: "flex-start",
+                                        justifyContent: "center",
+                                        height: "calc(25vh - 8px)"
+                                    }}
+                                    marginBottom={10}
+                                >
+                                    <RPM
+                                        rpm={data.motor_rpm.length !== 0 ? data.motor_rpm[data.motor_rpm.length - 1].value : 0}
+                                        darkMode={false}/>
+                                </Box>
+                            </Box>
+                        </Box>
+                    </Box>
+                </Box>
             </Box>
-          </Box>
         </Box>
-      </Box>
-    </Box>
-  );
+    );
 };
 
 export default MonitorTwoPage;
