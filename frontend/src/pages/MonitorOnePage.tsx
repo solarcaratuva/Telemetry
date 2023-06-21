@@ -24,14 +24,6 @@ import ToggleButton from "@mui/material/ToggleButton";
 import * as React from "react";
 
 interface Data extends DataBase {
-    panel1_voltage: DataSet,
-    panel2_voltage: DataSet,
-    panel3_voltage: DataSet,
-    panel4_voltage: DataSet,
-    panel1_temp: DataSet,
-    panel2_temp: DataSet,
-    panel3_temp: DataSet,
-    panel4_temp: DataSet,
     pack_voltage: DataSet,
     pack_current: DataSet
 }
@@ -59,14 +51,6 @@ const MonitorOnePage = () => {
         motor_rpm: [],
         pack_current: [],
         high_temperature: [],
-        panel1_voltage: [],
-        panel2_voltage: [],
-        panel3_voltage: [],
-        panel4_voltage: [],
-        panel1_temp: [],
-        panel2_temp: [],
-        panel3_temp: [],
-        panel4_temp: [],
         pack_voltage: []
     });
 
