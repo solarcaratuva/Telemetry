@@ -211,6 +211,7 @@ const MonitorOnePage = () => {
                 </Box>
                 <Box sx={{display: "flex", gap: "16px", width: "100%"}}>
                     <Box
+                        style={{ marginTop: "30px" }}
                         sx={{
                             display: "flex",
                             justifyContent: "space-around",
