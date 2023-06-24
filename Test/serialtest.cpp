@@ -42,7 +42,10 @@ int main() {
                 boost::asio::read(serial, boost::asio::buffer(msg + i, 1));
             }
             int message_id = msg[0]*0x0100+msg[1];
-            printf("msg: %s, id: %d\n", msg, message_id);
+            printf("msg: id: %d data: ", message_id);
+            for(int i=0; i<24; ++i) {
+                printf("%d, ", (int) msg[i]);
+            }
         }
     }
 
