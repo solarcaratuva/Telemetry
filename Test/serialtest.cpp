@@ -42,9 +42,15 @@ int main() {
                 boost::asio::read(serial, boost::asio::buffer(msg + i, 1));
             }
             int message_id = msg[0]*0x0100+msg[1];
-            printf("msg: id: %d data: ", message_id);
-            for(int i=0; i<24; ++i) {
-                printf("%d, ", (int) msg[i]);
+            if(message_id == 1046) { // Detected message with ID 1046
+                printf("msg: id: %d data: ", message_id);
+                // assuming message_data is uint8_t[]
+                uint16_t low_cell_voltage = (msg[2] << 8) | msg[3]; // Extract 16-bit signal starting at byte index 3
+                uint8_t low_cell_voltage_id = msg[4]; // Extract 8-bit signal at byte index 5
+                uint16_t high_cell_voltage = (msg[5] << 8) | msg[6]; // Extract 16-bit signal starting at byte index 6
+                uint8_t high_cell_voltage_id = msg[7]; // Extract 8-bit signal at byte index 8
+                printf("Low Cell Voltage: %.4f V, ID: %d, High Cell Voltage: %.4f V, ID: %d\n",
+                       low_cell_voltage*0.0001, low_cell_voltage_id, high_cell_voltage*0.0001, high_cell_voltage_id);
             }
         }
     }
