@@ -63,6 +63,7 @@ isRunning = False
 # white mode
 
 def sendData():
+    print("task")
     while True:
         encoded_message = ser.read(1)
         start_byte = int.from_bytes(encoded_message, "big")  # Checks for start byte as int for beginning of message
@@ -79,6 +80,7 @@ def connect(sid, environ):
     global isRunning, sio
     if not isRunning:
         isRunning = True
+        print("start task")
         sio.start_background_task(sendData)
 
 
@@ -107,4 +109,5 @@ if __name__ == '__main__':
         while not time_received:
             pass
 
+    print("start server")
     eventlet.wsgi.server(eventlet.listen(('localhost', 5050)), app)
