@@ -36,6 +36,13 @@ int main() {
     while (true) {
         boost::asio::read(serial, boost::asio::buffer(&c,1));
         std::cout << (int) c << "\n";
+        if((int) c == 249) {
+            char msg[24];
+            for(int i=0; i<24; ++i) {
+                boost::asio::read(serial, boost::asio::buffer(msg+i,1));
+            }
+            printf("%s", msg);
+        }
     }
 
     return 0;
