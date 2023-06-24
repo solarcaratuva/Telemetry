@@ -15,7 +15,7 @@ from send_from_can import CANSender, get_xbee_connection
 # car - 0013A20041C4AC5F
 
 # USB port on PI (UART splitter)
-ser = serial.Serial("/dev/ttyUSB0", 9600)
+ser = serial.Serial("/dev/ttyUSB0", 19200)
 sio = socketio.Server(cors_allowed_origins=["http://localhost:3000", "http://localhost:12345"])
 app = socketio.WSGIApp(sio)
 # ser = serial.Serial(port="/dev/serial0")
