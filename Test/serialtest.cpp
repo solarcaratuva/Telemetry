@@ -51,6 +51,13 @@ int main() {
                 uint8_t high_cell_voltage_id = msg[7]; // Extract 8-bit signal at byte index 8
                 printf("Low Cell Voltage: %.4f V, ID: %d, High Cell Voltage: %.4f V, ID: %d\n",
                        low_cell_voltage*0.0001, low_cell_voltage_id, high_cell_voltage*0.0001, high_cell_voltage_id);
+                for(int i=2; i<8; ++i) {
+                    for(int j=0; j<8; ++j) {
+                        std::cout << ((msg[i] >> j) & 1);
+                    }
+                    std::cout << " ";
+                }
+                std::cout << "\n";
             }
         }
     }
