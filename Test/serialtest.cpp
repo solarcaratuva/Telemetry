@@ -1,26 +1,19 @@
+#include <boost/asio.hpp>
 #include <iostream>
-#include <wiringPi.h>
-#include <wiringSerial.h>
 
-int main ()
-{
-    if (wiringPiSetup () == -1) {
-        std::cerr << "Unable to setup wiringPi" << std::endl;
-        return 1;
-    }
+#define SERIAL_PORT "/dev/serial0" // Replace with your serial port
+#define BAUD_RATE 9600 // Replace with your baud rate
 
-    int serial_port;
-    if ((serial_port = serialOpen ("/dev/ttyUSB0", 9600)) < 0 && (serial_port = serialOpen ("/dev/ttyUSB1", 9600)) < 0) { //change to the correct port and baud rate
-        std::cerr << "Unable to open serial device" << std::endl;
-        return 1;
-    }
+int main() {
+    boost::asio::io_service io;
+    boost::asio::serial_port serial(io, SERIAL_PORT);
 
+    serial.set_option(boost::asio::serial_port_base::baud_rate(BAUD_RATE));
+
+    char c;
     while (true) {
-        if (serialDataAvail (serial_port)) {
-            char incomingByte = serialGetchar (serial_port);
-            std::cout << incomingByte;
-            fflush(stdout);
-        }
+        boost::asio::read(serial, boost::asio::buffer(&c,1));
+        std::cout << c;
     }
 
     return 0;
