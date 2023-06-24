@@ -4,7 +4,7 @@ import can
 import cantools
 from pathlib import Path
 import binascii
-
+import codecs
 
 def decode_dbc(message_id, message_data): #message_id -> frame_id, message_data -> binary representation of the message data
     # Switch comment below and uncomment line 2 below for testing, vice versa for prod
@@ -53,5 +53,5 @@ def make_hex_great_again(message_data):
             new_message += hex(x-55)[2:]
         else:
             new_message += hex(0)[2:]
-    return bytes.fromhex(new_message)        
+    return codecs.decode(new_message, 'hex_codec')
                 
