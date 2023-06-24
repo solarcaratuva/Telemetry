@@ -99,7 +99,7 @@ if __name__ == '__main__':
                 seconds = int(msgtxt[5:])
                 os.system(f"sudo date -s '@{seconds}'")
                 time_received = True
-                device.del_data_received_callback(time_received)
+                device.del_data_received_callback(time_handler)
                 device.send_data_broadcast("ack")
 
 
