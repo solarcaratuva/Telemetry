@@ -28,6 +28,7 @@ def get_serial_connection():
 def main_loop(serconn):
     while True:
         encoded_message = ser.read(1)
+        print(f"byte found: {encoded_message}")
         start_byte = int.from_bytes(encoded_message, "big")  # Checks for start byte as int for beginning of message
         if start_byte == 249:  # 249 is the start message byte
             encoded_message += ser.read(24)  # read rest of 25 byte message
