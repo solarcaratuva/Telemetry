@@ -44,7 +44,7 @@ if __name__ == "__main__":
         exit(-1)
 
     def exit_handler():
-        if ser is not None and ser.is_open():
+        if ser is not None and ser.is_open:
             ser.close()
         exit(0)
 

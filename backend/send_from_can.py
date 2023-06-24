@@ -1,12 +1,12 @@
+import os
+import sys
 from datetime import datetime
 
 import serial.tools.list_ports
 from digi.xbee.devices import XBeeDevice
 
-try:
-    from backend.decode_can_dbc import decode_dbc
-except ModuleNotFoundError:
-    import decode_can_dbc
+# sys.path.append(os.path.dirnsame(__file__))
+from decode_can_dbc import decode_dbc
 
 
 def get_xbee_connection():
