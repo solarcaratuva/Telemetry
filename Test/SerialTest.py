@@ -31,7 +31,7 @@ def main_loop(serconn):
         start_byte = int.from_bytes(encoded_message, "big")  # Checks for start byte as int for beginning of message
         if start_byte == 249:  # 249 is the start message byte
             encoded_message += ser.read(24)  # read rest of 25 byte message
-            print(f"raw msg: {encoded_message}")
+            print(f"raw msg: {encoded_message}, length: {len(encoded_message)}")
             name, values = get_can_data(encoded_message)
             print(f"~~~~~~~~~\nRaw data: {encoded_message}\nMessage Name: {name}\nValues: {values}\n~~~~~~~~~~")
 
