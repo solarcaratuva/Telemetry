@@ -14,7 +14,7 @@ from send_from_can import CANSender, get_xbee_connection
 # 0013A20041C4AC5F
 
 ports = serial.tools.list_ports.comports()
-sio = socketio.Server(cors_allowed_origins=["http://localhost:3000"])
+sio = socketio.Server(cors_allowed_origins=["http://localhost:3000", "http://localhost:12345"])
 app = socketio.WSGIApp(sio)
 
 curr_path = os.path.dirname(os.path.abspath(__file__))
@@ -60,9 +60,9 @@ def sendData():  # replacement for send_data
 
     def data_receive_callback(xbee_message):
         address = xbee_message.remote_device.get_64bit_addr()
-        data = xbee_message.data.decode("utf8")
-        sender.send(data)
+        data = xbee_message.data#.decode("utf8")
         print("Received data from %s: %s" % (address, data))
+        sender.send(data)
 
     device.add_data_received_callback(data_receive_callback)
 
@@ -80,16 +80,17 @@ if __name__ == '__main__':
 
     def ack_handler(msg):
         global ack_received
+        print("acked")
         if msg.data.decode("utf8") == "ack":
             ack_received = True
             device.del_data_received_callback(ack_received)
 
 
-    device.add_data_received_callback(ack_handler)
-    while not ack_received:
-        sending = f"Time:{int(time.time())}"
-        device.send_data_broadcast(sending)
-        print(f"sent: {sending}")
-        time.sleep(2)
+    # device.add_data_received_callback(ack_handler)
+    # while not ack_received:
+    #     sending = f"Time:{int(time.time())}"
+    #     device.send_data_broadcast(sending)
+    #     print(f"sent: {sending}")
+    #     time.sleep(2)
 
     eventlet.wsgi.server(eventlet.listen(('localhost', 5050)), app)
