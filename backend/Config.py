@@ -1,1 +1,1 @@
-USE_RADIO = False
+USE_RADIO = True
