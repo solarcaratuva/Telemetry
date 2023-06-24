@@ -41,7 +41,7 @@ if Config.USE_RADIO:
 
 
 def exit_handler():
-    if ser is not None and ser.is_open():
+    if ser is not None and ser.is_open:
         print("Closing serial")
         ser.close()
     if Config.USE_RADIO:
