@@ -53,10 +53,11 @@ class CANSender:
     def send(self, encoded_message: bytes) -> bool:
         timestamp = datetime.now().isoformat()
         name, values = get_can_data(encoded_message)
+        """
         print(name)
         print(values)
         print(encoded_message)
-
+        """
         if name not in self.can_messages:
             return False
         if name in ("BPSError", "MotorControllerError", "PowerAuxError"):

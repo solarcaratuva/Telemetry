@@ -63,8 +63,10 @@ isRunning = False
 # white mode
 
 def sendData():
+    print("sendData")
     while True:
         encoded_message = ser.read(1)
+        print(f"got byte: {encoded_message}")
         start_byte = int.from_bytes(encoded_message, "big")  # Checks for start byte as int for beginning of message
         if start_byte == 249:  # 249 is the start message byte
             encoded_message += ser.read(24)  # read rest of 25 byte message
@@ -79,6 +81,7 @@ def connect(sid, environ):
     global isRunning, sio
     if not isRunning:
         isRunning = True
+        print("connected")
         sio.start_background_task(sendData)
 
 
@@ -106,5 +109,5 @@ if __name__ == '__main__':
         device.add_data_received_callback(time_handler)
         while not time_received:
             pass
-
+    print("start server")
     eventlet.wsgi.server(eventlet.listen(('localhost', 5050)), app)
