@@ -15,8 +15,10 @@ def get_serial_connection():
     for port in ports:
         print(f"Attempting to connect to {port.device}")
         try:
-            can_serial = serial.Serial(port=port.device)
-            print(f"Connected to {port.device}")
+            if port.device.startswith("/dev/ttyUSB"):
+                can_serial = serial.Serial(port=port.device)
+                print(f"Connected to {port.device}")
+                break
         except Exception:
             print(f"Failed to connect to {port.device}")
             continue
