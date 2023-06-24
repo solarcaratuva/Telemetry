@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 
-#define BAUD_RATE 9600 // Replace with your baud rate
+#define BAUD_RATE 19200 // Replace with your baud rate
 
 std::string get_available_port() {
     std::ifstream check_port;
