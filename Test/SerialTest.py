@@ -22,9 +22,12 @@ def get_serial_connection():
 
 def main_loop(serconn):
     while True:
-        txt = serconn.read(25)
-        name, values = get_can_data(txt)
-        print(f"~~~~~~~~~\nRaw data: {txt}\nMessage Name: {name}\nValues: {values}\n~~~~~~~~~~")
+        encoded_message = ser.read(1)
+        start_byte = int.from_bytes(encoded_message, "big")  # Checks for start byte as int for beginning of message
+        if start_byte == 249:  # 249 is the start message byte
+            encoded_message += ser.read(24)  # read rest of 25 byte message
+            name, values = get_can_data(encoded_message)
+            print(f"~~~~~~~~~\nRaw data: {encoded_message}\nMessage Name: {name}\nValues: {values}\n~~~~~~~~~~")
 
 # Can format:
 #   249_id1,id2_canmsg(17)_250
