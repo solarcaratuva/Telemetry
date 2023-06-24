@@ -39,9 +39,10 @@ int main() {
         if((int) c == 249) {
             char msg[24];
             for(int i=0; i<24; ++i) {
-                boost::asio::read(serial, boost::asio::buffer(msg+i,1));
+                boost::asio::read(serial, boost::asio::buffer(msg + i, 1));
             }
-            printf("%s", msg);
+            int message_id = msg[0]*0x0100+msg[1];
+            printf("msg: %s, id: %s\n", msg, message_id);
         }
     }
 
