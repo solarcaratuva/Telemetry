@@ -1,6 +1,7 @@
 # Runs on the PI, takes data off ECU board over UART, parses CAN and publishes to server
 import atexit
 import os
+import threading
 
 import cantools
 import eventlet
@@ -106,6 +107,12 @@ if __name__ == '__main__':
 
 
         device.add_data_received_callback(time_handler)
+
+        def timeout():
+            global time_received
+            time_received = True
+
+        threading.Timer(15, timeout)
         while not time_received:
             pass
 
