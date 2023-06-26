@@ -1,7 +1,7 @@
 # Runs on the PI, takes data off ECU board over UART, parses CAN and publishes to server
 import atexit
 import os
-
+import time
 import cantools
 import eventlet
 import serial
@@ -107,7 +107,9 @@ if __name__ == '__main__':
 
 
         device.add_data_received_callback(time_handler)
-        while not time_received:
+        
+        end_time = time.time() + 15
+        while not time_received and time.time() <= end_time:
             pass
     print("start server")
     eventlet.wsgi.server(eventlet.listen(('localhost', 5050)), app)
