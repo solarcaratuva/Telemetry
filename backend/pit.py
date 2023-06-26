@@ -1,6 +1,6 @@
 import atexit
 import os
-import time
+# import time
 
 import cantools
 import eventlet
@@ -78,12 +78,12 @@ def connect(sid, environ):
 ack_received = False
 if __name__ == '__main__':
 
-    def ack_handler(msg):
-        global ack_received
-        print("acked")
-        if msg.data.decode("utf8") == "ack":
-            ack_received = True
-            device.del_data_received_callback(ack_received)
+    # def ack_handler(msg):
+    #     global ack_received
+    #     print("acked")
+    #     if msg.data.decode("utf8") == "ack":
+    #         ack_received = True
+    #         device.del_data_received_callback(ack_received)
 
 
     # device.add_data_received_callback(ack_handler)
