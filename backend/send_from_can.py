@@ -5,7 +5,7 @@ from datetime import datetime
 import serial.tools.list_ports
 from digi.xbee.devices import XBeeDevice
 
-# sys.path.append(os.path.dirnsame(__file__))
+sys.path.append(os.path.dirname(__file__))
 from decode_can_dbc import decode_dbc
 
 
