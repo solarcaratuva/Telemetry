@@ -15,7 +15,7 @@ import cantools
 import serial.tools.list_ports
 import socketio
 
-from send_from_can import CANSender, get_xbee_connection
+from send_from_can import CANSender, get_xbee_connection, get_can_data
 
 # XBee Mac addresses
 # 0013A20041C4ACC3
@@ -73,8 +73,10 @@ def read_radio():  # replacement for send_data
 
 def send_socket():
     while True:
-        data = queue.get()  # Wait for data in queue)
-        sender.send(data)
+        data = queue.get()  # Wait for data in queue
+        name, values = get_can_data(data)
+        sio.emit("monitor_two", {"name": name, "values": values})
+        sender.send(name, values)
         sio.sleep(0.1)
 
 

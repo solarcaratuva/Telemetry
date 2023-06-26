@@ -50,12 +50,10 @@ class CANSender:
         self.sio = sio
         self.can_messages = can_messages
 
-    def send(self, encoded_message: bytes) -> bool:
+    def send(self, name, values) -> bool:
         timestamp = datetime.now().isoformat()
-        name, values = get_can_data(encoded_message)
         print(name)
         print(values)
-        print(encoded_message)
 
         if name not in self.can_messages:
             return False
