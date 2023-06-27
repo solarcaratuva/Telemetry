@@ -18,7 +18,7 @@ from send_from_can import CANSender, get_xbee_connection
 # car - 0013A20041C4AC5F
 
 # USB port on PI (UART splitter)
-ser = serial.Serial("/dev/ttyUSB1", 19200)
+#ser = serial.Serial("/dev/ttyUSB1", 19200)
 sio = socketio.Server(cors_allowed_origins=["http://localhost:3000", "http://localhost:12345"])
 app = socketio.WSGIApp(sio)
 # ser = serial.Serial(port="/dev/serial0")
@@ -41,7 +41,7 @@ CANframes = {"BPSError": cantools.database.load_file(os.path.join(can_dir, "BPS.
 
 if Config.USE_RADIO:
     device = get_xbee_connection()
-
+ser = serial.Serial(port="/dev/ttyUSB1", baudrate=19200)
 
 def exit_handler():
     if ser is not None and ser.is_open:
@@ -72,6 +72,7 @@ def read_serial():
     while True:
         encoded_message = ser.read(1)
         start_byte = int.from_bytes(encoded_message, "big")  # Checks for start byte as int for beginning of message
+        print(f"got byte: {encoded_message}")
         if start_byte == 249:  # 249 is the start message byte
             encoded_message += ser.read(24)
             print(f"put {encoded_message} into queue")
