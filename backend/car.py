@@ -1,7 +1,10 @@
 # Runs on the PI, takes data off ECU board over UART, parses CAN and publishes to server
 import atexit
 import os
+import threading
 import time
+from queue import Queue
+
 import cantools
 import eventlet
 import serial
@@ -62,18 +65,29 @@ isRunning = False
 # make motor faults longer/ all faults
 # white mode
 
+queue = Queue()
+
+
+def read_serial():
+    while True:
+        encoded_message = ser.read(1)
+        start_byte = int.from_bytes(encoded_message, "big")  # Checks for start byte as int for beginning of message
+        if start_byte == 249:  # 249 is the start message byte
+            encoded_message += ser.read(24)
+            queue.put(encoded_message)
+            if len(queue) > 50:
+                with queue.mutex:
+                    queue.queue.clear()
+
+
 def sendData():
     print("sendData")
     while True:
-        encoded_message = ser.read(1)
-        print(f"got byte: {encoded_message}")
-        start_byte = int.from_bytes(encoded_message, "big")  # Checks for start byte as int for beginning of message
-        if start_byte == 249:  # 249 is the start message byte
-            encoded_message += ser.read(24)  # read rest of 25 byte message
-            sender.send(encoded_message)  # Send data to be parsed to CAN
-            if Config.USE_RADIO:
-                device.send_data_broadcast(encoded_message)  # Send over radio to Telemetry
-            sio.sleep(1)
+        encoded_message = queue.get()
+        sender.send(encoded_message)  # Send data to be parsed to CAN
+        if Config.USE_RADIO:
+            device.send_data_broadcast(encoded_message)  # Send over radio to Telemetry
+        sio.sleep(1)
 
 
 @sio.event
@@ -82,6 +96,7 @@ def connect(sid, environ):
     if not isRunning:
         isRunning = True
         print("connected")
+        threading.Thread(target=read_serial).start()
         sio.start_background_task(sendData)
 
 
