@@ -18,7 +18,7 @@ from send_from_can import CANSender, get_xbee_connection
 # car - 0013A20041C4AC5F
 
 # USB port on PI (UART splitter)
-ser = serial.Serial("/dev/ttyUSB0", 19200)
+ser = serial.Serial("/dev/ttyUSB1", 19200)
 sio = socketio.Server(cors_allowed_origins=["http://localhost:3000", "http://localhost:12345"])
 app = socketio.WSGIApp(sio)
 # ser = serial.Serial(port="/dev/serial0")
@@ -76,7 +76,7 @@ def read_serial():
             encoded_message += ser.read(24)
             print(f"put {encoded_message} into queue")
             queue.put(encoded_message)
-            if len(queue) > 50:
+            if queue.qsize() > 50:
                 with queue.mutex:
                     print("cleared queue")
                     queue.queue.clear()
@@ -90,7 +90,7 @@ def sendData():
         sender.send(encoded_message)  # Send data to be parsed to CAN
         if Config.USE_RADIO:
             device.send_data_broadcast(encoded_message)  # Send over radio to Telemetry
-        sio.sleep(1)
+        sio.sleep(0.1)
 
 
 @sio.event
