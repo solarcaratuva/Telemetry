@@ -9,6 +9,7 @@ export interface Data {
     brake_lights: DataSet;
     forward_en: DataSet;
     pack_current: DataSet;
+    pack_voltage: DataSet;
     high_temperature: DataSet;
 }
 
