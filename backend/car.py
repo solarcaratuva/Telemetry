@@ -39,9 +39,10 @@ CANframes = {"BPSError": cantools.database.load_file(os.path.join(can_dir, "BPS.
              "BPSPackInformation": ["pack_current"]
              }
 
+port = "/dev/ttyUSB1"
 if Config.USE_RADIO:
-    device = get_xbee_connection()
-ser = serial.Serial(port="/dev/ttyUSB1", baudrate=19200)
+    device, port = get_xbee_connection()
+ser = serial.Serial(port=("/dev/ttyUSB0" if port=="/dev/ttyUSB1" else "/dev/ttyUSB1"), baudrate=19200)
 
 def exit_handler():
     if ser is not None and ser.is_open:
@@ -86,7 +87,7 @@ def read_serial():
 def sendData():
     print("sendData")
     while True:
-        encoded_message = queue.get()
+        encoded_message = queue.get(block=True)
         print(f"read {encoded_message} from queue")
         sender.send(encoded_message)  # Send data to be parsed to CAN
         if Config.USE_RADIO:
