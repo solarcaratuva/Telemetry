@@ -1,27 +1,56 @@
-//
-// Created by tony_ on 6/24/2023.
-//
+#include <sys/mman.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <cstring>
+#include <semaphore.h>
 
+struct SharedData {
+    int var1 = 0;
+    int var2 = 0;
+};
 
-#include <QApplication>
-#include <QCamera>
-#include <QCameraViewfinder>
+int main() {
+    const char *memname = "sample";
+    const char *sem_ready_name = "sem_data_ready";
+    const char *sem_consumed_name = "sem_data_consumed";
+    const size_t region_size = sysconf(_SC_PAGE_SIZE);
 
-int main(int argc, char *argv[]) {
-    QApplication app(argc, argv);
+    int fd = shm_open(memname, O_CREAT | O_TRUNC | O_RDWR, 0666);
+    if (fd == -1) {
+        // Handle error
+    }
 
-    QCamera *camera = new QCamera;
-    QCameraViewfinder *viewfinder = new QCameraViewfinder;
+    if (ftruncate(fd, region_size) == -1) {
+        // Handle error
+    }
 
-    camera->setViewfinder(viewfinder);
+    void *ptr = mmap(0, region_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+    if (ptr == MAP_FAILED) {
+        // Handle error
+    }
 
-    camera->start();
-    viewfinder->show();
+    sem_t *sem_ready = sem_open(sem_ready_name, O_CREAT, 0666, 0);
+    if (sem_ready == SEM_FAILED) {
+        // Handle error
+    }
 
-    int returnVal = app.exec();
+    sem_t *sem_consumed = sem_open(sem_consumed_name, O_CREAT, 0666, 1);
+    if (sem_consumed == SEM_FAILED) {
+        // Handle error
+    }
 
-    delete viewfinder;
-    delete camera;
+    SharedData *data = reinterpret_cast<SharedData *>(ptr);
 
-    return returnVal;
+    // Main loop
+    while (true) {
+        sem_wait(sem_consumed);  // Wait until data has been consumed
+
+        // Update the data
+        ++data->var1;
+        data->var2 += 2;
+
+        sem_post(sem_ready);  // Indicate that new data is ready
+    }
+
+    return 0;
 }
