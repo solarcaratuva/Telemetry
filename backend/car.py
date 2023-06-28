@@ -18,7 +18,7 @@ from send_from_can import CANSender, get_xbee_connection
 # car - 0013A20041C4AC5F
 
 # USB port on PI (UART splitter)
-#ser = serial.Serial("/dev/ttyUSB1", 19200)
+# ser = serial.Serial("/dev/ttyUSB1", 19200)
 sio = socketio.Server(cors_allowed_origins=["http://localhost:3000", "http://localhost:12345"])
 app = socketio.WSGIApp(sio)
 # ser = serial.Serial(port="/dev/serial0")
@@ -36,13 +36,14 @@ CANframes = {"BPSError": cantools.database.load_file(os.path.join(can_dir, "BPS.
              "ECUPowerAuxCommands": ['hazards', 'brake_lights', 'headlights', 'left_turn_signal', 'right_turn_signal'],
              "ECUMotorCommands": ['throttle', "forward_en", "reverse_en"],
              "MotorControllerPowerStatus": ["motor_rpm"],
-             "BPSPackInformation": ["pack_current"]
+             "BPSPackInformation": ["pack_voltage", "pack_current"]
              }
 
 port = "/dev/ttyUSB1"
 if Config.USE_RADIO:
     device, port = get_xbee_connection()
-ser = serial.Serial(port=("/dev/ttyUSB0" if port=="/dev/ttyUSB1" else "/dev/ttyUSB1"), baudrate=19200)
+ser = serial.Serial(port=("/dev/ttyUSB0" if port == "/dev/ttyUSB1" else "/dev/ttyUSB1"), baudrate=19200)
+
 
 def exit_handler():
     if ser is not None and ser.is_open:
@@ -59,7 +60,6 @@ atexit.register(exit_handler)
 sender = CANSender(sio, CANframes)  # from send_from_can.py
 
 isRunning = False
-
 
 # remove rpm
 # discharge -> current
