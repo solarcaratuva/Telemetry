@@ -22,7 +22,7 @@ std::string get_available_port() {
 }
 
 int main() {
-    std::string port = "/dev/ttyUSB1";
+    std::string port = "/dev/canUART";
     if(port.empty()) {
         std::cerr << "No available port found" << std::endl;
         return 1;
@@ -35,7 +35,7 @@ int main() {
     char c;
     while (true) {
         boost::asio::read(serial, boost::asio::buffer(&c,1));
-        std::cout << (int) c << "\n";
+//        std::cout << (int) c << "\n";
         if((int) c == 249) {
             char msg[24];
             for(int i=0; i<24; ++i) {
@@ -43,23 +43,12 @@ int main() {
             }
             int message_id = msg[0]*0x0100+msg[1];
             if(message_id == 1030) { // Detected message with ID 1046
-                printf("msg: id: %d data: ", message_id);
-                // assuming message_data is uint8_t[]
-                uint16_t low_cell_voltage = ((uint16_t) (msg[2] << 8)) | (uint16_t) msg[3]; // Extract 16-bit signal starting at byte index 3
-                uint8_t low_cell_voltage_id = msg[4]; // Extract 8-bit signal at byte index 5
-                uint16_t high_cell_voltage = (msg[5] << 8) | msg[6]; // Extract 16-bit signal starting at byte index 6
-                uint8_t high_cell_voltage_id = msg[7]; // Extract 8-bit signal at byte index 8
-                printf("Low Cell Voltage: %.4f V, ID: %d, High Cell Voltage: %.4f V, ID: %d\n",
-                       low_cell_voltage*0.0001, low_cell_voltage_id, high_cell_voltage*0.0001, high_cell_voltage_id);
-
-            }
-            for(int i=0; i<24; ++i) {
-                for(int j=0; j<8; ++j) {
-                    std::cout << ((msg[i] >> j) & 1);
+                printf("battery message msg: id: %d data: ", message_id);
+                for(int i=0; i<24; ++i) {
+                    printf("%c", msg[i]);
                 }
-                printf("(%d) ", (int)msg[i]);
+                printf("\n");
             }
-            std::cout << "\n";
         }
     }
 
