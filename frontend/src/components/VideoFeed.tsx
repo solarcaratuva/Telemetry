@@ -4,8 +4,8 @@ import React from 'react';
 class VideoFeed extends React.Component {
     render() {
         const videoConstraints = {
-            width: 900,
-            height: 500,
+            width: 800,
+            height: 550,
             facingMode: "user"
         };
 
