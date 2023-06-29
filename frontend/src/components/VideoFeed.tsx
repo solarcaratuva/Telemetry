@@ -7,7 +7,7 @@ class VideoFeed extends React.Component {
             facingMode: "user"
         };
 
-        return <Webcam videoConstraints={videoConstraints} />;
+        return <Webcam videoConstraints={videoConstraints} mirrored={true} />;
     }
 }
 
