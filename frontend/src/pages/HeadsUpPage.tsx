@@ -246,17 +246,24 @@ const HeadsUpPage = () => {
             justifyContent="center"
           >
             <VideoFeed />
-            <Box
+          </Box>
+          <Box
               height="100%"
-              display="flex"
-              flexDirection="row"
-              gap="10px"
+              // display="flex"
+              flexDirection="column"
+              gap="0px"
               justifyContent="center"
               width = "60%"
-              marginLeft="19%"
-            >
+              marginLeft="10px"
+              style={{ position: 'relative', height: '100%' /* Or any other height */ }}
+          >
+            <Box style={{ position: 'absolute', top: '0%' }}>
               <CurrentGuage current={data.pack_current.length !== 0 ? data.pack_current[data.pack_current.length - 1].value : 0} darkMode={false} />
+            </Box>
+            <Box style={{ position: 'absolute', top: '30%' }}>
               <BatteryTempGuage temp={data.high_temperature.length !== 0 ? data.high_temperature[data.high_temperature.length - 1].value : 0} darkMode={false}/>
+            </Box>
+            <Box style={{ position: 'absolute', top: '60%' }}>
               <PackVoltageGuage voltage={data.pack_voltage.length !== 0 ? data.pack_voltage[data.pack_voltage.length - 1].value : 0}/>
             </Box>
           </Box>
