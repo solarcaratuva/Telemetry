@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(QtCamera LANGUAGES CXX)
+project(SERIALTest LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_CXX_STANDARD 11)
@@ -11,6 +11,6 @@ set(CMAKE_PREFIX_PATH "C:\\Qt\\6.5.1\\mingw_64\\lib\\cmake")
 
 find_package(Qt5 COMPONENTS Widgets Multimedia REQUIRED)
 
-add_executable(QtCamera main.cpp)
+add_executable(SerialTest serialtest.cpp)
 
-target_link_libraries(QtCamera PRIVATE Qt5::Widgets Qt5::Multimedia)
+target_link_libraries(SERIALTest PRIVATE Qt5::Widgets Qt5::Multimedia)

@@ -22,7 +22,7 @@ std::string get_available_port() {
 }
 
 int main() {
-    std::string port = get_available_port();
+    std::string port = "/dev/ttyUSB1";
     if(port.empty()) {
         std::cerr << "No available port found" << std::endl;
         return 1;
@@ -42,7 +42,7 @@ int main() {
                 boost::asio::read(serial, boost::asio::buffer(msg + i, 1));
             }
             int message_id = msg[0]*0x0100+msg[1];
-            if(message_id == 1046) { // Detected message with ID 1046
+            if(message_id == 1030) { // Detected message with ID 1046
                 printf("msg: id: %d data: ", message_id);
                 // assuming message_data is uint8_t[]
                 uint16_t low_cell_voltage = ((uint16_t) (msg[2] << 8)) | (uint16_t) msg[3]; // Extract 16-bit signal starting at byte index 3
