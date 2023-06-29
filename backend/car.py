@@ -9,6 +9,7 @@ import cantools
 import eventlet
 import serial
 import socketio
+from digi.xbee.devices import XBeeDevice
 
 import Config
 from send_from_can import CANSender, get_xbee_connection
@@ -39,10 +40,10 @@ CANframes = {"BPSError": cantools.database.load_file(os.path.join(can_dir, "BPS.
              "BPSPackInformation": ["pack_voltage", "pack_current"]
              }
 
-port = "/dev/ttyUSB1"
+
 if Config.USE_RADIO:
-    device, port = get_xbee_connection()
-ser = serial.Serial(port=("/dev/ttyUSB0" if port == "/dev/ttyUSB1" else "/dev/ttyUSB1"), baudrate=19200)
+    device = XBeeDevice("/dev/radio", 9600)
+ser = serial.Serial(port="/dev/canUART", baudrate=19200)
 
 
 def exit_handler():
