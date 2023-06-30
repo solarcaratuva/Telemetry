@@ -43,6 +43,7 @@ CANframes = {"BPSError": cantools.database.load_file(os.path.join(can_dir, "BPS.
 
 if Config.USE_RADIO:
     device = XBeeDevice("/dev/radio", 9600)
+    device.open()
 ser = serial.Serial(port="/dev/canUART", baudrate=19200)
 
 
@@ -91,9 +92,16 @@ def sendData():
         encoded_message = queue.get(block=True)
         print(f"read {encoded_message} from queue")
         sender.send(encoded_message)  # Send data to be parsed to CAN
-        if Config.USE_RADIO:
-            device.send_data_broadcast(encoded_message)  # Send over radio to Telemetry
-        sio.sleep(0.1)
+        try:
+            if Config.USE_RADIO:
+                    device.send_data_broadcast(encoded_message)  # Send over radio to Telemetry
+        except:
+            try:
+                device = XBeeDevice("/dev/radio", 9600)
+                device.open()
+            except:
+                pass
+        sio.sleep(0.01)
 
 
 @sio.event
