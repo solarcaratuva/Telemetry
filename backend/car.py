@@ -46,6 +46,9 @@ if Config.USE_RADIO:
     device.open()
 ser = serial.Serial(port="/dev/canUART", baudrate=19200)
 
+logfilename = "/home/cwise/carlogger.txt"
+with open(logfilename, "w") as outfile:
+    outfile.write("")
 
 def exit_handler():
     if ser is not None and ser.is_open:
@@ -128,6 +131,8 @@ if __name__ == '__main__':
     # Pit receives ack, sends back ack
     # Car receives ack and starts transmitting data
     if Config.USE_RADIO:
+        with open(logfilename, "w") as outfile:
+            outfile.write("setting up callback")
         def time_handler(msg):
             global time_received
             if time_received:
