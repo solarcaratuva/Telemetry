@@ -57,4 +57,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    device = XBeeDevice("COM4", 9600)
+    device.send_data_broadcast("test")

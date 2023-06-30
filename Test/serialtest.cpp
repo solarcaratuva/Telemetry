@@ -35,20 +35,21 @@ int main() {
     char c;
     while (true) {
         boost::asio::read(serial, boost::asio::buffer(&c,1));
-//        std::cout << (int) c << "\n";
+        std::cout << (int) c << "\n";
         if((int) c == 249) {
             char msg[24];
             for(int i=0; i<24; ++i) {
                 boost::asio::read(serial, boost::asio::buffer(msg + i, 1));
             }
             int message_id = msg[0]*0x0100+msg[1];
-            if(message_id == 1030) { // Detected message with ID 1046
-                printf("battery message msg: id: %d data: ", message_id);
-                for(int i=0; i<24; ++i) {
-                    printf("%c", msg[i]);
-                }
-                printf("\n");
+            printf("message id: %d data: ", message_id);
+            for(int i=0; i<24; ++i) {
+                printf("%d", (int) msg[i]);
             }
+            printf("\n");
+//            if(message_id == 1030) { // Detected message with ID 1046
+//                printf("battery message msg: id: %d data: ", message_id);
+//            }
         }
     }
 
