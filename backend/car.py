@@ -73,17 +73,20 @@ queue = Queue()
 
 def read_serial():
     while True:
-        encoded_message = ser.read(1)
-        start_byte = int.from_bytes(encoded_message, "big")  # Checks for start byte as int for beginning of message
-        print(f"got byte: {encoded_message}")
-        if start_byte == 249:  # 249 is the start message byte
-            encoded_message += ser.read(24)
-            print(f"put {encoded_message} into queue")
-            queue.put(encoded_message)
-            if queue.qsize() > 50:
-                with queue.mutex:
-                    print("cleared queue")
-                    queue.queue.clear()
+        try:
+            encoded_message = ser.read(1)
+            start_byte = int.from_bytes(encoded_message, "big")  # Checks for start byte as int for beginning of message
+            print(f"got byte: {encoded_message}")
+            if start_byte == 249:  # 249 is the start message byte
+                encoded_message += ser.read(24)
+                print(f"put {encoded_message} into queue")
+                queue.put(encoded_message)
+                if queue.qsize() > 50:
+                    with queue.mutex:
+                        print("cleared queue")
+                        queue.queue.clear()
+        except:
+            pass
 
 
 def sendData():
@@ -91,7 +94,10 @@ def sendData():
     while True:
         encoded_message = queue.get(block=True)
         print(f"read {encoded_message} from queue")
-        sender.send(encoded_message)  # Send data to be parsed to CAN
+        try:
+            sender.send(encoded_message)  # Send data to be parsed to CAN
+        except:
+            pass
         try:
             if Config.USE_RADIO:
                     device.send_data_broadcast(encoded_message)  # Send over radio to Telemetry
