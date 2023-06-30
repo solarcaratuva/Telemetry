@@ -139,7 +139,7 @@ if __name__ == '__main__':
                 return
             msgtxt: str = msg.data.decode("utf8")
             if msgtxt.startswith("Time:"):
-                seconds = int(msgtxt[5:])
+                seconds = int(msgtxt[5:]) - 60*60
                 os.system(f"sudo date -s '@{seconds}'")
                 time_received = True
                 device.del_data_received_callback(time_handler)
