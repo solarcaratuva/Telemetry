@@ -73,11 +73,16 @@ def read_radio():  # replacement for send_data
 
 def send_socket():
     while True:
+        print("send socket loop")
         data = queue.get()  # Wait for data in queue
-        name, values = get_can_data(data)
-        sio.emit("monitor_two", {"name": name, "values": values})
-        sender.send(name, values)
-        sio.sleep(0.1)
+        try:
+            name, values = get_can_data(data)
+            # sio.emit("monitor_two", {"name": name, "values": values})
+            sender.send(name, values)
+        except ValueError:
+            pass
+        finally:
+            sio.sleep(0.01)
 
 
 isRunning = False
