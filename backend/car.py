@@ -105,6 +105,9 @@ def sendData():
             pass
         try:
             if Config.USE_RADIO:
+                if device is not None and device.is_open():
+                    # print("Closing radio")
+                    device.close()
                 device = None
                 device = XBeeDevice("/dev/radio", 9600)
                 device.open()
