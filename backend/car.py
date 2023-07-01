@@ -47,17 +47,17 @@ if Config.USE_RADIO:
     pass
 ser = serial.Serial(port="/dev/canUART", baudrate=19200)
 
-logfilename = "/home/cwise/carlogger.txt"
-with open(logfilename, "w") as outfile:
-    outfile.write("")
+# logfilename = "/home/cwise/carlogger.txt"
+# with open(logfilename, "w") as outfile:
+#     outfile.write("")
 
 def exit_handler():
     if ser is not None and ser.is_open:
-        print("Closing serial")
+        # print("Closing serial")
         ser.close()
     if Config.USE_RADIO:
         if device is not None and device.is_open():
-            print("Closing radio")
+            # print("Closing radio")
             device.close()
 
 
@@ -80,25 +80,25 @@ def read_serial():
         try:
             encoded_message = ser.read(1)
             start_byte = int.from_bytes(encoded_message, "big")  # Checks for start byte as int for beginning of message
-            print(f"got byte: {encoded_message}")
+            # print(f"got byte: {encoded_message}")
             if start_byte == 249:  # 249 is the start message byte
                 encoded_message += ser.read(24)
-                print(f"put {encoded_message} into queue")
+                # print(f"put {encoded_message} into queue")
                 queue.put(encoded_message)
                 if queue.qsize() > 50:
                     with queue.mutex:
-                        print("cleared queue")
+                        # print("cleared queue")
                         queue.queue.clear()
         except:
             pass
 
 
 def sendData():
-    print("sendData")
+    # print("sendData")
     device = None
     while True:
         encoded_message = queue.get(block=True)
-        print(f"read {encoded_message} from queue")
+        # print(f"read {encoded_message} from queue")
         try:
             sender.send(encoded_message)  # Send data to be parsed to CAN
         except:
@@ -122,7 +122,7 @@ def connect(sid, environ):
     global isRunning, sio
     if not isRunning:
         isRunning = True
-        print("connected")
+        # print("connected")
         threading.Thread(target=read_serial).start()
         sio.start_background_task(sendData)
 
@@ -135,8 +135,8 @@ if __name__ == '__main__':
     # Pit receives ack, sends back ack
     # Car receives ack and starts transmitting data
     if Config.USE_RADIO:
-        with open(logfilename, "w") as outfile:
-            outfile.write("setting up callback")
+        # with open(logfilename, "w") as outfile:
+        #     outfile.write("setting up callback")
 
 
         def time_handler(msg):
@@ -153,15 +153,15 @@ if __name__ == '__main__':
 
 
         device.add_data_received_callback(time_handler)
-        print("start time ack loop")
+        # print("start time ack loop")
         end_time = time.time() + 15
         while not time_received and time.time() <= end_time:
             pass
 
         if Config.USE_RADIO:
             if device is not None and device.is_open():
-                print("Closing radio")
+                # print("Closing radio")
                 device.close()
                 device = None
-    print("start server")
+    # print("start server")
     eventlet.wsgi.server(eventlet.listen(('localhost', 5050)), app)
