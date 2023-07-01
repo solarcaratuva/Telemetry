@@ -42,8 +42,8 @@ CANframes = {"BPSError": cantools.database.load_file(os.path.join(can_dir, "BPS.
 
 
 if Config.USE_RADIO:
-    #device = XBeeDevice("/dev/radio", 9600)
-    #device.open()
+    device = XBeeDevice("/dev/radio", 9600)
+    device.open()
     pass
 ser = serial.Serial(port="/dev/canUART", baudrate=19200)
 
@@ -150,10 +150,16 @@ if __name__ == '__main__':
                 device.send_data_broadcast("ack")
 
 
-        # device.add_data_received_callback(time_handler)
-        # print("thing")
-        # end_time = time.time() + 15
-        # while not time_received and time.time() <= end_time:
-        #     pass
+        device.add_data_received_callback(time_handler)
+        print("start time ack loop")
+        end_time = time.time() + 15
+        while not time_received and time.time() <= end_time:
+            pass
+
+        if Config.USE_RADIO:
+            if device is not None and device.is_open():
+                print("Closing radio")
+                device.close()
+                device = None
     print("start server")
     eventlet.wsgi.server(eventlet.listen(('localhost', 5050)), app)
