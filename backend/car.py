@@ -42,8 +42,9 @@ CANframes = {"BPSError": cantools.database.load_file(os.path.join(can_dir, "BPS.
 
 
 if Config.USE_RADIO:
-    device = XBeeDevice("/dev/radio", 9600)
-    device.open()
+    #device = XBeeDevice("/dev/radio", 9600)
+    #device.open()
+    pass
 ser = serial.Serial(port="/dev/canUART", baudrate=19200)
 
 logfilename = "/home/cwise/carlogger.txt"
@@ -94,6 +95,7 @@ def read_serial():
 
 def sendData():
     print("sendData")
+    device = None
     while True:
         encoded_message = queue.get(block=True)
         print(f"read {encoded_message} from queue")
