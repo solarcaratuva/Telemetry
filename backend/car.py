@@ -133,6 +133,8 @@ if __name__ == '__main__':
     if Config.USE_RADIO:
         with open(logfilename, "w") as outfile:
             outfile.write("setting up callback")
+
+
         def time_handler(msg):
             global time_received
             if time_received:
@@ -146,10 +148,10 @@ if __name__ == '__main__':
                 device.send_data_broadcast("ack")
 
 
-        device.add_data_received_callback(time_handler)
-        print("thing")
-        end_time = time.time() + 15
-        while not time_received and time.time() <= end_time:
-            pass
+        # device.add_data_received_callback(time_handler)
+        # print("thing")
+        # end_time = time.time() + 15
+        # while not time_received and time.time() <= end_time:
+        #     pass
     print("start server")
     eventlet.wsgi.server(eventlet.listen(('localhost', 5050)), app)
