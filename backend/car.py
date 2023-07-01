@@ -105,13 +105,12 @@ def sendData():
             pass
         try:
             if Config.USE_RADIO:
-                    device.send_data_broadcast(encoded_message)  # Send over radio to Telemetry
-        except:
-            try:
+                device = None
                 device = XBeeDevice("/dev/radio", 9600)
                 device.open()
-            except:
-                pass
+                device.send_data_broadcast(encoded_message)  # Send over radio to Telemetry
+        except:
+            pass
         sio.sleep(0.01)
 
 
