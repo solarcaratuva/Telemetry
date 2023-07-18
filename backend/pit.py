@@ -2,6 +2,7 @@ from queue import Queue
 from threading import Thread
 
 import eventlet
+from digi.xbee.devices import XBeeDevice
 
 eventlet.patcher.monkey_patch(socket=True)
 import atexit
@@ -42,7 +43,11 @@ CANframes = {"BPSError": cantools.database.load_file(os.path.join(can_dir, "BPS.
              "SolarTemp": ["panel1_temp", "panel2_temp", "panel3_temp", "panel4_temp"]
              }
 
-device = get_xbee_connection()
+device = XBeeDevice("COM4", 9600)
+if device.is_open():
+    device.close()
+if not device.is_open():
+    device.open()
 
 if device is None:
     print("Could not find radio")
