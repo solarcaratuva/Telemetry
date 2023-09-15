@@ -8,7 +8,18 @@ import BatteryTempGuage from "../components/BatteryTempGuage";
 import MPHandTurnSignal from "../components/MPHandTurnSignal";
 import GearState from "../components/GearState";
 import CurrentGuage from "../components/NetCurrentGuage";
-import { Data, Update, StringData, StringUpdate, StringArrayData, StringArrayUpdate, BooleanData, BooleanUpdate } from './UpdateTypes';
+import {
+  Data,
+  Update,
+  StringData,
+  StringUpdate,
+  StringArrayData,
+  StringArrayUpdate,
+  BooleanData,
+  BooleanUpdate,
+  DataSet
+} from './UpdateTypes';
+import PackVoltageGuage from "../components/PackVoltageGuage";
 
 const socket = io("http://localhost:5050");
 const MAX_LENGTH = 50;
@@ -24,6 +35,7 @@ const HeadsUpPage = () => {
     forward_en: [],
     motor_rpm: [],
     pack_current: [],
+    pack_voltage: [],
     high_temperature: []
   });
 
@@ -234,17 +246,25 @@ const HeadsUpPage = () => {
             justifyContent="center"
           >
             <VideoFeed />
-            <Box
+          </Box>
+          <Box
               height="100%"
-              display="flex"
-              flexDirection="row"
-              gap="10px"
+              // display="flex"
+              flexDirection="column"
+              gap="0px"
               justifyContent="center"
               width = "60%"
-              marginLeft="19%"
-            >
+              marginLeft="10px"
+              style={{ position: 'relative', height: '100%' /* Or any other height */ }}
+          >
+            <Box style={{ position: 'absolute', top: '0%' }}>
               <CurrentGuage current={data.pack_current.length !== 0 ? data.pack_current[data.pack_current.length - 1].value : 0} darkMode={false} />
+            </Box>
+            <Box style={{ position: 'absolute', top: '30%' }}>
               <BatteryTempGuage temp={data.high_temperature.length !== 0 ? data.high_temperature[data.high_temperature.length - 1].value : 0} darkMode={false}/>
+            </Box>
+            <Box style={{ position: 'absolute', top: '60%' }}>
+              <PackVoltageGuage voltage={data.pack_voltage.length !== 0 ? data.pack_voltage[data.pack_voltage.length - 1].value : 0}/>
             </Box>
           </Box>
         </Box>

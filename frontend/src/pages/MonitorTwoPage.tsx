@@ -49,6 +49,7 @@ const MonitorTwoPage = () => {
         forward_en: [],
         motor_rpm: [],
         pack_current: [],
+        pack_voltage: [],
         high_temperature: [],
         pack_voltage: []
     });

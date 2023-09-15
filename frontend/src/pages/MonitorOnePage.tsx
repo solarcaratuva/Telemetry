@@ -17,16 +17,11 @@ import {
     BooleanUpdate,
     DataSet
 } from './UpdateTypes';
-import {Data as DataBase} from './UpdateTypes'
+import {Data} from './UpdateTypes'
 import {BooleanData as BooleanDataBase} from './UpdateTypes'
 import PackVoltageGuage from "../components/PackVoltageGuage";
 import ToggleButton from "@mui/material/ToggleButton";
 import * as React from "react";
-
-interface Data extends DataBase {
-    pack_voltage: DataSet,
-    pack_current: DataSet
-}
 
 interface BooleanData extends BooleanDataBase {
     brake_lights: number,
