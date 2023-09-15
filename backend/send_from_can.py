@@ -25,7 +25,7 @@ def get_xbee_connection():
             # We can now try to read a parameter from the device.
             try:
                 device.get_64bit_addr()
-                return device
+                return device, port.device
             except:
                 continue
         except:
@@ -52,9 +52,8 @@ class CANSender:
 
     def send(self, name, values) -> bool:
         timestamp = datetime.now().isoformat()
-        print(name)
-        print(values)
-
+        name, values = get_can_data(encoded_message)
+        
         if name not in self.can_messages:
             return False
         if name in ("BPSError", "MotorControllerError", "PowerAuxError"):

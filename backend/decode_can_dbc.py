@@ -12,7 +12,8 @@ def decode_dbc(message_id, message_data): #message_id -> frame_id, message_data 
     # message = message_data
 
     # message_id = make_hex_great_again(message_id)
-
+    print("Message Data: " + str(message_data))
+    print("Message: " + str(message) + "Message ID: " + str(message_id))
     curr_path = os.path.dirname(os.path.abspath(__file__))
     can_dir = os.path.join(curr_path, "CAN-messages")
 
@@ -39,7 +40,8 @@ def decode_dbc(message_id, message_data): #message_id -> frame_id, message_data 
     elif message_id in rivanna2DB._frame_id_to_message:
         return rivanna2DB._frame_id_to_message[message_id].name, rivanna2DB.decode_message(message_id, message)
     else:
-        return "ID does not exist"
+        print(message_id)
+        return "ID does not exist", "Error"
         
 def make_hex_great_again(message_data):
     ints = []
@@ -53,5 +55,5 @@ def make_hex_great_again(message_data):
             new_message += hex(x-55)[2:]
         else:
             new_message += hex(0)[2:]
-    return codecs.decode(new_message, 'hex_codec')
-                
+
+    return codecs.decode(new_message, 'hex_codec')              
