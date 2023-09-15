@@ -5,7 +5,7 @@ from datetime import datetime
 import serial.tools.list_ports
 from digi.xbee.devices import XBeeDevice
 
-# sys.path.append(os.path.dirnsame(__file__))
+sys.path.append(os.path.dirname(__file__))
 from decode_can_dbc import decode_dbc
 
 
@@ -50,14 +50,10 @@ class CANSender:
         self.sio = sio
         self.can_messages = can_messages
 
-    def send(self, encoded_message: bytes) -> bool:
+    def send(self, name, values) -> bool:
         timestamp = datetime.now().isoformat()
         name, values = get_can_data(encoded_message)
-        """
-        print(name)
-        print(values)
-        print(encoded_message)
-        """
+        
         if name not in self.can_messages:
             return False
         if name in ("BPSError", "MotorControllerError", "PowerAuxError"):

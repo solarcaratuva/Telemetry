@@ -45,7 +45,8 @@ const HeadsUpPage = () => {
     right_turn_signal: 0,
     hazards: 0,
     forward_en: 0,
-    reverse_en: 0
+    reverse_en: 0,
+    headlights: 0
   });
 
   const [time, setTime] = useState(new Date().toLocaleTimeString());
@@ -223,7 +224,7 @@ const HeadsUpPage = () => {
             </Box>
             <GearState state={booleanData.forward_en ? "Forward" : (booleanData.reverse_en ? "Reverse" : "Park")}/>
             <OnePedalDrive value={ data.throttle.length !== 0 ? data.throttle[data.throttle.length - 1].value : 50 } />
-            <AlertBox data={stringArrayData.BPSError.concat(stringArrayData.MotorControllerError, stringArrayData.PowerAuxError)}/>
+            <AlertBox data={(booleanData.hazards === 1 && booleanData.headlights == 1 ? ["BMS Error"] : [] as string[]).concat(stringArrayData.BPSError, stringArrayData.MotorControllerError, stringArrayData.PowerAuxError)}/>
           </Box>
           <Box
             height="100%"

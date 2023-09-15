@@ -1,13 +1,22 @@
+from queue import Queue
+from threading import Thread
+
+import eventlet
+from digi.xbee.devices import XBeeDevice
+
+eventlet.patcher.monkey_patch(socket=True)
 import atexit
 import os
-import time
+import sys
+
+sys.path.append(os.path.dirname(__file__))
+# import time
 
 import cantools
-import eventlet
 import serial.tools.list_ports
 import socketio
 
-from send_from_can import CANSender, get_xbee_connection
+from send_from_can import CANSender, get_xbee_connection, get_can_data
 
 # XBee Mac addresses
 # 0013A20041C4ACC3
@@ -34,8 +43,15 @@ CANframes = {"BPSError": cantools.database.load_file(os.path.join(can_dir, "BPS.
              "SolarTemp": ["panel1_temp", "panel2_temp", "panel3_temp", "panel4_temp"]
              }
 
-device = get_xbee_connection()
+device = XBeeDevice("COM4", 9600)
+if device.is_open():
+    device.close()
+if not device.is_open():
+    device.open()
 
+if device is None:
+    print("Could not find radio")
+    exit(-1)
 
 def exit_handler():
     print("Closing serial port")
@@ -47,24 +63,34 @@ atexit.register(exit_handler)
 
 sender = CANSender(sio, CANframes)
 
-isRunning = False
+queue = Queue()
 
 
-# remove rpm
-# discharge -> current
-# make motor faults longer/ all faults
-# white mode
-
-def sendData():  # replacement for send_data
-    print("LISTENING FOR DATA")
-
+def read_radio():  # replacement for send_data
     def data_receive_callback(xbee_message):
         address = xbee_message.remote_device.get_64bit_addr()
-        data = xbee_message.data#.decode("utf8")
+        data = xbee_message.data  # .decode("utf8")
         print("Received data from %s: %s" % (address, data))
-        sender.send(data)
+        queue.put(data)
 
     device.add_data_received_callback(data_receive_callback)
+
+
+def send_socket():
+    while True:
+        print("send socket loop")
+        data = queue.get()  # Wait for data in queue
+        try:
+            name, values = get_can_data(data)
+            # sio.emit("monitor_two", {"name": name, "values": values})
+            sender.send(name, values)
+        except ValueError:
+            pass
+        finally:
+            sio.sleep(0.01)
+
+
+isRunning = False
 
 
 @sio.event
@@ -72,19 +98,18 @@ def connect(sid, environ):
     global isRunning
     if not isRunning:
         isRunning = True
-        sio.start_background_task(sendData)
+        Thread(target=read_radio).start()
+        sio.start_background_task(send_socket)
 
 
 ack_received = False
 if __name__ == '__main__':
-
-    def ack_handler(msg):
-        global ack_received
-        print("acked")
-        if msg.data.decode("utf8") == "ack":
-            ack_received = True
-            device.del_data_received_callback(ack_received)
-
+    # def ack_handler(msg):
+    #     global ack_received
+    #     print("acked")
+    #     if msg.data.decode("utf8") == "ack":
+    #         ack_received = True
+    #         device.del_data_received_callback(ack_received)
 
     # device.add_data_received_callback(ack_handler)
     # while not ack_received:

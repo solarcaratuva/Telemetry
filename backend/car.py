@@ -94,7 +94,6 @@ def read_serial():
 
 
 def sendData():
-    # print("sendData")
     device = None
     while True:
         encoded_message = queue.get(block=True)
@@ -122,7 +121,6 @@ def connect(sid, environ):
     global isRunning, sio
     if not isRunning:
         isRunning = True
-        # print("connected")
         threading.Thread(target=read_serial).start()
         sio.start_background_task(sendData)
 
@@ -153,6 +151,7 @@ if __name__ == '__main__':
 
 
         device.add_data_received_callback(time_handler)
+
         # print("start time ack loop")
         end_time = time.time() + 15
         while not time_received and time.time() <= end_time:
@@ -163,5 +162,5 @@ if __name__ == '__main__':
                 # print("Closing radio")
                 device.close()
                 device = None
-    # print("start server")
+                
     eventlet.wsgi.server(eventlet.listen(('localhost', 5050)), app)

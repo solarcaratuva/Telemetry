@@ -30,7 +30,6 @@ interface Data extends DataBase {
 
 interface BooleanData extends BooleanDataBase {
     brake_lights: number,
-    headlights: number,
     is_charging_signal_status: number
 }
 
@@ -280,7 +279,7 @@ const MonitorOnePage = () => {
                                 {/* Replace this paper component with motor faults */}
 
                                 <AlertBox
-                                    data={stringArrayData.BPSError.concat(stringArrayData.MotorControllerError, stringArrayData.PowerAuxError)}/>
+                                    data={(booleanData.hazards === 1 && booleanData.headlights == 1 ? ["BMS Error"] : [] as string[]).concat(stringArrayData.BPSError, stringArrayData.MotorControllerError, stringArrayData.PowerAuxError)}/>
 
                                 {/* Replace this paper component with fifa chart */}
                                 <Box
