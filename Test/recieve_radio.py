@@ -1,31 +1,43 @@
-import serial
+import serial.tools.list_ports
+from digi.xbee.devices import XBeeDevice
+import time
 
-# Define the serial port and baud rate for the XBee module
-serial_port = '/dev/ttyUSB1'  # Change this to the correct port on your system
-baud_rate = 9600
+def get_xbee_connection():
+    BAUD_RATE = 9600
+    ports = serial.tools.list_ports.comports()
 
-# Create a serial connection to the XBee module
-try:
-    xbee_serial = serial.Serial(serial_port, baud_rate)
-except serial.SerialException as e:
-    print(f"Error opening serial port: {e}")
-    exit(1)
+    for port in ports:
+        # Try to open a connection to each port.
+        try:
+            device = XBeeDevice(port.device, BAUD_RATE)
+            if device.is_open():
+                device.close()
+            if not device.is_open():
+                device.open()
+            # If we get here, we've successfully opened a connection.
+            # We can now try to read a parameter from the device.
+            try:
+                device.get_64bit_addr()
+                return device, port.device
+            except:
+                continue
+        except:
+            # Couldn't open a connection to this port. It's either in use
+            # or doesn't have an XBee connected.
+            pass
+    return None
 
-# Function to continuously read and print data
-def receive_data():
-    try:
-        while True:
-            data = xbee_serial.readline().decode().strip()
-            if data:
-                print(f"Received: {data}")
-    except KeyboardInterrupt:
-        pass
-
-# Main execution
 if __name__ == "__main__":
-    print("Listening for incoming data...")
-    receive_data()
-
-# Close the serial connection when the script is interrupted
-xbee_serial.close()
-print("Serial port closed.")
+    device, port = get_xbee_connection()
+    if device is None:
+        print("Couldn't find an XBee!")
+    else:
+        print(f"Found an XBee on {port}")
+        while True:
+            try:
+                data = device.read_data()
+                print(f"Received data: {data}")
+                time.sleep(0.5)
+            except KeyboardInterrupt:
+                device.close()
+                print("Closed connection.")
