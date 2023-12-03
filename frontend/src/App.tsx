@@ -5,8 +5,11 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import InteractivePage from "./pages/InteractivePage";
 import MonitorOnePage from "./pages/MonitorOnePage";
 import MonitorTwoPage from "./pages/MonitorTwoPage";
+import HeadsUpPage from "./pages/HeadsUpPage";
 import { ThemeProvider } from "@emotion/react";
 import { theme } from "./theme";
+import React from "react";
+
 
 function App() {
   return (
@@ -21,9 +24,12 @@ function App() {
         <ThemeProvider theme={theme}>
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<InteractivePage />} />
+              <Route path="/" element={<HeadsUpPage />} />
               <Route path="monitor_one" element={<MonitorOnePage />} />
               <Route path="monitor_two" element={<MonitorTwoPage />} />
+              {/*  //these appear to do nothing
+               */}
+              <Route path="interactive_page" element={<InteractivePage />} />
             </Routes>
           </BrowserRouter>
         </ThemeProvider>

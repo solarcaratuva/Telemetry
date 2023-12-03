@@ -27,7 +27,7 @@ const OnePedalDrive: React.FC<Props> = ({ value }) => {
     : (50 - value) / 50;
 
   return (
-    <Box>
+    <Box marginTop = {2}>
       <Box
         width="100%"
         display="flex"
@@ -85,7 +85,7 @@ const OnePedalDrive: React.FC<Props> = ({ value }) => {
           )}
         </Box>
       </Box>
-      <Box width="100%" display="flex" justifyContent="space-between" py="8px">
+      <Box width="100%" display="flex" justifyContent="space-between" color = "white" py="8px">
         <Typography>Decelerating</Typography>
         <Typography>Accelerating</Typography>
       </Box>

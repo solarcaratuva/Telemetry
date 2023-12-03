@@ -1,9 +1,13 @@
-import { Box, Button, Paper, Typography } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 import OnePedalDrive from "../components/OnePedalDrive";
 import { io } from "socket.io-client";
 import ToggleButtons from "../components/ToggleButtons";
+import AlertBox from "../components/AlertBox";
+import RPM from "../components/RPM";
+import BatteryTempGuage from "../components/BatteryTempGuage";
+import CurrentGuage from "../components/NetCurrentGuage";
 
 const socket = io("http://localhost:5050");
 const MAX_LENGTH = 50;
@@ -122,39 +126,11 @@ const InteractivePage = () => {
           >
             <Typography>Motor Temp</Typography>
           </Paper>
-          {/* Replace this paper component with RPM */}
-          <Paper
-            sx={{
-              flex: "1 0 0",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Typography>RPM</Typography>
-          </Paper>
+          <RPM  rpm={50} darkMode={false}/>
           {/* Replace this paper component with battery pack temp */}
-          <Paper
-            sx={{
-              flex: "1 0 0",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Typography>Battery Pack Temp</Typography>
-          </Paper>
-          {/* Replace this paper component with discharge */}
-          <Paper
-            sx={{
-              flex: "1 0 0",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Typography>Discharge</Typography>
-          </Paper>
+
+          <BatteryTempGuage temp={40} darkMode={false}/>
+          <CurrentGuage current={46} darkMode={false} />
         </Box>
         <Box sx={{ display: "flex", gap: "16px", width: "100%" }}>
           <Box
@@ -176,19 +152,22 @@ const InteractivePage = () => {
               }}
             >
               <ToggleButtons
-                state={ stringData.gear_state.length != 0 ? stringData.gear_state[stringData.gear_state.length - 1].value : "false" }
+                  leftOn = {false}
+                  rightOn = {true}
                 left={"Low"}
                 right={"High"}
                 label={"Gear:"}
               />
               <ToggleButtons
-                state={ stringData.hazard_state.length != 0 ? stringData.hazard_state[stringData.hazard_state.length - 1].value : "false" }
+                  leftOn = {false}
+                  rightOn = {true}
                 left={"Off"}
                 right={"On"}
                 label={"Hazard State:"}
               />
               <ToggleButtons
-                state={ stringData.turn_state.length != 0 ? stringData.turn_state[stringData.turn_state.length - 1].value : "false" }
+                  leftOn = {false}
+                  rightOn = {true}
                 left={"Left"}
                 right={"Right"}
                 label={"Turn Signal:"}
@@ -221,7 +200,7 @@ const InteractivePage = () => {
                     height: "calc(25vh - 8px)",
                   }}
                 >
-                  <Typography>Motor Faults</Typography>
+                    <AlertBox data={["Alert 1", "Alert2"]}/>
                 </Paper>
                 {/* Replace this paper component with fifa chart */}
                 <Paper

@@ -5,26 +5,26 @@ import { Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
 
 interface Props {
-  state?: string;
+  leftOn: boolean;
+  rightOn: boolean;
   left: string;
   right: string;
   label: string;
 }
 
-const ToggleButtons: React.FC<Props> = ({ state, left, right, label }) => {
+const ToggleButtons: React.FC<Props> = ({ leftOn, rightOn, left, right, label }) => {
   return (
     <Box>
       <Typography> {label} </Typography>
       <ToggleButtonGroup
-        value={state}
-        exclusive
+        value={[leftOn ? "left" : "None", rightOn ? "right" : "None"]}
         disabled
         aria-label="text alignment"
       >
-        <ToggleButton value="false" aria-label="left aligned">
+        <ToggleButton value="left" aria-label="left aligned">
           {left}
         </ToggleButton>
-        <ToggleButton value="true" aria-label="centered">
+        <ToggleButton value="right" aria-label="centered">
           {right}
         </ToggleButton>
       </ToggleButtonGroup>
