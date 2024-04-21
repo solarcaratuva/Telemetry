@@ -51,7 +51,6 @@ const MonitorTwoPage = () => {
         pack_current: [],
         pack_voltage: [],
         high_temperature: [],
-        pack_voltage: []
     });
 
     const [stringData, setStringData] = useState<StringData>({
