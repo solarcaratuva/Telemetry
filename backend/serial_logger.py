@@ -1,5 +1,5 @@
 import serial
-import send_from_can
+from send_from_can import *
 
 ser = serial.Serial(port="/dev/canUART", baudrate=9600)
 
