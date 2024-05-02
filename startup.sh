@@ -8,3 +8,5 @@ sleep 10
 /usr/bin/unclutter -idle 0
 
 # lxterminal --command "bash -c 'python /home/solarcar/Telemetry/backend/serial_logger.py; exec bash'"
+# wmctrl -r "UVA Telemetry 1" -e 0,0,0,800,600
+# wmctrl -r "serial_logger.py; exec bash'" -e 0,800,0,1600,600
