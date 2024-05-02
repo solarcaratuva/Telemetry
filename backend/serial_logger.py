@@ -14,10 +14,18 @@ while True:
             encoded_message += ser.read(24)
             # print(encoded_message)
             name, values = get_can_data(encoded_message)
+            curr_faults = []
             if name in ("BPSError", "MotorControllerError", "PowerAuxError"):
                 for k, v in values.items():
-                    # if v == 1:
-                    print(f"{name}: {k}: {v}")
+                    if v == 1:
+                        curr_faults.append(k)
+                print("~~~~~~~~~~~~~~~~~~~~~~~")
+                if len(curr_faults) > 0:
+                    for fault in curr_faults:
+                        print(fault)
+                else:
+                    print("No faults")
+                print("~~~~~~~~~~~~~~~~~~~~~~~")
                 # errors = []
                 # for data in self.can_messages[name]:
                 #     if values[data]:
