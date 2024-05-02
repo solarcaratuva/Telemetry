@@ -12,8 +12,8 @@ def decode_dbc(message_id, message_data): #message_id -> frame_id, message_data 
     # message = message_data
 
     # message_id = make_hex_great_again(message_id)
-    print("Message Data: " + str(message_data))
-    print("Message: " + str(message) + "Message ID: " + str(message_id))
+    # print("Message Data: " + str(message_data))
+    # print("Message: " + str(message) + "Message ID: " + str(message_id))
     curr_path = os.path.dirname(os.path.abspath(__file__))
     can_dir = os.path.join(curr_path, "CAN-messages")
 
