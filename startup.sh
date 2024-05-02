@@ -6,3 +6,5 @@ chromium-browser --app=http://localhost:12345 --start-fullscreen &
 sleep 10
 /home/cwise/backend.sh &
 /usr/bin/unclutter -idle 0
+
+# lxterminal --command "bash -c 'python /home/solarcar/Telemetry/backend/serial_logger.py; exec bash'"
