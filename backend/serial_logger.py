@@ -14,6 +14,6 @@ while True:
             encoded_message += ser.read(24)
             print(encoded_message)
             print(get_can_data(encoded_message))
-    except Exception:
-        print("error")
+    except Exception as e:
+        print(f"error: {e}")
 
