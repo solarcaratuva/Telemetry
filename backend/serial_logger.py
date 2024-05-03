@@ -4,6 +4,7 @@ from send_from_can import *
 ser = serial.Serial(port="/dev/canUART", baudrate=9600)
 
 pack_current = 0
+curr_faults = []
 
 while True:
     try:
@@ -18,6 +19,14 @@ while True:
             name, values = get_can_data(encoded_message)
             if name == "BPSPackInformation":
                 pack_current = values["pack_current"]
+                print("~~~~~~~~~~~~~~~~~~~~~~~")
+                if len(curr_faults) > 0:
+                    for fault in curr_faults:
+                        print(fault)
+                else:
+                    print("No faults")
+                print(f"pack_current: {pack_current}")
+                print("~~~~~~~~~~~~~~~~~~~~~~~")
             elif name in ("BPSError", "MotorControllerError", "PowerAuxError"):
                 curr_faults = []
                 for k, v in values.items():
