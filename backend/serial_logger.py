@@ -22,6 +22,7 @@ while True:
             for byte in encoded_message:
                 ints.append(byte)
             message_id = int.from_bytes(encoded_message[1:3], "big")  # first two bytes are message id
+            print(f"id: {message_id}")
             # print(f"message id: {message_id}")
             message_body = encoded_message[3:17]
             print(f"message body: {message_body}")
