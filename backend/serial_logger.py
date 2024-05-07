@@ -81,6 +81,7 @@ def handle_serial():
                     bms_fault_in = int(curr_msg[1])
                     decode_fault_codes(bms_fault_in)
                 elif msg_id == "left_turn":
+                    print(f"left msg: {curr_msg[1]}")
                     left_turn = int(curr_msg[1]) == 1
                 elif msg_id == "right_turn":
                     right_turn = int(curr_msg[1]) == 1
