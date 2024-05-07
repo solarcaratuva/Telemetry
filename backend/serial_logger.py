@@ -1,6 +1,6 @@
 import time
 import threading
-from send_from_can import *
+import serial
 
 
 def decode_fault_codes(raw_data):
