@@ -1,9 +1,10 @@
-import serial
+import time
+import threading
 from send_from_can import *
-from decode_can_dbc import *
 
 
 def decode_fault_codes(raw_data):
+    global curr_faults
     # Define the fault codes based on their bit positions
     fault_codes = {
         0: "internal_communications_fault",
@@ -29,14 +30,13 @@ def decode_fault_codes(raw_data):
         20: "internal_logic_fault"
     }
 
-    active_faults = []
+    curr_faults = []
 
     # Check each fault bit if it is set
     for bit_position, fault_name in fault_codes.items():
         if raw_data & (1 << bit_position):  # Shift 1 left by bit_position and check with AND
-            active_faults.append(fault_name)
+            curr_faults.append(fault_name)
 
-    return active_faults
 
 ser = serial.Serial(port="COM10", baudrate=9600)
 
@@ -47,83 +47,62 @@ high_cell_tmp = 0
 regen = 0
 cruise_control_speed = 0
 cruise_control_en = 0
-
+left_turn = False
+right_turn = False
 curr_faults = []
 
-while True:
-    try:
-        curr_msg = ser.readline().decode('utf-8')[:-1].split()
-        msg_id = curr_msg[0]
+lock = threading.Lock()
 
-        if msg_id == "pack_voltage":
-            pack_voltage = float(curr_msg[1])/100
-        elif msg_id == "pack_current":
-            pack_current = float(curr_msg[1])/10
-        elif msg_id == "motor_rpm":
-            motor_rpm = int(curr_msg[1])
-        elif msg_id == "tmp":
-            high_cell_tmp = int(curr_msg[1])
-        elif msg_id == "regen":
-            regen = int(curr_msg[1])
-        elif msg_id == "cc_speed":
-            cruise_control_speed = int(curr_msg[1])
-        elif msg_id == "cc_en":
-            cruise_control_en = int(curr_msg[1])
-        elif msg_id == "bms_fault":
-            bms_fault_in = int(curr_msg[1])
-            curr_faults = decode_fault_codes(bms_fault_in)
 
-        # print(encoded_message)
-        #
-        # start_byte = int.from_bytes(encoded_message, "big")  # Checks for start byte as int for beginning of message
-        # # print(f"got byte: {start_byte}")
-        # if start_byte == 249:  # 249 is the start message byte
-        #     encoded_message += ser.read(24)
-        #     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        #     print(f"encoded message: {encoded_message}")
-        #     ints = []
-        #     for byte in encoded_message:
-        #         ints.append(byte)
-        #     message_id = int.from_bytes(encoded_message[1:3], "big")  # first two bytes are message id
-        #     print(f"id: {message_id}")
-        #     # print(f"message id: {message_id}")
-        #     message_body = encoded_message[3:17]
-        #     print(f"message body: {message_body}")
-        #     m = make_hex_great_again(message_body)
-        #     print(f"after make hex: {m}")
-        #     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-            # print(encoded_message)
-            # name, values = get_can_data(encoded_message)
-            # if name == "BPSPackInformation":
-            #     pack_current = values["pack_current"]
-            #     print("~~~~~~~~~~~~~~~~~~~~~~~")
-            #     if len(curr_faults) > 0:
-            #         for fault in curr_faults:
-            #             print(fault)
-            #     else:
-            #         print("No faults")
-            #     print(f"pack_current: {pack_current}")
-            #     print("~~~~~~~~~~~~~~~~~~~~~~~")
-            # elif name in ("BPSError", "MotorControllerError", "PowerAuxError"):
-            #     curr_faults = []
-            #     for k, v in values.items():
-            #         if v == 1:
-            #             curr_faults.append(k)
-            #     print("~~~~~~~~~~~~~~~~~~~~~~~")
-            #     if len(curr_faults) > 0:
-            #         for fault in curr_faults:
-            #             print(fault)
-            #     else:
-            #         print("No faults")
-            #     print(f"pack_current: {pack_current}")
-            #     print("~~~~~~~~~~~~~~~~~~~~~~~")
-            # errors = []
-            # for data in self.can_messages[name]:
-            #     if values[data]:
-            #         errors.append(data)
-            #
-            # # print("ERRORS: " + str(errors))
-            # self.sio.emit(name, {"timestamp": timestamp, "array": errors})
-            # return True
-    except Exception as e:
-        print(f"error: {e}")
+def handle_serial():
+    global pack_voltage, pack_current, motor_rpm, high_cell_tmp, regen, cruise_control_speed,\
+        cruise_control_en, left_turn, right_turn
+    while True:
+        try:
+            curr_msg = ser.readline().decode('utf-8')[:-1].split()
+            msg_id = curr_msg[0]
+
+            with lock:
+                if msg_id == "pack_voltage":
+                    pack_voltage = float(curr_msg[1])/100
+                elif msg_id == "pack_current":
+                    pack_current = float(curr_msg[1])/10
+                elif msg_id == "motor_rpm":
+                    motor_rpm = int(curr_msg[1])
+                elif msg_id == "tmp":
+                    high_cell_tmp = int(curr_msg[1])
+                elif msg_id == "regen":
+                    regen = int(curr_msg[1])
+                elif msg_id == "cc_speed":
+                    cruise_control_speed = int(curr_msg[1])
+                elif msg_id == "cc_en":
+                    cruise_control_en = int(curr_msg[1])
+                elif msg_id == "bms_fault":
+                    bms_fault_in = int(curr_msg[1])
+                    decode_fault_codes(bms_fault_in)
+                elif msg_id == "left_turn":
+                    left_turn = int(curr_msg[1]) == 1
+                elif msg_id == "right_turn":
+                    right_turn = int(curr_msg[1]) == 1
+
+        except Exception as e:
+            print(f"error: {e}")
+
+
+def display_info():
+    while True:
+        print("One second has passed.")
+        with lock:
+            print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            print(f"pack voltage: {pack_voltage}")
+            print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        time.sleep(1)
+
+
+if __name__ == "__main__":
+    serial_thread = threading.Thread(target=handle_serial)
+    timer_thread = threading.Thread(target=display_info)
+
+    # Start threads
+    serial_thread.start()
+    timer_thread.start()
