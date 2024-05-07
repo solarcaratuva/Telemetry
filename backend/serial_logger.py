@@ -92,7 +92,6 @@ def handle_serial():
 
 def display_info():
     while True:
-        print("One second has passed.")
         with lock:
             print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
             print(f"pack voltage: {pack_voltage}")
