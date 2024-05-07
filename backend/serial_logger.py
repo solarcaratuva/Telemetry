@@ -95,6 +95,16 @@ def display_info():
         with lock:
             print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
             print(f"pack voltage: {pack_voltage}")
+            print(f"pack current: {pack_current}")
+            speed_mph = (motor_rpm * 3.1415926535 * 16 * 60) / 63360
+            print(f"speed: {speed_mph}")
+            print(f"tmp: {high_cell_tmp}")
+            print(f"regen: {'on' if regen else 'off'}")
+            print(f"cc speed: {cruise_control_speed}")
+            print(f"cc: {'on' if cruise_control_en else 'off'}")
+            print(f"left: {'on' if left_turn else 'off'}")
+            print(f"right: {'on' if right_turn else 'off'}")
+            print(f"faults: {'None' if len(curr_faults) == 0 else ', '.join(curr_faults)}")
             print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         time.sleep(1)
 
