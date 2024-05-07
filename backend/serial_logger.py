@@ -38,7 +38,7 @@ def decode_fault_codes(raw_data):
             curr_faults.append(fault_name)
 
 
-ser = serial.Serial(port="COM10", baudrate=9600)
+ser = serial.Serial(port="/dev/serial/by-id/usb-Teensyduino_USB_Serial_6196050-if00", baudrate=9600)
 
 pack_voltage = 0
 pack_current = 0
