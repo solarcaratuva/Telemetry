@@ -7,6 +7,8 @@
 
 // Create a CAN object
 FlexCAN CANbus;
+int motor_commands_rate_divisor = 30;
+int curr_motor_commands_ct = 0;
 
 static inline uint16_t unpack_right_shift_u16(
     uint8_t value,
@@ -43,7 +45,7 @@ static inline uint8_t unpack_left_shift_u8(
 void setup() {
   Serial.begin(9600);
   while (!Serial); // Wait for Serial Monitor to open
-
+  Serial.print("starting\n");
   // Initialize CAN bus
   Can0.begin(250000); // Set baud rate to 250 kbps
 }
@@ -85,6 +87,11 @@ void loop() {
       break;
     }
     case(513): {
+      ++curr_motor_commands_ct;
+      if(curr_motor_commands_ct < motor_commands_rate_divisor) {
+        break;
+      }
+      curr_motor_commands_ct = 0;
       // int throttle = unpack_right_shift_u16(msg.buf[0], 0u, 0xffu);
       // throttle |= unpack_left_shift_u16(msg.buf[1], 8u, 0x01u);
       // Serial.printf("throttle %d\n", throttle);
@@ -93,21 +100,25 @@ void loop() {
       Serial.printf("regen %d\n", regen);
       int cruise_control_speed = unpack_right_shift_u8(msg.buf[2], 2u, 0xfcu);
       cruise_control_speed |= unpack_left_shift_u8(msg.buf[3], 6u, 0x03u);
-      Serial.printf("cc_speed %d\n", cruise_control_speed);
+      Serial.printf("cc_speed %d\n-", cruise_control_speed);
       int cruise_control_en = unpack_right_shift_u8(msg.buf[3], 2u, 0x04u);
       Serial.printf("cc_en %d\n", cruise_control_en);
       break;
     }
     case(262): {
-      uint32_t bms_out = msg.buf[0];
+      uint32_t bms_out = msg.buf[2];
       bms_out = (bms_out<<8) | msg.buf[1];
-      bms_out = (bms_out<<8) | msg.buf[2];
+      bms_out = (bms_out<<8) | msg.buf[0];
       Serial.printf("bms_fault %d\n", bms_out);
+      break;
+    }
+    case(769): {
+      uint8_t left_turn = (msg.buf[0]>>3)&1;
+      Serial.printf("left_turn %d\n", left_turn);
+      uint8_t right_turn = (msg.buf[0]>>4)&1;
+      Serial.printf("right_turn %d\n", right_turn);
       break;
     }
     }
   }
-
-  // Add a delay to read every 1 seconds
-  delay(1000);
 }
