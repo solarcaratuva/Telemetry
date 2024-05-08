@@ -2,6 +2,8 @@ import time
 import threading
 import serial
 import os
+from digi.xbee.devices import XBeeDevice
+import atexit
 
 
 def decode_fault_codes(raw_data):
@@ -63,6 +65,9 @@ def handle_serial():
 
     global pack_voltage, pack_current, motor_rpm, high_cell_tmp, regen, cruise_control_speed,\
         cruise_control_en, left_turn, right_turn
+    radio = XBeeDevice("/dev/radio", 9600)
+    radio.open()
+    atexit.register(lambda: radio.close())
     while True:
         try: 
             port = find_serial_port()
@@ -75,6 +80,7 @@ def handle_serial():
             while True:
                 try:
                     curr_msg = ser.readline().decode('utf-8')[:-1].split()
+                    radio.send_data_broadcast(curr_msg)
                     msg_id = curr_msg[0]
 
                     with lock:
