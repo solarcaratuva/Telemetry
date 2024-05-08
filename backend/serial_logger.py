@@ -38,8 +38,6 @@ def decode_fault_codes(raw_data):
             curr_faults.append(fault_name)
 
 
-ser = serial.Serial(port="/dev/serial/by-id/usb-Teensyduino_USB_Serial_6538150-if00", baudrate=9600)
-
 pack_voltage = 0
 pack_current = 0
 motor_rpm = 0
@@ -55,38 +53,45 @@ lock = threading.Lock()
 
 
 def handle_serial():
+
     global pack_voltage, pack_current, motor_rpm, high_cell_tmp, regen, cruise_control_speed,\
         cruise_control_en, left_turn, right_turn
     while True:
-        try:
-            curr_msg = ser.readline().decode('utf-8')[:-1].split()
-            msg_id = curr_msg[0]
+        try: 
+            ser = serial.Serial(port="/dev/serial/by-id/usb-Teensyduino_USB_Serial_6538150-if00", baudrate=9600)
 
-            with lock:
-                if msg_id == "pack_voltage":
-                    pack_voltage = float(curr_msg[1])/100
-                elif msg_id == "pack_current":
-                    pack_current = float(curr_msg[1])/10
-                elif msg_id == "motor_rpm":
-                    motor_rpm = int(curr_msg[1])
-                elif msg_id == "tmp":
-                    high_cell_tmp = int(curr_msg[1])
-                elif msg_id == "regen":
-                    regen = int(curr_msg[1])
-                elif msg_id == "cc_speed":
-                    cruise_control_speed = int(curr_msg[1])
-                elif msg_id == "cc_en":
-                    cruise_control_en = int(curr_msg[1])
-                elif msg_id == "bms_fault":
-                    bms_fault_in = int(curr_msg[1])
-                    decode_fault_codes(bms_fault_in)
-                elif msg_id == "left_turn":
-                    left_turn = int(curr_msg[1]) == 1
-                elif msg_id == "right_turn":
-                    right_turn = int(curr_msg[1]) == 1
+            while True:
+                try:
+                    curr_msg = ser.readline().decode('utf-8')[:-1].split()
+                    msg_id = curr_msg[0]
 
-        except Exception as e:
-            print(f"error: {e}")
+                    with lock:
+                        if msg_id == "pack_voltage":
+                            pack_voltage = float(curr_msg[1])/100
+                        elif msg_id == "pack_current":
+                            pack_current = float(curr_msg[1])/10
+                        elif msg_id == "motor_rpm":
+                            motor_rpm = int(curr_msg[1])
+                        elif msg_id == "tmp":
+                            high_cell_tmp = int(curr_msg[1])
+                        elif msg_id == "regen":
+                            regen = int(curr_msg[1])
+                        elif msg_id == "cc_speed":
+                            cruise_control_speed = int(curr_msg[1])
+                        elif msg_id == "cc_en":
+                            cruise_control_en = int(curr_msg[1])
+                        elif msg_id == "bms_fault":
+                            bms_fault_in = int(curr_msg[1])
+                            decode_fault_codes(bms_fault_in)
+                        elif msg_id == "left_turn":
+                            left_turn = int(curr_msg[1]) == 1
+                        elif msg_id == "right_turn":
+                            right_turn = int(curr_msg[1]) == 1
+                except Exception as e:
+                    print(f"error: {e}")
+        except serial.SerialException as e:
+            print("Serial Port not connected, retrying")
+            time.sleep(1)
 
 
 def display_info():
