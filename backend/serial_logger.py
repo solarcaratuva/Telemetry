@@ -1,6 +1,7 @@
 import time
 import threading
 import serial
+import os
 
 
 def decode_fault_codes(raw_data):
@@ -51,6 +52,12 @@ curr_faults = []
 
 lock = threading.Lock()
 
+def find_serial_port() -> str:
+    ports = os.listdir("/dev/serial/by-id/")
+    for port in ports:
+        if "usb-Teensyduino_USB_Serial" in port:
+            return port
+
 
 def handle_serial():
 
@@ -58,7 +65,12 @@ def handle_serial():
         cruise_control_en, left_turn, right_turn
     while True:
         try: 
-            ser = serial.Serial(port="/dev/serial/by-id/usb-Teensyduino_USB_Serial_6538150-if00", baudrate=9600)
+            port = find_serial_port()
+            if port is None:
+                print("No serial port found, retrying...")
+                time.sleep(1)
+                continue
+            ser = serial.Serial(port=port, baudrate=9600)
 
             while True:
                 try:
@@ -90,7 +102,7 @@ def handle_serial():
                 except Exception as e:
                     print(f"error: {e}")
         except serial.SerialException as e:
-            print("Serial Port not connected, retrying")
+            print("Serial Port not connected, retrying...")
             time.sleep(1)
 
 
