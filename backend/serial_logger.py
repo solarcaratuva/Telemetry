@@ -113,6 +113,8 @@ def handle_serial():
                         elif msg_id == "hazards":
                             hazards = int(curr_msg[1]) == 1
                 except Exception as e:
+                    if type(e) == serial.SerialException:
+                        raise e
                     print(f"error: {e}")
         except serial.SerialException as e:
             print("Serial Port not connected, retrying...")
