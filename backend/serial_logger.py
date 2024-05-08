@@ -52,8 +52,10 @@ left_turn = False
 right_turn = False
 curr_faults = []
 other_error = False
+hazards = False
 
 lock = threading.Lock()
+
 
 def find_serial_port() -> str:
     ports = os.listdir("/dev/serial/by-id/")
@@ -108,6 +110,8 @@ def handle_serial():
                             right_turn = int(curr_msg[1]) == 1
                         elif msg_id == "other_error":
                             other_error = int(curr_msg[1]) == 1
+                        elif msg_id == "hazards":
+                            hazards = int(curr_msg[1]) == 1
                 except Exception as e:
                     print(f"error: {e}")
         except serial.SerialException as e:
@@ -129,6 +133,7 @@ def display_info():
             print(f"cc: {'on' if cruise_control_en else 'off'}")
             print(f"left: {'on' if left_turn else 'off'}")
             print(f"right: {'on' if right_turn else 'off'}")
+            print(f"hazards: {'on' if hazards else 'off'}")
             faults_list = ["other_error"] if other_error else []
             faults_list.extend(curr_faults)
             print(f"faults: {'None' if len(faults_list) == 0 else ', '.join(faults_list)}")
