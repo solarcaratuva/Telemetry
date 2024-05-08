@@ -51,6 +51,7 @@ cruise_control_en = 0
 left_turn = False
 right_turn = False
 curr_faults = []
+other_error = False
 
 lock = threading.Lock()
 
@@ -64,7 +65,7 @@ def find_serial_port() -> str:
 def handle_serial():
 
     global pack_voltage, pack_current, motor_rpm, high_cell_tmp, regen, cruise_control_speed,\
-        cruise_control_en, left_turn, right_turn
+        cruise_control_en, left_turn, right_turn, other_error
     radio = XBeeDevice("/dev/radio", 9600)
     radio.open()
     atexit.register(lambda: radio.close())
@@ -105,6 +106,8 @@ def handle_serial():
                             left_turn = int(curr_msg[1]) == 1
                         elif msg_id == "right_turn":
                             right_turn = int(curr_msg[1]) == 1
+                        elif msg_id == "other_error":
+                            other_error = int(curr_msg[1]) == 1
                 except Exception as e:
                     print(f"error: {e}")
         except serial.SerialException as e:
@@ -126,7 +129,9 @@ def display_info():
             print(f"cc: {'on' if cruise_control_en else 'off'}")
             print(f"left: {'on' if left_turn else 'off'}")
             print(f"right: {'on' if right_turn else 'off'}")
-            print(f"faults: {'None' if len(curr_faults) == 0 else ', '.join(curr_faults)}")
+            faults_list = ["other_error"] if other_error else []
+            faults_list.extend(curr_faults)
+            print(f"faults: {'None' if len(faults_list) == 0 else ', '.join(faults_list)}")
             print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         time.sleep(1)
 
