@@ -113,6 +113,15 @@ void loop() {
       break;
     }
     case(769): {
+      uint8_t headlights = (msg.buf[0]>>2)&1;
+      uint8_t hazards = msg.buf[0]&1;
+      if(headlights) {
+        // Sent from battery board
+        // Hazards represent error value
+        Serial.printf("other_error %d\n", hazards);
+        break;
+      }
+      Serial.printf("hazards %d\n", hazards);
       uint8_t left_turn = (msg.buf[0]>>3)&1;
       Serial.printf("left_turn %d\n", left_turn);
       uint8_t right_turn = (msg.buf[0]>>4)&1;
