@@ -63,7 +63,8 @@ def find_serial_port() -> str:
     ports = os.listdir("/dev/serial/by-id/")
     for port in ports:
         if "usb-Teensyduino_USB_Serial" in port:
-            return port
+            return f"/dev/serial/by-id/{port}"
+    return None
 
 
 def handle_serial():
