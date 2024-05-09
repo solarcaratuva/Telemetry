@@ -122,6 +122,7 @@ def handle_serial():
                     print(f"error: {e}")
         except serial.SerialException as e:
             print("Serial Port not connected, retrying...")
+            print(e)
             time.sleep(1)
 
 
