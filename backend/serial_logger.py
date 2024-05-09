@@ -70,7 +70,7 @@ def find_serial_port() -> str:
 def handle_serial():
 
     global pack_voltage, pack_current, motor_rpm, high_cell_tmp, regen, cruise_control_speed,\
-        cruise_control_en, left_turn, right_turn, other_error
+        cruise_control_en, left_turn, right_turn, other_error, hazards
     if Config.USE_RADIO:
         radio = XBeeDevice("/dev/radio", 9600)
         radio.open()
@@ -123,6 +123,7 @@ def handle_serial():
                     print(f"error: {e}")
         except serial.SerialException as e:
             print("Serial Port not connected, retrying...")
+            print(e)
             time.sleep(1)
 
 
