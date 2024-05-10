@@ -142,6 +142,13 @@ def display_info():
         if disconnected:
             continue
         with lock:
+            lights = []
+            if left_turn:
+                lights.append("left_turn")
+            if right_turn:
+                lights.append("right_turn")
+            if hazards:
+                lights.append("hazards")
             print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
             print(f"pack voltage: {pack_voltage}")
             print(f"pack current: {pack_current}")
@@ -151,9 +158,10 @@ def display_info():
             print(f"regen: {'on' if regen else 'off'}")
             print(f"cc speed: {cruise_control_speed}")
             print(f"cc: {'on' if cruise_control_en else 'off'}")
-            print(f"left: {'on' if left_turn else 'off'}")
-            print(f"right: {'on' if right_turn else 'off'}")
-            print(f"hazards: {'on' if hazards else 'off'}")
+            print(f"lights: {'None' if len(lights)==0 else ', '.join(lights)}")
+            # print(f"left: {'on' if left_turn else 'off'}")
+            # print(f"right: {'on' if right_turn else 'off'}")
+            # print(f"hazards: {'on' if hazards else 'off'}")
             faults_list = ["other_error"] if other_error else []
             faults_list.extend(curr_faults)
             print(f"faults: {'None' if len(faults_list) == 0 else ', '.join(faults_list)}")
