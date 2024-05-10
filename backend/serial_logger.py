@@ -57,6 +57,7 @@ right_turn = False
 curr_faults = []
 other_error = False
 hazards = False
+disconnected = False
 
 lock = threading.Lock()
 
@@ -75,7 +76,7 @@ def find_serial_port() -> Optional[str]:
 def handle_serial():
 
     global pack_voltage, pack_current, motor_rpm, high_cell_tmp, regen, cruise_control_speed,\
-        cruise_control_en, left_turn, right_turn, other_error, hazards
+        cruise_control_en, left_turn, right_turn, other_error, hazards, disconnected
     if Config.USE_RADIO:
         radio = XBeeDevice("/dev/radio", 9600)
         radio.open()
@@ -85,10 +86,11 @@ def handle_serial():
             port = find_serial_port()
             if port is None:
                 print("No serial port found, retrying...")
+                disconnected = True
                 time.sleep(1)
                 continue
             ser = serial.Serial(port=port, baudrate=9600)
-
+            disconnected = False
             while True:
                 try:
                     curr_msg = ser.readline().decode('utf-8')[:-1].split()
@@ -131,11 +133,14 @@ def handle_serial():
         except serial.SerialException as e:
             print("Serial Port not connected, retrying...")
             print(e)
+            disconnected = True
             time.sleep(1)
 
 
 def display_info():
     while True:
+        if disconnected:
+            continue
         with lock:
             print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
             print(f"pack voltage: {pack_voltage}")
