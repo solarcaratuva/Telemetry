@@ -156,7 +156,7 @@ def display_info():
             print(f"speed: {speed_mph}")
             print(f"tmp: {high_cell_tmp}")
             print(f"regen: {'on' if regen else 'off'}")
-            print(f"cc speed: {cruise_control_speed}")
+            print(f"cc speed: {cruise_control_speed if cruise_control_en else 0}")
             print(f"cc: {'on' if cruise_control_en else 'off'}")
             print(f"lights: {'None' if len(lights)==0 else ', '.join(lights)}")
             # print(f"left: {'on' if left_turn else 'off'}")
