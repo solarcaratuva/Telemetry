@@ -1,5 +1,7 @@
 import time
 import threading
+from typing import Optional
+
 import serial
 import os
 from digi.xbee.devices import XBeeDevice
@@ -59,11 +61,15 @@ hazards = False
 lock = threading.Lock()
 
 
-def find_serial_port() -> str:
-    ports = os.listdir("/dev/serial/by-id/")
-    for port in ports:
-        if "usb-Teensyduino_USB_Serial" in port:
-            return port
+def find_serial_port() -> Optional[str]:
+    try:
+        ports = os.listdir("/dev/serial/by-id/")
+        for port in ports:
+            if "usb-Teensyduino_USB_Serial" in port:
+                return port
+        return None
+    except FileNotFoundError:
+        return None
 
 
 def handle_serial():
