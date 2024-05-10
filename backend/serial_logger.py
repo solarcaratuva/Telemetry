@@ -100,7 +100,9 @@ def handle_serial():
                         if msg_id == "pack_voltage":
                             pack_voltage = float(curr_msg[1])/100
                         elif msg_id == "pack_current":
-                            pack_current = float(curr_msg[1])/10
+                            new_pack_current = float(curr_msg[1])/10
+                            if -50 <= new_pack_current <= 200:
+                                pack_current = new_pack_current
                         elif msg_id == "motor_rpm":
                             motor_rpm = int(curr_msg[1])
                         elif msg_id == "tmp":
