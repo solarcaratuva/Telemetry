@@ -71,8 +71,12 @@ void loop() {
     case (1030): {
       int pack_voltage = ((msg.buf[1]<<8) | msg.buf[0]);
       Serial.printf("pack_voltage %d\n", pack_voltage);
-      int pack_current = ((msg.buf[3]<<8) | msg.buf[2]);
+      int16_t pack_current = unpack_right_shift_u16(msg.buf[2], 0u, 0xffu);
+      pack_current |= unpack_left_shift_u16(msg.buf[3], 8u, 0xffu);
       Serial.printf("pack_current %d\n", pack_current);
+      // uint8_t byte2 = msg.buf[2];
+      // uint8_t byte3 = msg.buf[3];
+      // Serial.printf("byte 2: %d, byte 3: %d\n", byte2, byte3);
       break;
     }
     case (805): {
@@ -100,8 +104,8 @@ void loop() {
       Serial.printf("regen %d\n", regen);
       int cruise_control_speed = unpack_right_shift_u8(msg.buf[2], 2u, 0xfcu);
       cruise_control_speed |= unpack_left_shift_u8(msg.buf[3], 6u, 0x03u);
-      Serial.printf("cc_speed %d\n-", cruise_control_speed);
-      int cruise_control_en = unpack_right_shift_u8(msg.buf[3], 2u, 0x04u);
+      Serial.printf("cc_speed %d\n", cruise_control_speed);
+      int cruise_control_en = (msg.buf[3]>>2)&1;
       Serial.printf("cc_en %d\n", cruise_control_en);
       break;
     }
