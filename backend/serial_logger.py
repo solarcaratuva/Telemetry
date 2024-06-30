@@ -157,7 +157,7 @@ def display_info():
             print(f"pack voltage: {pack_voltage}")
             print(f"pack current: {pack_current}")
             speed_mph = (motor_rpm * 3.1415926535 * 16 * 60) / 63360
-            print(f"speed: {speed_mph}")
+            print(f"speed: {int(speed_mph)}")
             print(f"tmp: {high_cell_tmp}")
             print(f"regen: {'on' if regen else 'off'}")
             print(f"cc speed: {cruise_control_speed if cruise_control_en else 0}")
