@@ -1,3 +1,5 @@
+
+
 import time
 import threading
 from typing import Optional
@@ -9,40 +11,41 @@ import atexit
 
 import Config
 
-
-def decode_fault_codes(raw_data):
-    global curr_faults
-    # Define the fault codes based on their bit positions
-    fault_codes = {
-        0: "internal_communications_fault",
-        1: "internal_conversion_fault",
-        2: "weak_cell_fault",
-        3: "low_cell_voltage_fault",
-        4: "open_wiring_fault",
-        5: "current_sensor_fault",
-        6: "pack_voltage_sensor_fault",
-        7: "weak_pack_fault",
-        8: "voltage_redundancy_fault",
-        9: "fan_monitor_fault",
-        10: "thermistor_fault",
-        11: "CANBUS_communications_fault",
+fault_codes = {
+        0: "P0A1F", #"internal_communications_fault",
+        1: "P0A00", #"internal_conversion_fault",
+        2: "P0A80", #"weak_cell_fault",
+        3: "P0AFA", #"low_cell_voltage_fault",
+        4: "P0A04", #"open_wiring_fault",
+        5: "P0AC0", #"current_sensor_fault",
+        6: "P0A01", #"pack_voltage_sensor_fault",
+        7: "P0A02", #"weak_pack_fault",
+        8: "P0560", #"voltage_redundancy_fault",
+        9: "P0A81", #"fan_monitor_fault",
+        10: "P0A9C", #"thermistor_fault",
+        11: "U0100", #"CANBUS_communications_fault",
         12: "always_on_supply_fault",
-        13: "high_voltage_isolation_fault",
-        14: "power_supply_12v_fault",
-        15: "charge_limit_enforcement_fault",
-        16: "discharge_limit_enforcement_fault",
-        17: "charger_safety_relay_fault",
-        18: "internal_memory_fault",
-        19: "internal_thermistor_fault",
-        20: "internal_logic_fault"
+        13: "P0AA6", #"high_voltage_isolation_fault",
+        14: "P0A05", #"power_supply_12v_fault",
+        15: "P0A06", #"charge_limit_enforcement_fault",
+        16: "P0A07", #"discharge_limit_enforcement_fault",
+        17: "P0A08", #"charger_safety_relay_fault",
+        18: "P0A09", #"internal_memory_fault",
+        19: "P0A0A", #"internal_thermistor_fault",
+        20: "P0A0B" #"internal_logic_fault"
     }
 
-    curr_faults = []
+def decode_fault_codes(raw_data):
+    global curr_faults_set, fault_codes
+    # Define the fault codes based on their bit positions
+
+    #curr_faults = []
 
     # Check each fault bit if it is set
     for bit_position, fault_name in fault_codes.items():
         if raw_data & (1 << bit_position):  # Shift 1 left by bit_position and check with AND
-            curr_faults.append(fault_name)
+            #curr_faults.append(fault_name)
+            curr_faults_set.add(fault_name)
 
 
 pack_voltage = 0
@@ -54,7 +57,7 @@ cruise_control_speed = 0
 cruise_control_en = 0
 left_turn = False
 right_turn = False
-curr_faults = []
+curr_faults_set = set()
 other_error = False
 hazards = False
 disconnected = False
@@ -138,6 +141,7 @@ def handle_serial():
 
 
 def display_info():
+    global curr_faults_set
     while True:
         if disconnected:
             continue
@@ -162,6 +166,7 @@ def display_info():
             # print(f"left: {'on' if left_turn else 'off'}")
             # print(f"right: {'on' if right_turn else 'off'}")
             # print(f"hazards: {'on' if hazards else 'off'}")
+            curr_faults = list(curr_faults_set)
             faults_list = ["other_error"] if other_error else []
             faults_list.extend(curr_faults)
             print(f"faults: {'None' if len(faults_list) == 0 else ', '.join(faults_list)}")
