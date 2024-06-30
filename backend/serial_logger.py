@@ -167,7 +167,8 @@ def display_info():
 
             print(f"{start_color_voltage}voltage: {pack_voltage}{end_color_voltage}")
             print(f"current: {pack_current}")
-            speed_mph = (motor_rpm * 3.1415926535 * 16 * 60) / 63360
+            speed_mph = 0.0596 * motor_rpm
+            #speed_mph = (motor_rpm * 3.1415926535 * 16 * 60) / 63360
             print(f"speed: {int(speed_mph)}")
             print(f"tmp: {high_cell_tmp}")
             print(f"regen: {'on' if regen else 'off'}")
