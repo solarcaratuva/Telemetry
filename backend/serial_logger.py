@@ -169,7 +169,9 @@ def display_info():
             curr_faults = list(curr_faults_set)
             faults_list = ["other_error"] if other_error else []
             faults_list.extend(curr_faults)
-            print(f"faults: {'None' if len(faults_list) == 0 else ', '.join(faults_list)}")
+            red = '\33[41m' if len(faults_list) > 0 else ''
+            end = '\33[0m' if len(faults_list) > 0 else ''
+            print(f"{red}faults: {'None' if len(faults_list) == 0 else ', '.join(faults_list)}{end}")
             print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         time.sleep(1)
 
