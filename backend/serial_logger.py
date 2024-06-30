@@ -153,7 +153,7 @@ def display_info():
                 lights.append("right_turn")
             if hazards:
                 lights.append("hazards")
-            print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            print("~~~~~~~~~~~~~~~~~~~~~~")
             print(f"pack voltage: {pack_voltage}")
             print(f"pack current: {pack_current}")
             speed_mph = (motor_rpm * 3.1415926535 * 16 * 60) / 63360
@@ -172,7 +172,7 @@ def display_info():
             red = '\33[41m' if len(faults_list) > 0 else ''
             end = '\33[0m' if len(faults_list) > 0 else ''
             print(f"{red}faults: {'None' if len(faults_list) == 0 else ', '.join(faults_list)}{end}")
-            print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            print("~~~~~~~~~~~~~~~~~~~~~~")
         time.sleep(1)
 
 
