@@ -154,8 +154,8 @@ def display_info():
             if hazards:
                 lights.append("hazards")
             print("~~~~~~~~~~~~~~~~~~~~~~")
-            print(f"pack voltage: {pack_voltage}")
-            print(f"pack current: {pack_current}")
+            print(f"voltage: {pack_voltage}")
+            print(f"current: {pack_current}")
             speed_mph = (motor_rpm * 3.1415926535 * 16 * 60) / 63360
             print(f"speed: {int(speed_mph)}")
             print(f"tmp: {high_cell_tmp}")
