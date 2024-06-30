@@ -154,7 +154,18 @@ def display_info():
             if hazards:
                 lights.append("hazards")
             print("~~~~~~~~~~~~~~~~~~~~~~")
-            print(f"voltage: {pack_voltage}")
+
+            start_color_voltage = ""
+            end_color_voltage = ""
+            if pack_voltage <= 100:
+                start_color_voltage = "\33[41m"
+                end_color_voltage = "\33[0m"
+            elif pack_voltage <= 110:
+                start_color_voltage = "\33[43m"
+                end_color_voltage = "\33[0m"
+
+
+            print(f"{start_color_voltage}voltage: {pack_voltage}{end_color_voltage}")
             print(f"current: {pack_current}")
             speed_mph = (motor_rpm * 3.1415926535 * 16 * 60) / 63360
             print(f"speed: {int(speed_mph)}")
