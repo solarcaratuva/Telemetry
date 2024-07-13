@@ -142,6 +142,8 @@ def handle_serial():
 
 def display_info():
     global curr_faults_set
+    avg_pwr_per_mph = 0
+    num_pwr_per_mph = 0
     while True:
         if disconnected:
             continue
@@ -168,6 +170,14 @@ def display_info():
             print(f"{start_color_voltage}voltage: {pack_voltage}{end_color_voltage}")
             print(f"current: {pack_current}")
             speed_mph = 0.0596 * motor_rpm
+            pwr_per_mph = (pack_voltage * pack_current) / speed_mph
+            # prev = (a+b+c)/n, new = (a+b+c+d)/(n+1)
+            # new = (prev*n+d)/(n+1)
+            # new = (n/n+1)*prev + d/(n+1)
+            avg_pwr_per_mph = (num_pwr_per_mph/(1 + num_pwr_per_mph))*avg_pwr_per_mph + pwr_per_mph/(1 + num_pwr_per_mph)
+            num_pwr_per_mph += 1
+            print(f"W/mph: {pwr_per_mph:.2f}")
+            print(f"Avg W/mph: {avg_pwr_per_mph:.2f}")
             #speed_mph = (motor_rpm * 3.1415926535 * 16 * 60) / 63360
             print(f"speed: {int(speed_mph)}")
             print(f"tmp: {high_cell_tmp}")
