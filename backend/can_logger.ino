@@ -48,6 +48,7 @@ void setup() {
   Serial.print("starting\n");
   // Initialize CAN bus
   Can0.begin(250000); // Set baud rate to 250 kbps
+  Can0.setListenOnly(true);
 }
 
 void loop() {
@@ -67,6 +68,7 @@ void loop() {
     //   Serial.print(" ");
     // }
     // Serial.println();
+    Serial.printf("msg id: %d\n", msg.id);
     switch(msg.id) {
     case (1030): {
       int pack_voltage = ((msg.buf[1]<<8) | msg.buf[0]);
@@ -80,6 +82,12 @@ void loop() {
       break;
     }
     case (805): {
+      int motor_rpm = unpack_right_shift_u16(msg.buf[4], 3u, 0xf8u);
+      motor_rpm |= unpack_left_shift_u16(msg.buf[5], 5u, 0x7fu);
+      Serial.printf("motor_rpm %d\n", motor_rpm);
+      break;
+    }
+    case(0x08850225): {
       int motor_rpm = unpack_right_shift_u16(msg.buf[4], 3u, 0xf8u);
       motor_rpm |= unpack_left_shift_u16(msg.buf[5], 5u, 0x7fu);
       Serial.printf("motor_rpm %d\n", motor_rpm);
@@ -130,6 +138,10 @@ void loop() {
       Serial.printf("left_turn %d\n", left_turn);
       uint8_t right_turn = (msg.buf[0]>>4)&1;
       Serial.printf("right_turn %d\n", right_turn);
+      break;
+    }
+    default: {
+      Serial.printf("unknown can msg id: %d\n", msg.id);
       break;
     }
     }
