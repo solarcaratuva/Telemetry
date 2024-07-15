@@ -35,18 +35,6 @@ fault_codes = {
         20: "P0A0B" #"internal_logic_fault"
     }
 
-def decode_fault_codes(raw_data):
-    global curr_faults_set, fault_codes
-    # Define the fault codes based on their bit positions
-
-    #curr_faults = []
-
-    # Check each fault bit if it is set
-    for bit_position, fault_name in fault_codes.items():
-        if raw_data & (1 << bit_position):  # Shift 1 left by bit_position and check with AND
-            #curr_faults.append(fault_name)
-            curr_faults_set.add(fault_name)
-
 
 pack_voltage = 0
 pack_current = 0
@@ -118,9 +106,6 @@ def handle_serial():
                             cruise_control_speed = int(curr_msg[1])
                         elif msg_id == "cc_en":
                             cruise_control_en = int(curr_msg[1])
-                        elif msg_id == "bms_fault":
-                            bms_fault_in = int(curr_msg[1])
-                            decode_fault_codes(bms_fault_in)
                         elif msg_id == "left_turn":
                             left_turn = int(curr_msg[1]) == 1
                         elif msg_id == "right_turn":
@@ -129,6 +114,69 @@ def handle_serial():
                             other_error = int(curr_msg[1]) == 1
                         elif msg_id == "hazards":
                             hazards = int(curr_msg[1]) == 1
+                        elif msg_id == "internal_communications_fault":
+                            if int(curr_msg[1]) == 1:
+                                curr_faults_set.add("P0A1F")
+                        elif msg_id == "internal_conversion_fault":
+                            if int(curr_msg[1]) == 1:
+                                curr_faults_set.add("P0A00")
+                        elif msg_id == "weak_cell_fault":
+                            if int(curr_msg[1]) == 1:
+                                curr_faults_set.add("P0A80")
+                        elif msg_id == "low_cell_voltage_fault":
+                            if int(curr_msg[1]) == 1:
+                                curr_faults_set.add("P0AFA")
+                        elif msg_id == "open_wiring_fault":
+                            if int(curr_msg[1]) == 1:
+                                curr_faults_set.add("P0A04")
+                        elif msg_id == "current_sensor_fault":
+                            if int(curr_msg[1]) == 1:
+                                curr_faults_set.add("P0AC0")
+                        elif msg_id == "pack_voltage_sensor_fault":
+                            if int(curr_msg[1]) == 1:
+                                curr_faults_set.add("P0A01")
+                        elif msg_id == "weak_pack_fault":
+                            if int(curr_msg[1]) == 1:
+                                curr_faults_set.add("P0A02")
+                        elif msg_id == "voltage_redundancy_fault":
+                            if int(curr_msg[1]) == 1:
+                                curr_faults_set.add("P0560")
+                        elif msg_id == "fan_monitor_fault":
+                            if int(curr_msg[1]) == 1:
+                                curr_faults_set.add("P0A81")
+                        elif msg_id == "thermistor_fault":
+                            if int(curr_msg[1]) == 1:
+                                curr_faults_set.add("P0A9C")
+                        elif msg_id == "CANBUS_communications_fault":
+                            if int(curr_msg[1]) == 1:
+                                curr_faults_set.add("U0100")
+                        elif msg_id == "always_on_supply_fault":
+                            if int(curr_msg[1]) == 1:
+                                curr_faults_set.add("P0AA6")
+                        elif msg_id == "high_voltage_isolation_fault":
+                            if int(curr_msg[1]) == 1:
+                                curr_faults_set.add("P0AA6")
+                        elif msg_id == "power_supply_12v_fault":
+                            if int(curr_msg[1]) == 1:
+                                curr_faults_set.add("P0A05")
+                        elif msg_id == "charge_limit_enforcement_fault":
+                            if int(curr_msg[1]) == 1:
+                                curr_faults_set.add("P0A06")
+                        elif msg_id == "discharge_limit_enforcement_fault":
+                            if int(curr_msg[1]) == 1:
+                                curr_faults_set.add("P0A07")
+                        elif msg_id == "charger_safety_relay_fault":
+                            if int(curr_msg[1]) == 1:
+                                curr_faults_set.add("P0A08")
+                        elif msg_id == "internal_memory_fault":
+                            if int(curr_msg[1]) == 1:
+                                curr_faults_set.add("P0A09")
+                        elif msg_id == "internal_thermistor_fault":
+                            if int(curr_msg[1]) == 1:
+                                curr_faults_set.add("P0A0A")
+                        elif msg_id == "internal_logic_fault":
+                            if int(curr_msg[1]) == 1:
+                                curr_faults_set.add("P0A0B")
                 except Exception as e:
                     if type(e) == serial.SerialException:
                         raise e
