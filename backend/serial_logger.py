@@ -11,29 +11,29 @@ import atexit
 
 import Config
 
-fault_codes = {
-        0: "P0A1F", #"internal_communications_fault",
-        1: "P0A00", #"internal_conversion_fault",
-        2: "P0A80", #"weak_cell_fault",
-        3: "P0AFA", #"low_cell_voltage_fault",
-        4: "P0A04", #"open_wiring_fault",
-        5: "P0AC0", #"current_sensor_fault",
-        6: "P0A01", #"pack_voltage_sensor_fault",
-        7: "P0A02", #"weak_pack_fault",
-        8: "P0560", #"voltage_redundancy_fault",
-        9: "P0A81", #"fan_monitor_fault",
-        10: "P0A9C", #"thermistor_fault",
-        11: "U0100", #"CANBUS_communications_fault",
-        12: "always_on_supply_fault",
-        13: "P0AA6", #"high_voltage_isolation_fault",
-        14: "P0A05", #"power_supply_12v_fault",
-        15: "P0A06", #"charge_limit_enforcement_fault",
-        16: "P0A07", #"discharge_limit_enforcement_fault",
-        17: "P0A08", #"charger_safety_relay_fault",
-        18: "P0A09", #"internal_memory_fault",
-        19: "P0A0A", #"internal_thermistor_fault",
-        20: "P0A0B" #"internal_logic_fault"
-    }
+# fault_codes = {
+#         0: "P0A1F", #"internal_communications_fault",
+#         1: "P0A00", #"internal_conversion_fault",
+#         2: "P0A80", #"weak_cell_fault",
+#         3: "P0AFA", #"low_cell_voltage_fault",
+#         4: "P0A04", #"open_wiring_fault",
+#         5: "P0AC0", #"current_sensor_fault",
+#         6: "P0A01", #"pack_voltage_sensor_fault",
+#         7: "P0A02", #"weak_pack_fault",
+#         8: "P0560", #"voltage_redundancy_fault",
+#         9: "P0A81", #"fan_monitor_fault",
+#         10: "P0A9C", #"thermistor_fault",
+#         11: "U0100", #"CANBUS_communications_fault",
+#         12: "always_on_supply_fault",
+#         13: "P0AA6", #"high_voltage_isolation_fault",
+#         14: "P0A05", #"power_supply_12v_fault",
+#         15: "P0A06", #"charge_limit_enforcement_fault",
+#         16: "P0A07", #"discharge_limit_enforcement_fault",
+#         17: "P0A08", #"charger_safety_relay_fault",
+#         18: "P0A09", #"internal_memory_fault",
+#         19: "P0A0A", #"internal_thermistor_fault",
+#         20: "P0A0B" #"internal_logic_fault"
+#     }
 
 
 pack_voltage = 0
@@ -222,8 +222,9 @@ def display_info():
             # prev = (a+b+c)/n, new = (a+b+c+d)/(n+1)
             # new = (prev*n+d)/(n+1)
             # new = (n/n+1)*prev + d/(n+1)
-            avg_pwr_per_mph = (num_pwr_per_mph/(1 + num_pwr_per_mph))*avg_pwr_per_mph + pwr_per_mph/(1 + num_pwr_per_mph)
-            num_pwr_per_mph += 1
+            if pwr_per_mph != 0:
+                avg_pwr_per_mph = (num_pwr_per_mph/(1 + num_pwr_per_mph))*avg_pwr_per_mph + pwr_per_mph/(1 + num_pwr_per_mph)
+                num_pwr_per_mph += 1
             print(f"W/mph: {pwr_per_mph:.2f}")
             print(f"Avg W/mph: {avg_pwr_per_mph:.2f}")
             #speed_mph = (motor_rpm * 3.1415926535 * 16 * 60) / 63360
