@@ -218,7 +218,7 @@ def display_info():
             print(f"{start_color_voltage}voltage: {pack_voltage}{end_color_voltage}")
             print(f"current: {pack_current}")
             speed_mph = 0.0596 * motor_rpm
-            pwr_per_mph = (pack_voltage * pack_current) / speed_mph
+            pwr_per_mph = 0 if speed_mph == 0 else (pack_voltage * pack_current) / speed_mph
             # prev = (a+b+c)/n, new = (a+b+c+d)/(n+1)
             # new = (prev*n+d)/(n+1)
             # new = (n/n+1)*prev + d/(n+1)
