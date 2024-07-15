@@ -57,7 +57,7 @@ def find_serial_port() -> Optional[str]:
     try:
         ports = os.listdir("/dev/serial/by-id/")
         for port in ports:
-            if "usb-Teensyduino_USB_Serial" in port:
+            if "usb-STMicroelectronics_STLINK-V3" in port:
                 return f"/dev/serial/by-id/{port}"
         return None
     except FileNotFoundError:
@@ -80,11 +80,11 @@ def handle_serial():
                 disconnected = True
                 time.sleep(1)
                 continue
-            ser = serial.Serial(port=port, baudrate=9600)
+            ser = serial.Serial(port=port, baudrate=921600)
             disconnected = False
             while True:
                 try:
-                    curr_msg = ser.readline().decode('utf-8')[:-1].split()
+                    curr_msg = ser.readline().decode()[:-1].split()
                     if Config.USE_RADIO:
                         radio.send_data_broadcast(curr_msg)
                     msg_id = curr_msg[0]
