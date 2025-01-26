@@ -4,7 +4,7 @@ sd_data = open("./output/sample.txt", "r") # Using sample text file to demonstra
 
 st.title("SD Card")
 
-st.subheader("The following is sample data from the sd card")
+st.subheader("Here is sample data from the sd card")
 
 stuff = sd_data.read()
 
