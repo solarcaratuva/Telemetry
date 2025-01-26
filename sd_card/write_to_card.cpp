@@ -44,10 +44,10 @@ int main() {
     }
 
     // Let's write 10 random pairs for demonstration.
-    for (int i = 0; i < 10; ++i) {
+    for (int i = 0; i < 100; ++i) {
         auto [message_id, value] = generate_data(); 
-        myFile << "Message ID: " << message_id 
-               << ", Value: " << value << "\n";
+        myFile << message_id 
+               << ", " << value << "\n";
     }
 
     myFile.close();

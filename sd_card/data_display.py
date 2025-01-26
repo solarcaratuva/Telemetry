@@ -1,6 +1,6 @@
 import streamlit as st
 
-sd_data = open("sample.txt", "r") # Using sample text file to demonstrate streamlit displaying file data 
+sd_data = open("./output/sample.txt", "r") # Using sample text file to demonstrate streamlit displaying file data 
 
 st.title("SD Card")
 
