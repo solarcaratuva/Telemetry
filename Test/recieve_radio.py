@@ -25,7 +25,7 @@ def get_xbee_connection():
             # Couldn't open a connection to this port. It's either in use
             # or doesn't have an XBee connected.
             pass
-    return None
+    return None, None
 
 if __name__ == "__main__":
     device, port = get_xbee_connection()
