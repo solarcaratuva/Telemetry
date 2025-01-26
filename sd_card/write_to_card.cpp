@@ -4,7 +4,7 @@
 
 int main() {
     std::ofstream myFile;
-    std::string filename = "/path/to/sdcard/example.txt"; // Replace with your actual path
+    std::string filename = "sample.txt"; // Replace with your actual path
 
     myFile.open(filename, std::ios::out);
 
