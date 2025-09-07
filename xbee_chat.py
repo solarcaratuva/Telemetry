@@ -2,6 +2,9 @@
 import argparse, sys, threading, time
 import serial
 
+PORT = "COM6"
+BAUD = 9600
+
 def receiver(ser, stop_flag):
     buf = bytearray()
     while not stop_flag["stop"]:
@@ -19,12 +22,10 @@ def receiver(ser, stop_flag):
 
 def main():
     p = argparse.ArgumentParser(description="XBee transparent-mode chat")
-    p.add_argument("--port", required=True, help="Serial port (e.g., COM5, /dev/ttyUSB0, /dev/tty.usbserial-*)")
-    p.add_argument("--baud", type=int, default=9600, help="Baud rate (default 9600)")
     p.add_argument("--name", default="Me", help="Name prefix for your messages")
     args = p.parse_args()
 
-    ser = serial.Serial(args.port, args.baud, timeout=0.05)
+    ser = serial.Serial(PORT, BAUD, timeout=0.05)
     stop_flag = {"stop": False}
 
     t = threading.Thread(target=receiver, args=(ser, stop_flag), daemon=True)
