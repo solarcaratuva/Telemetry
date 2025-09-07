@@ -1,0 +1,6 @@
+eventlet
+pyserial
+python-socketio
+digi-xbee
+python-can
+cantools
