@@ -4,3 +4,4 @@ python-socketio
 digi-xbee
 python-can
 cantools
+matplotlib
