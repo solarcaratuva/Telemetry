@@ -14,7 +14,7 @@ MQTT_PORT = 8883
 # SSL/TLS parameters. Ensure these files exist on your XBee.
 SSL_PARAMS = {
     "keyfile": "/flash/cert/private.key",
-    "certfile": "/flash/cert/certificate.pem",
+    "certfile": "/flash/cert/certificate.pem.crt",
     "server_hostname": AWS_ENDPOINT
 }
 
