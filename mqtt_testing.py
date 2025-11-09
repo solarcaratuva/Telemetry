@@ -6,9 +6,9 @@ import xbee
 
 # --- Configuration ---
 # Replace these with your actual AWS IoT Core endpoint and credentials.
-AWS_ENDPOINT = "your-iot-endpoint.iot.us-east-1.amazonaws.com"
-CLIENT_ID = "xbee-cellular-client"
-TOPIC_PUB = "xbee/data"
+AWS_ENDPOINT = "a14ezejktp3brt-ats.iot.us-east-2.amazonaws.com"
+CLIENT_ID = "iotconsole-123abca1-71e9-4531-8913-abb48943e02b"
+TOPIC_PUB = "test/xbee"
 MQTT_PORT = 8883
 
 # SSL/TLS parameters. Ensure these files exist on your XBee.
