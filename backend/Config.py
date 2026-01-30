@@ -1,2 +1,0 @@
-USE_RADIO = True
-
