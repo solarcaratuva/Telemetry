@@ -11,11 +11,16 @@ SSL_PARAMS = {'keyfile': "/flash/cert/aws.key",
               'certfile': "/flash/cert/aws.crt",
               'ca_certs': "/flash/cert/aws.ca"}
 
-TOPIC = "test/xbee"
+TOPIC = "solarcar/us-east-1/car1/telemetry"
+REGION = "us-east-1"
 
-# --- Function modified to take parameters ---
+# Use if region is not 'us-east-1'
+def enterRegion(newRegion):
+    REGION = newRegion
+    print("Current region: " + newRegion)
 
-def publish_test(message, region, client_id=CLIENT_ID, host_prefix=HOST, sslp=SSL_PARAMS):
+# Publishing message method
+def publish_test(message, region=REGION, client_id=CLIENT_ID, host_prefix=HOST, sslp=SSL_PARAMS):
 
     # Build the AWS endpoint dynamically using the region parameter
     # This ensures it works even if you pass a normal string
@@ -32,7 +37,7 @@ def publish_test(message, region, client_id=CLIENT_ID, host_prefix=HOST, sslp=SS
     
     # Publish the parameterized message.
     print("- Publishing message... ", end="")
-    message_json = '{"message": "%s"}' % message
+    message_json = '{"message": "%s", "ts": %s}' % message, time.time(), # for timestamp
     client.publish(TOPIC, message_json)
     print("[OK]")
     
@@ -44,6 +49,9 @@ def publish_test(message, region, client_id=CLIENT_ID, host_prefix=HOST, sslp=SS
 print(" +--------------------------------------+")
 print(" | XBee MicroPython AWS Publish Message |")
 print(" +--------------------------------------+\n")
+
+print("MQTT Topic: %s" % TOPIC)
+print("Current region: %s" % REGION)
 
 conn = network.Cellular()
 

@@ -33,7 +33,7 @@ SSL_PARAMS = {'keyfile': "/flash/cert/aws.key",
               'certfile': "/flash/cert/aws.crt",
               'ca_certs': "/flash/cert/aws.ca"}
 
-TOPIC = "test/xbee"
+TOPIC = "solarcar/us-east-1/car1/telemetry"
 
 
 def sub_cb(topic, msg):

@@ -27,6 +27,8 @@ import xbee
 HOST = b'a14ezejktp3brt-ats'
 CLIENT_ID = "clientID"
 
+REGION = b'us-east-2' # if not the region in AWS, switch it using enterRegion()
+
 # REGION = b'FILL_ME_IN'   ex: b'us-east-1'
 
 # SSL certificates.
@@ -34,11 +36,14 @@ SSL_PARAMS = {'keyfile': "/flash/cert/aws.key",
               'certfile': "/flash/cert/aws.crt",
               'ca_certs': "/flash/cert/aws.ca"}
 
-TOPIC = "test/xbee"
+TOPIC = "solarcar/us-east-1/car1/telemetry"
 
-# --- Function modified to take parameters ---
 
-def publish_test(message, region, client_id=CLIENT_ID, host_prefix=HOST, sslp=SSL_PARAMS):
+# Use if region is not 'us-east-2'
+def enterRegion(newRegion):
+    REGION = newRegion
+
+def publish_test(message, region=REGION, client_id=CLIENT_ID, host_prefix=HOST, sslp=SSL_PARAMS):
 
     # Build the AWS endpoint dynamically using the region parameter
     # This ensures it works even if you pass a normal string
