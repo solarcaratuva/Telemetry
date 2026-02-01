@@ -8,9 +8,7 @@ from machine import Pin
 HOST = b'a14ezejktp3brt-ats'
 CLIENT_ID = "clientID"
 
-REGION = b'us-east-2' # if not the region in AWS, switch it using enterRegion()
-
-# REGION = b'FILL_ME_IN'   ex: b'us-east-1'
+REGION = b'us-east-1' # if not the region in AWS, switch it using enterRegion()
 
 # SSL certificates.
 SSL_PARAMS = {'keyfile': "/flash/cert/aws.key",
@@ -20,7 +18,7 @@ SSL_PARAMS = {'keyfile': "/flash/cert/aws.key",
 TOPIC = "solarcar/us-east-1/car1/telemetry"
 
 
-# Use if region is not 'us-east-2'
+# Use if region is not 'us-east-1'
 def enterRegion(newRegion):
     REGION = newRegion
 
