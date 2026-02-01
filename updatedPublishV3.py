@@ -27,21 +27,21 @@ def publish_telemetry(payload_dict, region, client_id=CLIENT_ID, host_prefix=HOS
     # This automatically handles quotes and formatting
     message_json = ujson.dumps(payload_dict)
 
-    print(f"- Connecting to {hostname}...")
+    print("- Connecting to %s..." % hostname)
     try:
         client = MQTTClient(client_id, hostname, ssl=True, ssl_params=sslp)
         client.connect()
         print("[CONNECTED]")
         
-        print(f"- Publishing to {TOPIC}...")
-        print(f"- Payload: {message_json}")
+        print("- Publishing to %s..." % TOPIC)
+        print("- Payload: %s" % message_json)
         client.publish(TOPIC, message_json)
         print("[SENT]")
         
         client.disconnect()
         print("- Disconnected")
     except Exception as e:
-        print(f"[ERROR] Publish failed: {e}")
+        print("[ERROR] Publish failed: %s" % e)
 
 # --- Main Execution ---
 
@@ -57,7 +57,7 @@ print("[OK]")
 
 # Optional: Sync time with network so 'ts' is accurate
 # (Most Cellular modules do this automatically, but good to be aware)
-print(f"- Current System Time: {time.time()}") 
+print("- Current System Time: {%s}" % time.time()) 
 
 while True:
     # 1. Get User Input
