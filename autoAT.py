@@ -36,8 +36,9 @@ conn = network.Cellular()
 print("- Waiting for the module to be connected to the cellular network... ",
       end="")
 while not conn.isconnected():
-    print("ATAI Output: " + xb.atcmd('AI'))
-    print("ATDB Output: " + network.Cellular().signal())
+    print()
+    print("ATAI Output: %s" % xb.atcmd('AI'))
+    print("ATDB Output: %s" % network.Cellular().signal())
     time.sleep(10)
 print("[OK]")
 print()
@@ -50,8 +51,8 @@ count = 0
 while conn.isconnected():
     count += 1
     if (count == 10):
-        print("ATAI Output: " + xb.atcmd('AI'))
-        print("ATDB Output: " + network.Cellular().signal())
+        print("ATAI Output: %s" % xb.atcmd('AI'))
+        print("ATDB Output: %s" % network.Cellular().signal())
         count = 0
     if (button.value() == 0):
         print("User button pressed")
