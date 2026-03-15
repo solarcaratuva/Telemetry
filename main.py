@@ -14,6 +14,9 @@ except ImportError:
 # CONFIG
 # ============================================================
 
+DEBUG_TO_FILE = True
+DEBUG_FILE_PATH = "debug_log.txt"
+
 AWS_ENDPOINT = "YOUR_AWS_IOT_ENDPOINT_HERE"   # e.g. abcdefg-ats.iot.us-east-1.amazonaws.com
 CLIENT_ID    = "YOUR_CLIENT_ID_HERE"
 TOPIC_PUB    = "telemetry/raw_json"
@@ -395,7 +398,7 @@ def main():
     while True:
         try:
             # ---- Ensure MQTT connection ----
-            if not mqtt_connected or mqtt is None:
+            if not DEBUG_TO_FILE and (not mqtt_connected or mqtt is None):
                 try:
                     mqtt = connect_mqtt()
                     mqtt_connected = True
@@ -428,26 +431,40 @@ def main():
             t = now_ms()
             if batch:
                 if (len(batch) >= BATCH_MAX_FRAMES) or (elapsed_ms(last_flush) >= BATCH_FLUSH_MS):
-                    payload = build_batch_payload(batch)
-                    try:
-                        mqtt.publish(TOPIC_PUB, payload, qos=0)
-                        frames_published += len(batch)
-                        batch.clear()
-                        last_flush = t
-                    except Exception as e:
-                        publish_errors += 1
-                        print("[MQTT] publish failed:", e)
-                        mqtt_connected = False
-                        consecutive_failures += 1
-                        maybe_reset_module(consecutive_failures)
+                    if DEBUG_TO_FILE:
                         try:
-                            mqtt.disconnect()
-                        except Exception:
-                            pass
-                        mqtt = None
-                        # Keep batch, but cap growth
-                        if len(batch) > MAX_BATCH_FRAMES_HARD_CAP:
-                            batch = batch[-MAX_BATCH_FRAMES_HARD_CAP:]
+                            with open(DEBUG_FILE_PATH, "a") as f:
+                                for frame in batch:
+                                    f.write("TS: {ts_ms}, ID: 0x{id:03X}, LEN: {len}, DATA: {data_hex}\n".format(**frame))
+                            frames_published += len(batch)
+                            batch.clear()
+                            last_flush = t
+                        except Exception as e:
+                            publish_errors += 1
+                            print("[FILE] write failed:", e)
+                            if len(batch) > MAX_BATCH_FRAMES_HARD_CAP:
+                                batch = batch[-MAX_BATCH_FRAMES_HARD_CAP:]
+                    else:
+                        payload = build_batch_payload(batch)
+                        try:
+                            mqtt.publish(TOPIC_PUB, payload, qos=0)
+                            frames_published += len(batch)
+                            batch.clear()
+                            last_flush = t
+                        except Exception as e:
+                            publish_errors += 1
+                            print("[MQTT] publish failed:", e)
+                            mqtt_connected = False
+                            consecutive_failures += 1
+                            maybe_reset_module(consecutive_failures)
+                            try:
+                                mqtt.disconnect()
+                            except Exception:
+                                pass
+                            mqtt = None
+                            # Keep batch, but cap growth
+                            if len(batch) > MAX_BATCH_FRAMES_HARD_CAP:
+                                batch = batch[-MAX_BATCH_FRAMES_HARD_CAP:]
 
             # ---- Health print occasionally ----
             if elapsed_ms(last_health_print) >= 5000:
