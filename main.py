@@ -17,9 +17,9 @@ except ImportError:
 DEBUG_TO_FILE = True
 DEBUG_FILE_PATH = "debug_log.txt"
 
-AWS_ENDPOINT = "YOUR_AWS_IOT_ENDPOINT_HERE"   # e.g. abcdefg-ats.iot.us-east-1.amazonaws.com
-CLIENT_ID    = "YOUR_CLIENT_ID_HERE"
-TOPIC_PUB    = "telemetry/raw_json"
+AWS_ENDPOINT = b'a14ezejktp3brt-ats'  # e.g. abcdefg-ats.iot.us-east-1.amazonaws.com
+CLIENT_ID    = "car1_lte_module"
+TOPIC_PUB    = "solarcar/us-east-1/car1/telemetry"
 MQTT_PORT    = 8883
 
 SSL_PARAMS = {
@@ -395,7 +395,12 @@ def main():
 
     last_health_print = now_ms()
 
+    count = 0
     while True:
+        if (count >= 20):
+            print("[Stopped] Reached 20 message limit")
+            break
+
         try:
             # ---- Ensure MQTT connection ----
             if not DEBUG_TO_FILE and (not mqtt_connected or mqtt is None):
@@ -429,8 +434,11 @@ def main():
 
             # ---- Flush batch if needed ----
             t = now_ms()
+            with open(DEBUG_FILE_PATH, "a") as f:
+                f.write("Batch: ", str(batch))
             if batch:
                 if (len(batch) >= BATCH_MAX_FRAMES) or (elapsed_ms(last_flush) >= BATCH_FLUSH_MS):
+                    count += 1
                     if DEBUG_TO_FILE:
                         try:
                             with open(DEBUG_FILE_PATH, "a") as f:
