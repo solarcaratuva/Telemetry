@@ -422,6 +422,8 @@ def main():
             # ---- Read UART data ----
             chunk = uart_read_nonblocking(uart, max_bytes=256)
             if chunk:
+                with open(DEBUG_FILE_PATH, "a") as f:
+                    f.write("Raw chunk: " + str(chunk) + "\n")
                 rx_buf.extend(chunk)
                 if len(rx_buf) > MAX_RX_BUF:
                     # If we are falling behind, drop oldest bytes to recover.
