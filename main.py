@@ -435,7 +435,7 @@ def main():
             # ---- Flush batch if needed ----
             t = now_ms()
             with open(DEBUG_FILE_PATH, "a") as f:
-                f.write("Batch: ", str(batch))
+                f.write("Batch: " + str(batch) + "\n")
             if batch:
                 if (len(batch) >= BATCH_MAX_FRAMES) or (elapsed_ms(last_flush) >= BATCH_FLUSH_MS):
                     count += 1
