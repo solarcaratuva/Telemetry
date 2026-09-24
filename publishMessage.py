@@ -37,7 +37,7 @@ def publish_test(message, region=REGION, client_id=CLIENT_ID, host_prefix=HOST, 
     
     # Publish the parameterized message.
     print("- Publishing message... ", end="")
-    message_json = '{"message": "%s", "ts": %s}' % message, time.time(), # for timestamp
+    message_json = '{"message": "%s", "ts": %s}' % (message, time.time()) # for timestamp
     client.publish(TOPIC, message_json)
     print("[OK]")
     

@@ -27,7 +27,7 @@ def publish_telemetry(payload_dict, region, client_id=CLIENT_ID, host_prefix=HOS
     # This automatically handles quotes and formatting
     message_json = ujson.dumps(payload_dict)
 
-    print("- Connecting to %s..." % hostname)       
+    print("- Connecting to %s..." % hostname)
     try:
         client = MQTTClient(client_id, hostname, ssl=True, ssl_params=sslp)
         client.connect()
